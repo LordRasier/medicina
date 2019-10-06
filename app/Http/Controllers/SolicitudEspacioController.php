@@ -8,6 +8,7 @@ use App\turno;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SolicitudEspacioController extends Controller
 {
@@ -18,7 +19,7 @@ class SolicitudEspacioController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         $solicitudes = $user->solicitud_espacio()->get();
         $icons = [
           0 => "far fa-clock fa-2x",
@@ -27,7 +28,7 @@ class SolicitudEspacioController extends Controller
         ];
 
         foreach ($solicitudes as $item){
-            $item->espacio = $item->espacio()->get();
+            $item->espacio = espacio::find($item->espacio_id);
         }
 
         return view("espacio.listado",[
@@ -40,8 +41,8 @@ class SolicitudEspacioController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function listado(){
-        $user = Auth::user();
-        $solicitudes = turno::all()->where("autorizado","=","0");
+        $user = User::find(Auth::id());
+        $solicitudes = $user->solicitud_espacio()->get();
         $icons = [
             0 => "far fa-clock fa-2x",
             1 => "far fa-check fa-2x",
@@ -49,8 +50,7 @@ class SolicitudEspacioController extends Controller
         ];
 
         foreach ($solicitudes as $item){
-            $item->espacio = $item->espacio()->get();
-            $item->user = $item->user()->get();
+           $item->user = User::find($item->pivot["user_id"]);
         }
 
         return view("espacio.autorizar",[
@@ -60,8 +60,8 @@ class SolicitudEspacioController extends Controller
     }
 
     public function historial(){
-        $user = Auth::user();
-        $solicitudes = turno::all()->where("autorizado","!=","0");
+        $user = User::find(Auth::id());
+        $solicitudes = $user->solicitud_espacio()->wherePivot("autorizado","!=",0)->get();
         $icons = [
             0 => "far fa-clock fa-2x",
             1 => "far fa-check fa-2x",
@@ -69,8 +69,7 @@ class SolicitudEspacioController extends Controller
         ];
 
         foreach ($solicitudes as $item){
-            $item->espacio = $item->espacio()->get();
-            $item->user = $item->user()->get();
+            $item->user = User::find($item->pivot["user_id"]);
         }
 
         return view("espacio.historial",[
@@ -109,14 +108,7 @@ class SolicitudEspacioController extends Controller
             "detalle" => "required"
         ]);
 
-        $new = new turno();
-        $new->user_id = Auth::id();
-        $new->espacio_id = $data["espacio"];
-        $new->fecha = $data["fecha"];
-        $new->horario = $data["horario"];
-        $new->detalle = $data["detalle"];
-
-        $new->save();
+        User::find(Auth::id())->solicitud_espacio()->attach($data["espacio"],["fecha" => $data["fecha"], "horario" => $data["horario"], "detalle" => $data["detalle"]]);
 
         return redirect("/espacios/solicitudes/list");
 
@@ -152,16 +144,14 @@ class SolicitudEspacioController extends Controller
      */
     public function edit($id)
     {
-       $solicitud = turno::findOrFail($id);
-       $solicitud->espacio = $solicitud->espacio()->get();
-       $solicitud->user = $solicitud->user()->get();
+        $solicitud = DB::table("espacios_pivot")->where("id","=",$id)->get()[0];
 
-        $user = Auth::user();
+        $solicitud->user = User::find($solicitud->user_id);
+        $solicitud->espacio = espacio::find($solicitud->espacio_id);
 
         return view("espacio.definir",[
             "item" => $solicitud
         ]);
-
     }
 
     /**
@@ -179,12 +169,7 @@ class SolicitudEspacioController extends Controller
             "id" => "required"
         ]);
 
-        $turno = turno::findOrFail($data["id"]);
-        $turno->autorizado = $data["estado"];
-        $turno->respuesta = $data["respuesta"];
-
-        $turno->save();
-
+        DB::table("espacios_pivot")->where("id","=",$data["id"])->update(["autorizado" => $data["estado"], "respuesta" => $data["respuesta"]]);
         return redirect("/espacios/solicitudes/autorizar");
     }
 

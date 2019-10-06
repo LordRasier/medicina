@@ -134,7 +134,7 @@
         $(document).ready(function(){
             $("[name='especialidad']").val({{$edit->specialty}});
             $("[name='dedication']").val({{$edit->dedication}});
-            $("[name='type']").val({{$edit->type}});
+            $("[name='tipo']").val({{$edit->type}});
         });
     </script>
 @endsection

@@ -27,7 +27,7 @@
                                         <div class="col-12 mb-15">
                                             <div class="form-group">
                                                 <label class="form-label" for="user">Solicitante</label>
-                                                <input name="user" type="text" class="form-control" value="{{$item->user[0]["name"]}}" readonly>
+                                                <input name="user" type="text" class="form-control" value="{{$item->user["name"]}}" readonly>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-15">
@@ -40,7 +40,7 @@
                                         <div class="col-12 mb-15">
                                             <div class="form-group">
                                                 <label class="form-label" for="espacio">Espacio a reservar</label>
-                                                <input name="espacio" type="text" class="form-control" value="{{$item->espacio[0]["description"]}}" readonly>
+                                                <input name="espacio" type="text" class="form-control" value="{{$item->espacio["description"]}}" readonly>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-15">

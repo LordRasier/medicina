@@ -39,7 +39,7 @@ class User extends Authenticatable
     ];
 
     public function solicitud_espacio(){
-        return $this->belongsToMany(espacio::class,"espacios_pivot","user_id","espacio_id");
+        return $this->belongsToMany(espacio::class,"espacios_pivot","user_id","espacio_id")->withPivot("id","detalle","horario","autorizado","respuesta","fecha");
     }
 
     public function events(){

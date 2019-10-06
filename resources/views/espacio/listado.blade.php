@@ -33,11 +33,11 @@
                         <tbody>
                         @foreach($solicitudes as $item)
                             <tr>
-                                <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->espacio[0]["description"]}}</td>
-                                <td class="center">{{$item->fecha}}</td>
-                                <td class="center">{{$item->horario}}</td>
-                                <td class="center"><i class="{{$icon[$item->autorizado]}}"></i></td>
+                                <td class="center">{{$item->pivot["id"]}}</td>
+                                <td class="center">{{$item->description}}</td>
+                                <td class="center">{{$item->pivot["fecha"]}}</td>
+                                <td class="center">{{$item->pivot["horario"]}}</td>
+                                <td class="center"><i class="{{$icon[$item->pivot["autorizado"]]}}"></i></td>
                                 <td class="center"><button class="btn btn-danger" data-toggle="modal" data-target="#elim-{{$item->id}}"><i class="fa fa-trash"></i></button></td>
                             </tr>
                             <div class="modal modal-alert fade" id="elim-{{$item->id}}" tabindex="-1" role="dialog" aria-hidden="true">

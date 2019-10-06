@@ -34,14 +34,15 @@
                         </thead>
                         <tbody>
                         @foreach($solicitudes as $item)
+                            {{$item}}
                             <tr>
-                                <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->user[0]["name"]}}</td>
-                                <td class="center">{{$item->espacio[0]["description"]}}</td>
-                                <td class="center">{{$item->fecha}}</td>
-                                <td class="center">{{$item->horario}}</td>
-                                <td class="center"><i class="{{$icon[$item->autorizado]}}"></i></td>
-                                <td class="center"><a href="/espacios/solicitudes/{{$item->id}}/show" class="btn btn-primary" ><i class="fa fa-search"></i></a></td>
+                                <td class="center">{{$item->pivot["id"]}}</td>
+                                <td class="center">{{$item->user["name"]}}</td>
+                                <td class="center">{{$item->description}}</td>
+                                <td class="center">{{$item->pivot["fecha"]}}</td>
+                                <td class="center">{{$item->pivot["horario"]}}</td>
+                                <td class="center"><i class="{{$icon[$item->pivot["autorizado"]]}}"></i></td>
+                                <td class="center"><a href="/espacios/solicitudes/{{$item->pivot["id"]}}/show" class="btn btn-primary" ><i class="fa fa-search"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
