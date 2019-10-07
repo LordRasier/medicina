@@ -62,6 +62,10 @@ class User extends Authenticatable
         return $this->belongsTo(type::class);
     }
 
+    public function facturas(){
+        return $this->hasMany(factura::class);
+    }
+
     public function access_list(){
         $user = User::find(Auth::id());
         $sub_menu = $user->access()->get();

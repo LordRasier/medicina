@@ -88,3 +88,13 @@ Route::get("/espacios/solicitudes/{id}/show","SolicitudEspacioController@show");
 Route::get("/espacios/solicitudes/{id}/remove","SolicitudEspacioController@destroy");
 //End Rutas solicitud
 
+Route::get("/misFacturas","FacturaController@MisFacturas");
+
+Route::get("/misFacturas/create","FacturaController@create");
+
+Route::put("/misFacturas/create/store","FacturaController@store");
+
+Route::get("/facturas","FacturaController@index");
+
+Route::get("/facturas/show/{id}","FacturaController@show");
+
