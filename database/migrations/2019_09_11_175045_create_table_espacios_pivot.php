@@ -19,7 +19,7 @@ class CreateTableEspaciosPivot extends Migration
             $table->bigInteger("espacio_id");
             $table->string("horario");
             $table->string("detalle");
-            $table->string("respuesta");
+            $table->string("respuesta")->default(" ");
             $table->date("fecha");
             $table->bigInteger("autorizado")->default(0);
             $table->timestamps();
