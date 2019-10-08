@@ -24,6 +24,17 @@ class CreateTableSubMenu extends Migration
 
         DB::table("sub_menus")->insert(["name" => "Mensajeria", "url" => "/mail/inbox", "menu_id" => "1"]);
         DB::table("sub_menus")->insert(["name" => "Usuarios", "url" => "/users", "menu_id" => "2"]);
+        //Espacios
+        DB::table("sub_menus")->insert(["name" => "Espacios", "url" => "/espacios/list", "menu_id" => "2"]);
+        DB::table("sub_menus")->insert(["name" => "Mis solicitudes", "url" => "/espacios/solicitudes/list", "menu_id" => "3"]);
+        DB::table("sub_menus")->insert(["name" => "Autorizar", "url" => "/espacios/solicitudes/autorizar", "menu_id" => "3"]);
+        DB::table("sub_menus")->insert(["name" => "Archivo", "url" => "/espacios/solicitudes/historial", "menu_id" => "3"]);
+        //Facturas
+        DB::table("sub_menus")->insert(["name" => "Mis facturas", "url" => "/misFacturas/list", "menu_id" => "4"]);
+        DB::table("sub_menus")->insert(["name" => "Archivo", "url" => "/facturas/show", "menu_id" => "4"]);
+        //Honorarios
+        DB::table("sub_menus")->insert(["name" => "Mis honorarios", "url" => "/misHonorarios", "menu_id" => "5"]);
+        DB::table("sub_menus")->insert(["name" => "Cargar Registros", "url" => "/honorarios/create", "menu_id" => "4"]);
     }
 
     /**
