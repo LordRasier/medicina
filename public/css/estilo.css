@@ -1,0 +1,79 @@
+.fc-dayGrid-view .fc-body .fc-row {
+    min-height: 6em !important;
+}
+
+.fc-day-grid-event .fc-content {
+    white-space: inherit !important;
+}
+
+.no-padding {
+    padding: 0px !important;
+}
+
+.fill {
+    width: max-content;
+}
+
+.header-icon {
+    cursor: pointer !important;
+}
+
+.change-pic {
+    bottom: 38%;
+    position: absolute;
+    right: 30%;
+}
+
+.select2-selection {
+    border-right: 0 !important;
+    border-left: 0 !important;
+    border-top: 0 !important;
+}
+
+.center {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.mb-15 {
+    margin-bottom: 1.5rem !important;
+}
+
+.for-element {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.header-element {
+    display: inline-block;
+    margin: auto 2%;
+    vertical-align: middle;
+}
+
+.lotterie-box {
+    text-align-last: center;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    text-indent: 1px;
+    text-overflow: '';
+    padding: 0.5rem 0.5rem !important;
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #a38cc6 !important;
+}
+
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+    transition: all .5s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+  }
