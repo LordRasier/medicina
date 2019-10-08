@@ -1,12 +1,6 @@
 /node_modules
 /public/hot
 /public/storage
-/public/img
-/public/js
-/public/media
-/public/webfonts
-/public/css
-/storage/*.key
 /vendor
 .env
 .env.backup

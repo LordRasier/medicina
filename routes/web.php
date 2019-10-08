@@ -88,6 +88,7 @@ Route::get("/espacios/solicitudes/{id}/show","SolicitudEspacioController@show");
 Route::get("/espacios/solicitudes/{id}/remove","SolicitudEspacioController@destroy");
 //End Rutas solicitud
 
+// Rutas Facturas
 Route::get("/misFacturas","FacturaController@MisFacturas");
 
 Route::get("/misFacturas/create","FacturaController@create");
@@ -97,4 +98,16 @@ Route::put("/misFacturas/create/store","FacturaController@store");
 Route::get("/facturas","FacturaController@index");
 
 Route::get("/facturas/show/{id}","FacturaController@show");
+//End Rutas facturas
 
+//Rutas Honorarios
+Route::get("/misHonorarios");
+
+Route::get("/honorarios","HonorarioController@index");
+
+Route::get("/honorarios/create", "HonorarioController@create");
+
+Route::put("/honorarios/create/store", "HonorarioController@store");
+
+Route::get("/honorarios/{id}/remove", "HonorarioController@remove");
+//End rutas honorarios
