@@ -17,10 +17,10 @@ class CreateTableEspaciosPivot extends Migration
             $table->bigIncrements('id');
             $table->bigInteger("user_id");
             $table->bigInteger("espacio_id");
-            $table->bigInteger("horario");
-            $table->bigInteger("detalle");
-            $table->bigInteger("respuesta");
-            $table->bigInteger("fecha");
+            $table->string("horario");
+            $table->string("detalle");
+            $table->string("respuesta");
+            $table->date("fecha");
             $table->bigInteger("autorizado")->default(0);
             $table->timestamps();
         });
