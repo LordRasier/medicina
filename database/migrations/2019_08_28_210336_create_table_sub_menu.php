@@ -34,7 +34,8 @@ class CreateTableSubMenu extends Migration
         DB::table("sub_menus")->insert(["name" => "Archivo", "url" => "/facturas/show", "menu_id" => "4"]);
         //Honorarios
         DB::table("sub_menus")->insert(["name" => "Mis honorarios", "url" => "/misHonorarios", "menu_id" => "5"]);
-        DB::table("sub_menus")->insert(["name" => "Cargar Registros", "url" => "/honorarios/create", "menu_id" => "4"]);
+        DB::table("sub_menus")->insert(["name" => "Cargar Registros", "url" => "/honorarios/create", "menu_id" => "5"]);
+        DB::table("sub_menus")->insert(["name" => "Cargar Registros", "url" => "/honorarios", "menu_id" => "5"]);
     }
 
     /**
