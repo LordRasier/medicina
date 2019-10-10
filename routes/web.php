@@ -101,7 +101,7 @@ Route::get("/facturas/show/{id}","FacturaController@show");
 //End Rutas facturas
 
 //Rutas Honorarios
-Route::get("/misHonorarios");
+Route::get("/misHonorarios","HonorarioController@MisHonorarios");
 
 Route::get("/honorarios","HonorarioController@index");
 
