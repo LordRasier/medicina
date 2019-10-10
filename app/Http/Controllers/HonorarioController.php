@@ -19,7 +19,7 @@ class HonorarioController extends Controller
      */
     public function index()
     {
-        return view("honorarios.index",["honorarios" => honorario::all()]);
+        return view("honorario.index",["honorarios" => honorario::all()]);
     }
 
     /**
@@ -28,7 +28,7 @@ class HonorarioController extends Controller
     public function MisHonorarios(){
         $user = User::findOrFail(Auth::id());
 
-        return view("honorarios.listado",["honorarios" => $user->honorarios()->get()]);
+        return view("honorario.listado",["honorarios" => $user->honorarios()->get()]);
     }
 
     /**
@@ -38,7 +38,7 @@ class HonorarioController extends Controller
      */
     public function create()
     {
-        return view("honorarios.create");
+        return view("honorario.create");
     }
 
     /**
