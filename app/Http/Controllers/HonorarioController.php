@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\factura;
 use App\honorario;
 use Carbon\Carbon;
-use http\Client\Curl\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HonorarioController extends Controller
