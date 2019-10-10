@@ -25,7 +25,7 @@
                                             <label class="form-label" for="file">Selecciona archivo</label>
                                             <div class="input-group">
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" name="file"  accept="application/pdf,html" multiple>
+                                                    <input type="file" class="custom-file-input" name="file"  accept="application/pdf,.html" multiple>
                                                     <label class="custom-file-label" for="file">Buscar</label>
                                                 </div>
                                             </div>
