@@ -22,7 +22,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($facturas as $item)
+                        @foreach($honorarios as $item)
                             <tr>
                                 <td class="center">{{$item->id}}</td>
                                 <td class="center">{{$item->user["name"]}}</td>
