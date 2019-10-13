@@ -50,19 +50,20 @@ class HonorarioController extends Controller
     public function store(Request $request)
     {
         $files = $request->file("file");
-        if($request->hasFile("file")){
-            foreach($files as $file){
-                $temp = explode($file->name);
-                $user = User::where("code",$temp)->get();
 
-                $honorario = honorario::firstOrNew(["user_id" => $user->id],["date" => $temp]);
-                $honorario->user_id = $user->id;
-                $honorario->date = Carbon::parse($temp)->toDateString();
+
+            foreach($files as $file){
+                $temp = explode(" - ",$file->getClientOriginalName());
+                $date =  Carbon::parse($temp[1])->toDateString();
+                $user = User::where("code","=",explode("-",$temp[2])[0])->first();
+
+                $honorario = honorario::firstOrNew(["user_id" => $user->id,"fecha" => $date]);
                 $honorario->file = $file->store("app/honorarios");
 
                 $honorario->save();
+
             }
-        }
+
         return redirect("/honorarios");
     }
 

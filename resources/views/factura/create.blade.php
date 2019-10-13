@@ -15,12 +15,30 @@
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <form action="/misHonorarios/create/store" method="POST" enctype="multipart/form-data">
+                    <form action="/misFacturas/create/store" method="POST" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-12">
                                 @csrf
                                 @method("PUT")
                                 <div class="row">
+                                    <div class="col-12 mb-15">
+                                        <div class="form-group">
+                                            <label for="fecha" class="form-label">Fecha</label>
+                                            <input type="text" autocomplete="off" name="fecha" class="form-control calendar-event-date" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-15">
+                                        <div class="form-group">
+                                            <label for="numero" class="form-label">Numero de factura</label>
+                                            <input type="text" name="numero" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-15">
+                                        <div class="form-group">
+                                            <label for="observacion" class="form-label">Observacion</label>
+                                            <textarea class="form-control" name="observacion" rows="5"> </textarea>
+                                        </div>
+                                    </div>
                                     <div class="col-12 mb-15">
                                         <div class="form-group">
                                             <label class="form-label" for="file">Selecciona archivo</label>
@@ -37,7 +55,7 @@
                             <hr>
                             <div class="col-12">
                                 <button class="btn btn-primary float-right" type="submit">Enviar</button>
-                                <a class="btn btn-secondary" href="/honorarios/list">Cancelar</a>
+                                <a class="btn btn-secondary" href="/misFacturas">Cancelar</a>
                             </div>
                         </div>
                     </form>

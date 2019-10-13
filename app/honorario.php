@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class honorario extends Model
 {
+    protected $fillable = ['user_id','fecha'];
     public function user(){
         return $this->belongsTo(User::class);
     }
