@@ -24,6 +24,7 @@ class CreateTableSubMenu extends Migration
 
         DB::table("sub_menus")->insert(["name" => "Mensajeria", "url" => "/mail/inbox", "menu_id" => "1"]);
         DB::table("sub_menus")->insert(["name" => "Usuarios", "url" => "/users", "menu_id" => "2"]);
+        DB::table("sub_menus")->insert(["name" => "Dispensas", "url" => "/Dispensas", "menu_id" => "2"]);
         //Espacios
         DB::table("sub_menus")->insert(["name" => "Espacios", "url" => "/espacios/list", "menu_id" => "2"]);
         DB::table("sub_menus")->insert(["name" => "Mis solicitudes", "url" => "/espacios/solicitudes/list", "menu_id" => "3"]);
@@ -36,6 +37,8 @@ class CreateTableSubMenu extends Migration
         DB::table("sub_menus")->insert(["name" => "Mis honorarios", "url" => "/misHonorarios", "menu_id" => "5"]);
         DB::table("sub_menus")->insert(["name" => "Cargar Registros", "url" => "/honorarios/create", "menu_id" => "5"]);
         DB::table("sub_menus")->insert(["name" => "Archivo", "url" => "/honorarios", "menu_id" => "5"]);
+        //Dispensas
+        DB::table("sub_menus")->insert(["name" => "Mis Dispensas", "url" => "/misDispensas","menu_id" => "6"]);
     }
 
     /**

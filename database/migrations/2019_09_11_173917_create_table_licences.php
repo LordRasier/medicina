@@ -17,6 +17,7 @@ class CreateTableLicences extends Migration
             $table->bigIncrements('id');
             $table->string("description");
             $table->integer("alter")->default(0);
+            $table->integer("habilitado")->default(1);
             $table->timestamps();
         });
     }

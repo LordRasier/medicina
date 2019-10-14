@@ -11,6 +11,10 @@
 |
 */
 
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('login');
 });
@@ -111,3 +115,19 @@ Route::put("/honorarios/create/store", "HonorarioController@store");
 
 Route::get("/honorarios/{id}/remove", "HonorarioController@remove");
 //End rutas honorarios
+
+//Rutas Dispensas //
+
+Route::get("/dispensas","DispensaController@index");
+
+Route::get("/dispensas/create","DispensaController@create");
+
+Route::put("/dispensas/create/store","DispensaController@store");
+
+Route::get("/dispensas/show/{id}","DispensaController@edit");
+
+Route::put("/dispensas/show/{id}/update","DispensaController@update");
+
+Route::get("/misDispensas", "DispensasController@MisDispensas");
+
+//End Rutas Dispensas //

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\dispensa;
 use App\espacio;
 use App\event;
+use App\licence;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,9 +17,18 @@ class DispensaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
+        $dispensas = licence::all();
 
+        $icon = [
+            0 => "far fa-times fa-2x",
+            1 => "far fa-check fa-2x"
+        ];
+
+        return view("licenses.index",[
+            "dispensas" => $dispensas,
+            "icon" => $icon
+        ]);
     }
 
     /**
@@ -27,7 +38,7 @@ class DispensaController extends Controller
      */
     public function create()
     {
-
+        return view("licenses.create");
     }
 
     /**
@@ -38,7 +49,19 @@ class DispensaController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->validate([
+            "dispensa" => "required"
+        ]);
 
+        $licence = new licence();
+
+        $licence->description = $data["dispensa"];
+        $licence->alter = ($request->has("alter"))? 1 : 0;
+        $licence->habilitado = ($request->has("habilitado"))? 1 : 0;
+
+        $licence->save();
+
+        return redirect("/dispensas");
     }
 
     /**
@@ -49,7 +72,7 @@ class DispensaController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -60,7 +83,10 @@ class DispensaController extends Controller
      */
     public function edit($id)
     {
-
+        $dispensa = licence::findOrFail($id);
+        return view("licenses.show",[
+            "dispensa" => $dispensa
+        ]);
     }
 
     /**
@@ -72,7 +98,18 @@ class DispensaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $licence = licence::findOrFail($id);
+        $data = $request->validate([
+            "dispensa" => "required"
+        ]);
 
+        $licence->description = $data["dispensa"];
+        $licence->alter = ($request->has("alter"))? 1 : 0;
+        $licence->habilitado = ($request->has("habilitado"))? 1 : 0;
+
+        $licence->save();
+
+        return redirect("/dispensas");
     }
 
     /**
