@@ -70,6 +70,10 @@ class User extends Authenticatable
         return $this->hasMany(honorario::class);
     }
 
+    public function periodos(){
+        return $this->hasMany(periodo::class);
+    }
+
     public function access_list(){
         $user = User::find(Auth::id());
         $sub_menu = $user->access()->get();

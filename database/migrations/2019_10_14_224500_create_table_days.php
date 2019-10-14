@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateTablePeriodo extends Migration
+class CreateTableDays extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateTablePeriodo extends Migration
      */
     public function up()
     {
-        Schema::create('periodos', function (Blueprint $table) {
+        Schema::create('table_days', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date("start");
-            $table->date("end");
-            $table->bigInteger("user_id");
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ class CreateTablePeriodo extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('periodo');
+        Schema::dropIfExists('table_days');
     }
 }

@@ -2,15 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\espacio;
-use App\event;
-use App\periodo;
-use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class PeriodoController extends Controller
+class DaysController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,25 +13,7 @@ class PeriodoController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::id());
-
-        $center = Carbon::parse($user->ingreso);
-        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
-
-        $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
-
-        if($periodo == null){
-            $periodo = new periodo();
-
-            $periodo->user_id = $user->id;
-            $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(365)->toDateString();
-
-            $periodo->save();
-        }
-
-
-
+        //
     }
 
     /**
@@ -47,7 +23,7 @@ class PeriodoController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -58,7 +34,7 @@ class PeriodoController extends Controller
      */
     public function store(Request $request)
     {
-
+        //
     }
 
     /**
@@ -80,7 +56,7 @@ class PeriodoController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -92,7 +68,7 @@ class PeriodoController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //
     }
 
     /**
@@ -103,7 +79,6 @@ class PeriodoController extends Controller
      */
     public function destroy($id)
     {
-
+        //
     }
-
 }

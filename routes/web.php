@@ -128,6 +128,6 @@ Route::get("/dispensas/show/{id}","DispensaController@edit");
 
 Route::put("/dispensas/show/{id}/update","DispensaController@update");
 
-Route::get("/misDispensas", "DispensasController@MisDispensas");
+Route::get("/misDispensas", "PeriodoController@index");
 
 //End Rutas Dispensas //
