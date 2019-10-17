@@ -36,7 +36,11 @@ class PeriodoController extends Controller
             $periodo->save();
         }
 
+        $periodo->requests = $periodo->dispensas();
 
+        return view("periodo.show",[
+            "periodo" => $periodo
+        ]);
 
     }
 
