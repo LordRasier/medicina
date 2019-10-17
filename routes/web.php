@@ -130,4 +130,6 @@ Route::put("/dispensas/show/{id}/update","DispensaController@update");
 
 Route::get("/misDispensas", "PeriodoController@index");
 
+Route::get("/misDispensas/solicitud", "PeriodoController@create");
+
 //End Rutas Dispensas //

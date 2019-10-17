@@ -19,6 +19,10 @@ class CreateTableRequests extends Migration
             $table->bigInteger("licence_id");
             $table->text("description");
             $table->string("file");
+            $table->integer("autorizacion2")->default(1);
+            $table->text("observacion2");
+            $table->integer("autorizacion3")->default(1);
+            $table->text("observacion3");
             $table->timestamps();
         });
     }

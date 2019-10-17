@@ -77,3 +77,8 @@
     transform: translateX(10px);
     opacity: 0;
   }
+
+  .purple-hover:hover{
+      background-color: #a38cc6;
+      color: #fff;
+  }
