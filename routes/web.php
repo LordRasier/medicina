@@ -132,4 +132,24 @@ Route::get("/misDispensas", "PeriodoController@index");
 
 Route::get("/misDispensas/solicitud", "PeriodoController@create");
 
+Route::get("/misDispensas/solicitudes", "PeriodoController@misSolicitudes");
+
+Route::put("/misDispensas/create/store", "PeriodoController@store");
+
+Route::get("/request/detalle/{id}", "PeriodoController@detail");
+
+Route::get("/autorizaciones/2", "PeriodoController@auto2");
+
+Route::get("/autorizaciones/3", "PeriodoController@auto3");
+
+Route::get("/autorizaciones/2/definir/{id}","PeriodoController@detail2");
+
+Route::put("/autorizaciones/2/definir/{id}/update","PeriodoController@definir2");
+
+Route::get("/autorizaciones/3/definir/{id}","PeriodoController@detail3");
+
+Route::put("/autorizaciones/3/definir/{id}/update","PeriodoController@definir3");
+
+Route::get("/checkfile/{id}","PeriodoController@checkfile");
+
 //End Rutas Dispensas //

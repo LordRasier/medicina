@@ -17,12 +17,13 @@ class CreateTableRequests extends Migration
             $table->bigIncrements('id');
             $table->bigInteger("user_id");
             $table->bigInteger("licence_id");
+            $table->bigInteger("periodo_id");
             $table->text("description");
             $table->string("file");
             $table->integer("autorizacion2")->default(1);
-            $table->text("observacion2");
+            $table->text("observacion2")->nullable();
             $table->integer("autorizacion3")->default(1);
-            $table->text("observacion3");
+            $table->text("observacion3")->nullable();
             $table->timestamps();
         });
     }

@@ -14,6 +14,7 @@
             <div class="panel-container show">
                 <div class="panel-content">
                     <a href="/misDispensas/solicitud" class="btn btn-primary">Generar nueva solicitud</a>
+                    <a href="/misDispensas/solicitudes" class="btn btn-primary">Mis Solicitudes</a>
                 </div>
             </div>
         </div>
