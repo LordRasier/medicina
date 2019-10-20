@@ -19,7 +19,7 @@ class CreateTableRequests extends Migration
             $table->bigInteger("licence_id");
             $table->bigInteger("periodo_id");
             $table->text("description");
-            $table->string("file");
+            $table->string("file")->nullable();
             $table->integer("autorizacion2")->default(1);
             $table->text("observacion2")->nullable();
             $table->integer("autorizacion3")->default(1);

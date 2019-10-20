@@ -152,4 +152,12 @@ Route::put("/autorizaciones/3/definir/{id}/update","PeriodoController@definir3")
 
 Route::get("/checkfile/{id}","PeriodoController@checkfile");
 
+Route::get("/editperiod","PeriodoController@toeditperiod");
+
+Route::get("/editperiod/{id}","PeriodoController@editperiod");
+
+Route::put("/editperiod/{id}/update","PeriodoController@updateperiod");
+
+Route::get("/extralist","PeriodoController@extras");
+
 //End Rutas Dispensas //

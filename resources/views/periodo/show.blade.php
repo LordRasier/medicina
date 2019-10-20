@@ -22,16 +22,24 @@
             <div class="col-md-12">
                 <div id="panel-2" class="panel">
                     <div class="panel-hdr center">
-                        <h2 class="center">Periodo</h2>
+                        <h2 class="center">Periodo {{$periodo->start}} - {{$periodo->end}}</h2>
                     </div>
                     <div class="row">
-                        <div class="col-6 mb-15">
-                            <h4 class="center">Inicio</h4>
-                            <h3 class="center" style="width:100%">{{$periodo->start}}</h3>
+                        <div class="col-3 mb-15">
+                            <h3 class="center">Dispensas Comunes asigandas</h3>
+                            <h4 class="center" style="width:100%">{{$disponibles}}</h4>
                         </div>
-                        <div class="col-6 mb-15">
-                            <h4 class="center">Fin</h4>
-                            <h3 class="center" style="width:100%">{{$periodo->end}}</h3>
+                        <div class="col-3 mb-15">
+                            <h3 class="center">Dispensas Extraordinarias asignadas</h3>
+                            <h4 class="center" style="width:100%">{{$especiales}}</h4>
+                        </div>
+                        <div class="col-3 mb-15">
+                            <h3 class="center">Dispensas Usadas</h3>
+                            <h4 class="center" style="width:100%">{{$usados}}</h4>
+                        </div>
+                        <div class="col-3 mb-15">
+                            <h3 class="center">Total disponible</h3>
+                            <h4 class="center" style="width:100%">{{$disponibles + $especiales - $usados}}</h4>
                         </div>
                     </div>
                 </div>
@@ -52,7 +60,7 @@
                                 <tr>
                                     <td>{{$item}}</td>
                                     @for($i = 1; $i <= 31; $i++)
-                                        <td data-date="{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" class="center purple-hover">@isset($domingos[$item."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset</td>
+                                        <td data-date="{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" @isset($marcar[$item."-".str_pad($i,2,0,STR_PAD_LEFT)]) style="background-color:#a38cc6" @endisset class="center purple-hover">@isset($domingos[$item."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset</td>
                                     @endfor
                                 </tr>
                             @endforeach

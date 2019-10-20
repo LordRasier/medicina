@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\alter;
 use App\day;
 use App\request as sol;
 use App\event;
@@ -59,12 +60,32 @@ class PeriodoController extends Controller
             $start->modify('+1 day');
         }
         //dd($sundays);
-        $periodo->requests = $periodo->dispensas();
+        $periodo->requests = $periodo->dispensas()->where("autorizacion2","=",2)->where("autorizacion3","=",2)->get();
+        $usados = 0;
+        $marcar = [];
+        foreach($periodo->requests as $item) {
+            $usados = $usados + count(day::where("request_id","=",$item->id)->get());
+            $temp = day::where("request_id","=",$item->id)->get();
+
+            foreach($temp as $item){
+                $marcar[$item->date] = $item->date;
+            }
+        }
+        $especiales = 0;
+        $T = alter::where("periodo_id","=",$periodo->id)->get();
+
+        foreach ($T as $item){
+            $especiales = $especiales + $item->days;
+        }
 
         return view("periodo.show",[
             "periodo" => $periodo,
             "almanaque" => $t,
-            "domingos" => $sundays
+            "domingos" => $sundays,
+            "disponibles" => $this->disponibles($user->id),
+            "usados" => $usados,
+            "especiales" => $especiales,
+            "marcar" => $marcar
         ]);
 
     }
@@ -110,13 +131,34 @@ class PeriodoController extends Controller
             $start->modify('+1 day');
         }
         //dd($sundays);
-        $periodo->requests = $periodo->dispensas();
+        $periodo->requests = $periodo->dispensas()->where("autorizacion2","=",2)->where("autorizacion3","=",2)->get();
+
+        $usados = 0;
+        $marcar = [];
+        foreach($periodo->requests as $item) {
+            $usados = $usados + count(day::where("request_id","=",$item->id)->get());
+            $temp = day::where("request_id","=",$item->id)->get();
+
+            foreach($temp as $item){
+                $marcar[$item->date] = $item->date;
+            }
+        }
+        $especiales = 0;
+        $T = alter::where("periodo_id","=",$periodo->id)->get();
+
+        foreach ($T as $item){
+            $especiales = $especiales + $item->days;
+        }
 
         return view("periodo.create",[
             "periodo" => $periodo,
             "almanaque" => $t,
             "domingos" => $sundays,
-            "licencias" => licence::all()
+            "licencias" => licence::all(),
+            "disponibles" => $this->disponibles($user->id),
+            "usados" => $usados,
+            "especiales" => $especiales,
+            "marcar" => $marcar
         ]);
     }
 
@@ -319,10 +361,76 @@ class PeriodoController extends Controller
         $horas = $user->horas;
         $dedicacion = $user->dedication;
         $antiguedad = date_diff(new DateTime($user->ingreso),new DateTime(now()));
-        $antiguedad = $antiguedad->y;
+        $antiguedad = ($antiguedad->y > 15)?15:$antiguedad->y;
 
-
-
+        $total = 0;
+        switch($dedicacion){
+            //exclusiva
+            case 1:
+                if($horas < 20){
+                    $total = $total + 18;
+                }else if($horas >= 20 && $horas < 30){
+                    $total = $total + 23;
+                }else{
+                    $total = $total + 27;
+                }
+            break;
+            //no exclusiva
+            case 2:
+                if($horas < 20){
+                    $total = $total + 14;
+                }else if($horas >= 20 && $horas < 30){
+                    $total = $total + 19;
+                }else{
+                    $total = $total + 23;
+                }
+            break;
+        }
+        return $total + $antiguedad;
     }
 
+    public function toeditperiod(){
+        return view("periodo.extrauser",[
+            "users" => User::all()
+        ]);
+    }
+
+    public function editperiod($id){
+        $user = User::findOrFail($id);
+
+        $user->periodos = $user->periodos()->latest()->first();
+
+        return view("periodo.editperiod",[
+            "user" => $user
+        ]);
+    }
+
+    public function updateperiod(Request $request){
+        $data = $request->validate([
+            "id" => "required",
+            "observacion" => "required",
+            "cantidad" => "required"
+        ]);
+        $alter = new alter();
+
+        $alter->periodo_id = $data["id"];
+        $alter->description = $data["observacion"];
+        $alter->days = $data["cantidad"];
+
+        $alter->save();
+
+        return redirect("/extralist");
+    }
+
+    public function extras(){
+        $extras = alter::all();
+        foreach($extras as $item){
+            $temp = $item->periodo()->first();
+            $item->user = $temp->user()->first();
+            $item->periodo = $item->periodo()->first();
+        }
+        return view("periodo.listedit",[
+            "extras" => $extras
+        ]);
+    }
 }

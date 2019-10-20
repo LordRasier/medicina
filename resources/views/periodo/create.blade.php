@@ -13,7 +13,7 @@
         <div id="panel-1" class="panel">
             <div class="panel-container show">
                 <div class="panel-content">
-                    <a href="/misDispensas/show" class="btn btn-primary">Atras</a>
+                    <a href="/misDispensas" class="btn btn-primary">Atras</a>
                 </div>
             </div>
         </div>
@@ -76,10 +76,14 @@
                                 <tr>
                                     <td>{{$item}}</td>
                                     @for($i = 1; $i <= 31; $i++)
-                                        <td data-date="{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" class="center dia purple-hover">@isset($domingos[$item."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset
+                                        <td data-date="{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" class="center @empty($marcar[$item."-".str_pad($i,2,0,STR_PAD_LEFT)]) @empty($domingos[$item."-".str_pad($i,2,0,STR_PAD_LEFT)]) dia @endempty @endempty purple-hover " @isset($marcar[$item."-".str_pad($i,2,0,STR_PAD_LEFT)]) style="background-color:#a38cc6" @endisset> @isset($domingos[$item."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset
 
                                         </td>
-                                        <input id="D{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" value="{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" type="checkbox" name="dia[]" class="dia" style="opacity:0; position:absolute; left:9999px;">
+                                        @empty($marcar[$item."-".str_pad($i,2,0,STR_PAD_LEFT)])
+                                            @empty($domingos[$item."-".str_pad($i,2,0,STR_PAD_LEFT)])
+                                                <input id="D{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" value="{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" type="checkbox" name="dia[]" class="dias" style="opacity:0; position:absolute; left:9999px;">
+                                            @endempty
+                                        @endempty
                                     @endfor
                                 </tr>
                             @endforeach
@@ -120,15 +124,29 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script>
+        var disponibles = {{$disponibles + $especiales - $usados}};
+
         $(document).ready(function(){
-            $(".dia").click(function(){
-                console.log("clicked");
+            var usados = 0;
+
+            $(".dia").click(function () {
+                usados = 0;
                 var fecha = $(this).data("date");
-                $("#D"+fecha).click();
-                if($("#D"+fecha).is(":CHECKED")){
-                    $(this).css("background-color","#a38cc6 !important");
+                $(".dias").each(function () {
+                    if ($(this).is(":CHECKED")) {
+                        usados++;
+                    }
+                });
+                console.log(usados+" "+disponibles);
+                if (usados < disponibles) {
+                    $("#D" + fecha).click();
+                    if ($("#D" + fecha).is(":CHECKED")) {
+                        $(this).css("background-color", "#a38cc6 !important");
+                    } else {
+                        $(this).css("background-color", "");
+                    }
                 }else{
-                    $(this).css("background-color","");
+                    $("#D" + fecha).prop("CHECKED",false);
                 }
             });
         });
