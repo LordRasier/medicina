@@ -138,11 +138,23 @@ class PeriodoController extends Controller
         $end      = (new DateTime($periodo->end))->modify('last day of this month');
         $interval = DateInterval::createFromDateString('1 month');
         $period   = new DatePeriod($start, $interval, $end);
+        $intevalday  = DateInterval::createFromDateString('1 day');
+
+        $sundays = array();
+
+        $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
+        foreach ($before as $item){
+            $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+        }
+
+        $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
+        foreach ($after as $item){
+            $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+        }
         foreach ($period as $dt) {
             $t[] = $dt->format("Y-m");
         }
 
-        $sundays = array();
         while ($start <= $end) {
             if ($start->format('w') == 0 || $start->format("w") == 6) {
                 $sundays[$start->format('Y-m-d')] = $start->format('Y-m-d');
