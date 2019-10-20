@@ -9,6 +9,7 @@ use App\specialty;
 use App\sub_menu;
 use App\type;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -78,6 +79,7 @@ class ProfileController extends Controller
             "tipo" => "required",
             "especialidad" => "required",
             "codigo" => "required",
+            "ingreso" => "required"
         ]);
 
         $new = new User();
@@ -90,6 +92,7 @@ class ProfileController extends Controller
         $new->type = $data["tipo"];
         $new->specialty = $data["especialidad"];
         $new->code = $data["codigo"];
+        $new->ingreso = Carbon::parse($data["ingreso"])->format("Y-m-d");
         $new->save();
 
         foreach ($data["access"] as $item){
@@ -119,6 +122,7 @@ class ProfileController extends Controller
     public function edit($id)
     {
         $edit = User::findOrFail($id);
+        $edit->ingreso = Carbon::parse($edit->ingreso)->format("d/m/Y");
 
         $menus = menu::all();
         foreach ($menus as $item){
@@ -154,6 +158,7 @@ class ProfileController extends Controller
             "tipo" => "required",
             "especialidad" => "required",
             "codigo" => "required",
+            "ingreso" => "required"
         ]);
 
         $user = User::findOrFail($id);
@@ -166,6 +171,7 @@ class ProfileController extends Controller
         $user->type = $data["tipo"];
         $user->specialty = $data["especialidad"];
         $user->code = $data["codigo"];
+        $user->ingreso = Carbon::parse($data["ingreso"])->format("Y-m-d");
 
         $menus = sub_menu::all();
         foreach ($menus as $item){

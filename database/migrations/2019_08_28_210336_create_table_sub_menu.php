@@ -24,7 +24,7 @@ class CreateTableSubMenu extends Migration
 
         DB::table("sub_menus")->insert(["name" => "Mensajeria", "url" => "/mail/inbox", "menu_id" => "1"]);
         DB::table("sub_menus")->insert(["name" => "Usuarios", "url" => "/users", "menu_id" => "2"]);
-        DB::table("sub_menus")->insert(["name" => "Dispensas", "url" => "/Dispensas", "menu_id" => "2"]);
+        DB::table("sub_menus")->insert(["name" => "Dispensas", "url" => "/dispensas", "menu_id" => "2"]);
         //Espacios
         DB::table("sub_menus")->insert(["name" => "Espacios", "url" => "/espacios/list", "menu_id" => "2"]);
         DB::table("sub_menus")->insert(["name" => "Mis solicitudes", "url" => "/espacios/solicitudes/list", "menu_id" => "3"]);
