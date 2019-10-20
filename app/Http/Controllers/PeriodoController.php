@@ -68,7 +68,7 @@ class PeriodoController extends Controller
 
         $period   = new DatePeriod($start, $interval, $end);
         foreach ($period as $dt) {
-            $t[] = $dt->format("Y-m");
+            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
         }
 
 
@@ -152,7 +152,7 @@ class PeriodoController extends Controller
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
         }
         foreach ($period as $dt) {
-            $t[] = $dt->format("Y-m");
+            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
         }
 
         while ($start <= $end) {

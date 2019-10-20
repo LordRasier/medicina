@@ -74,14 +74,14 @@
                             <tbody>
                             @foreach($almanaque as $item)
                                 <tr>
-                                    <td>{{$item}}</td>
+                                    <td>{{$item[1]}}</td>
                                     @for($i = 1; $i <= 31; $i++)
-                                        <td data-date="{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" class="center @empty($marcar[$item."-".str_pad($i,2,0,STR_PAD_LEFT)]) @empty($domingos[$item."-".str_pad($i,2,0,STR_PAD_LEFT)]) dia @endempty @endempty purple-hover " @isset($marcar[$item."-".str_pad($i,2,0,STR_PAD_LEFT)]) style="background-color:#a38cc6" @endisset> @isset($domingos[$item."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset
+                                        <td data-date="{{$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)}}" class="center @empty($marcar[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)]) @empty($domingos[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)]) dia @endempty @endempty purple-hover " @isset($marcar[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)]) style="background-color:#a38cc6" @endisset> @isset($domingos[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset
 
                                         </td>
-                                        @empty($marcar[$item."-".str_pad($i,2,0,STR_PAD_LEFT)])
-                                            @empty($domingos[$item."-".str_pad($i,2,0,STR_PAD_LEFT)])
-                                                <input id="D{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" value="{{$item."-".str_pad($i,2,0,STR_PAD_LEFT)}}" type="checkbox" name="dia[]" class="dias" style="opacity:0; position:absolute; left:9999px;">
+                                        @empty($marcar[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)])
+                                            @empty($domingos[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)])
+                                                <input id="D{{$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)}}" value="{{$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)}}" type="checkbox" name="dia[]" class="dias" style="opacity:0; position:absolute; left:9999px;">
                                             @endempty
                                         @endempty
                                     @endfor
