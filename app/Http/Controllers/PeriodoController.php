@@ -29,12 +29,13 @@ class PeriodoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+
+    public function prev(){
         $user = User::find(Auth::id());
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso);
         $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+        $actual = $actual->subYear();
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
 
@@ -43,7 +44,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(365)->toDateString();
+            $periodo->end = $actual->addDays(364)->toDateString();
 
             $periodo->save();
         }
@@ -105,7 +106,176 @@ class PeriodoController extends Controller
             "disponibles" => $this->disponibles($user->id),
             "usados" => $usados,
             "especiales" => $especiales,
-            "marcar" => $marcar
+            "marcar" => $marcar,
+            "nextno" => true,
+            "prevno" => false
+        ]);
+    }
+
+    public function next(){
+        $user = User::find(Auth::id());
+        $this->disponibles($user->id);
+        $center = Carbon::parse($user->ingreso);
+        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+        $actual = $actual->addDays(365);
+
+        $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
+
+        if($periodo == null){
+            $periodo = new periodo();
+
+            $periodo->user_id = $user->id;
+            $periodo->start = $actual->toDateString();
+            $periodo->end = $actual->addDays(364)->toDateString();
+
+            $periodo->save();
+        }
+
+        $start    = (new DateTime($periodo->start))->modify('first day of this month');
+        $end      = (new DateTime($periodo->end))->modify('last day of this month');
+        $interval = DateInterval::createFromDateString('1 month');
+        $intevalday  = DateInterval::createFromDateString('1 day');
+        //prohibite days
+        $sundays = array();
+
+        $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
+        foreach ($before as $item){
+            $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+        }
+
+        $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
+        foreach ($after as $item){
+            $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+        }
+
+
+        $period   = new DatePeriod($start, $interval, $end);
+        foreach ($period as $dt) {
+            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+        }
+
+
+        while ($start <= $end) {
+            if ($start->format('w') == 0 || $start->format("w") == 6) {
+                $sundays[$start->format('Y-m-d')] = $start->format('Y-m-d');
+            }
+
+            $start->modify('+1 day');
+        }
+        //dd($sundays);
+        $periodo->requests = $periodo->dispensas()->where("autorizacion2","=",2)->where("autorizacion3","=",2)->get();
+        $usados = 0;
+        $marcar = [];
+        foreach($periodo->requests as $item) {
+            $usados = $usados + count(day::where("request_id","=",$item->id)->get());
+            $temp = day::where("request_id","=",$item->id)->get();
+
+            foreach($temp as $item){
+                $marcar[$item->date] = $item->date;
+            }
+        }
+        $especiales = 0;
+        $T = alter::where("periodo_id","=",$periodo->id)->get();
+
+        foreach ($T as $item){
+            $especiales = $especiales + $item->days;
+        }
+
+        return view("periodo.show",[
+            "periodo" => $periodo,
+            "almanaque" => $t,
+            "domingos" => $sundays,
+            "disponibles" => $this->disponibles($user->id),
+            "usados" => $usados,
+            "especiales" => $especiales,
+            "marcar" => $marcar,
+            "nextno" => false,
+            "prevno" => true
+        ]);
+    }
+
+
+
+
+    public function index()
+    {
+        $user = User::find(Auth::id());
+        $this->disponibles($user->id);
+        $center = Carbon::parse($user->ingreso);
+        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+
+        $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
+
+        if($periodo == null){
+            $periodo = new periodo();
+
+            $periodo->user_id = $user->id;
+            $periodo->start = $actual->toDateString();
+            $periodo->end = $actual->addDays(364)->toDateString();
+
+            $periodo->save();
+        }
+
+        $start    = (new DateTime($periodo->start))->modify('first day of this month');
+        $end      = (new DateTime($periodo->end))->modify('last day of this month');
+        $interval = DateInterval::createFromDateString('1 month');
+        $intevalday  = DateInterval::createFromDateString('1 day');
+        //prohibite days
+        $sundays = array();
+
+        $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
+        foreach ($before as $item){
+            $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+        }
+
+        $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
+        foreach ($after as $item){
+            $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+        }
+
+
+        $period   = new DatePeriod($start, $interval, $end);
+        foreach ($period as $dt) {
+            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+        }
+
+
+        while ($start <= $end) {
+            if ($start->format('w') == 0 || $start->format("w") == 6) {
+                $sundays[$start->format('Y-m-d')] = $start->format('Y-m-d');
+            }
+
+            $start->modify('+1 day');
+        }
+        //dd($sundays);
+        $periodo->requests = $periodo->dispensas()->where("autorizacion2","=",2)->where("autorizacion3","=",2)->get();
+        $usados = 0;
+        $marcar = [];
+        foreach($periodo->requests as $item) {
+            $usados = $usados + count(day::where("request_id","=",$item->id)->get());
+            $temp = day::where("request_id","=",$item->id)->get();
+
+            foreach($temp as $item){
+                $marcar[$item->date] = $item->date;
+            }
+        }
+        $especiales = 0;
+        $T = alter::where("periodo_id","=",$periodo->id)->get();
+
+        foreach ($T as $item){
+            $especiales = $especiales + $item->days;
+        }
+
+        return view("periodo.show",[
+            "periodo" => $periodo,
+            "almanaque" => $t,
+            "domingos" => $sundays,
+            "disponibles" => $this->disponibles($user->id),
+            "usados" => $usados,
+            "especiales" => $especiales,
+            "marcar" => $marcar,
+            "nextno" => true,
+            "prevno" => true
         ]);
 
     }
@@ -129,7 +299,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(365)->toDateString();
+            $periodo->end = $actual->addDays(364)->toDateString();
 
             $periodo->save();
         }

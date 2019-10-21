@@ -10,14 +10,43 @@
         <div class="alert alert-info" role="alert">
             <strong>Info!</strong> Aqui podras ver las solicitudes de dispensas correspondientes al periodo actual
         </div>
-        <div id="panel-1" class="panel">
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <a href="/misDispensas/solicitud" class="btn btn-primary">Generar nueva solicitud</a>
-                    <a href="/misDispensas/solicitudes" class="btn btn-primary">Mis Solicitudes</a>
+        <div class="row">
+            <div class="col-md-8">
+                <div id="panel-1" class="panel">
+                    <div class="panel-container show">
+                        <div class="panel-content">
+                            <a href="/misDispensas/solicitud" class="btn btn-primary">Generar nueva solicitud</a>
+                            <a href="/misDispensas/solicitudes" class="btn btn-primary">Mis Solicitudes</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div id="panel-4" class="panel">
+                    <div class="panel-container show">
+                        <div class="panel-content">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    @if($prevno)
+                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo anterior" href="/misDispensas/Prev" class="btn btn-primary btn-block"><i class="far fa-chevron-left"></i></a>
+                                    @endif
+                                </div>
+                                <div class="col-md-2">
+                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo actual" href="/misDispensas" class="btn btn-primary btn-block"><i class="far fa-chevron-down"></i></a>
+                                </div>
+                                <div class="col-md-5">
+                                    @if($nextno)
+                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo Siguiente" href="/misDispensas/Next" class="btn btn-secondary btn-block"><i class="far fa-chevron-right"></i></a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div id="panel-2" class="panel">

@@ -14,7 +14,7 @@
                         <div class="col-12">
                             <div class="d-flex flex-column align-items-center justify-content-center p-4">
                                 <img src="/storage/profile/{{$user->profile}}" class="rounded-circle shadow-2 img-thumbnail" alt="">
-                                <form action="profile/pic/update" enctype="multipart/form-data" method="POST">
+                                <form action="/profile/pic/update" enctype="multipart/form-data" method="POST">
                                     @csrf
                                     @method("put")
                                     <a href="#" onclick="$('[name=pic]').click()" class="btn btn-primary btn-icon rounded-circle change-pic"><i class="fal fa-sync"></i></a>
