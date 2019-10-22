@@ -34,7 +34,7 @@
                         </thead>
                         <tbody>
                         @foreach($solicitudes as $item)
-                            {{$item}}
+
                             <tr>
                                 <td class="center">{{$item->pivot["id"]}}</td>
                                 <td class="center">{{$item->user["name"]}}</td>

@@ -16,6 +16,8 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class PeriodoController extends Controller
 {
@@ -390,6 +392,13 @@ class PeriodoController extends Controller
         }
         $sol->periodo_id = $request->periodo;
 
+        $ids = DB::table("sub_menu_user")->distinct()->where("sub_menu_id", "=", 14)->orWhere("sub_menu_id", "=", 15)->get();
+
+        foreach($ids as $item){
+            $user = User::find($item->user_id);
+            Mail::to($user->email)->send(new \App\Mail\nueva_dispensa(""));
+        }
+
         $sol->save();
 
         foreach($data["dia"] as $item){
@@ -511,6 +520,13 @@ class PeriodoController extends Controller
         $sol->observacion2 = $data["respuesta"];
         $sol->autorizacion2 = $data["estado"];
 
+        $user = User::find($sol->user_id);
+        $R = [
+            0 => "Rechazada",
+            2 => "Aprobada"
+        ];
+
+        Mail::to($user->email)->send(new \App\Mail\dispensa_2($R[$data["estado"]]));
         $sol->save();
 
         return redirect("/autorizaciones/2");
@@ -528,6 +544,14 @@ class PeriodoController extends Controller
 
         $sol->observacion3 = $data["respuesta"];
         $sol->autorizacion3 = $data["estado"];
+
+        $user = User::find($sol->user_id);
+        $R = [
+            0 => "Rechazada",
+            2 => "Aprobada"
+        ];
+
+        Mail::to($user->email)->send(new \App\Mail\dispensa_3($R[$data["estado"]]));
 
         $sol->save();
 

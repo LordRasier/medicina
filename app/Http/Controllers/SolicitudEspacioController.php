@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class SolicitudEspacioController extends Controller
 {
@@ -112,10 +113,24 @@ class SolicitudEspacioController extends Controller
             "espacio"=>"required",
             "detalle" => "required"
         ]);
+        $result = false;
+        //dd(DB::table("espacios_pivot")->where(["espacio_id" => $data["espacio"],"fecha" => $data["fecha"], "horario" => $data["horario"], "autorizado" => 1])->count());
+        if(!DB::table("espacios_pivot")->where(["espacio_id" => $data["espacio"],"fecha" => $data["fecha"], "horario" => $data["horario"], "autorizado" => 1])->count()){
+            User::find(Auth::id())->solicitud_espacio()->attach($data["espacio"],["fecha" => $data["fecha"], "horario" => $data["horario"], "detalle" => $data["detalle"]]);
+            $result = true;
 
-        User::find(Auth::id())->solicitud_espacio()->attach($data["espacio"],["fecha" => $data["fecha"], "horario" => $data["horario"], "detalle" => $data["detalle"]]);
+            $ids = DB::table("sub_menu_user")->where("sub_menu_id", "=", 6)->get();
 
-        return redirect("/espacios/solicitudes/list");
+            foreach($ids as $item){
+                $user = User::find($item->user_id);
+                Mail::to($user->email)->send(new \App\Mail\solicitud_espacio('It works!'));
+            }
+        }
+
+        return view("espacio.nuevaSolicitud",[
+            "espacios" => espacio::all(),
+            "result" => $result
+        ]);
 
     }
 
@@ -149,7 +164,7 @@ class SolicitudEspacioController extends Controller
      */
     public function edit($id)
     {
-        $solicitud = DB::table("espacios_pivot")->where("id","=",$id)->get()[0];
+        $solicitud = DB::table("espacios_pivot")->where("id","=",$id)->first();
 
         $solicitud->user = User::find($solicitud->user_id);
         $solicitud->espacio = espacio::find($solicitud->espacio_id);
@@ -174,7 +189,24 @@ class SolicitudEspacioController extends Controller
             "id" => "required"
         ]);
 
+        $R = [
+            1 => "Aprobada",
+            2 => "Rechazada"
+        ];
+
         DB::table("espacios_pivot")->where("id","=",$data["id"])->update(["autorizado" => $data["estado"], "respuesta" => $data["respuesta"]]);
+
+
+        $temp = DB::table("espacios_pivot")->select(["user_id","espacio_id","horario"])->where("id","=",$data["id"])->first();
+        $user = User::find($temp->user_id);
+        if($data["estado"] == 1){
+            Mail::to($user->email)->send(new \App\Mail\resolucion_espacio(""));
+            DB::table("espacios_pivot")->where("id","!=",$data["id"])->where("espacio_id","=",$temp->espacio_id)->where("horario","=",$temp->horario)->update(["autorizado" => 2, "respuesta" => "Otro usuario fue autorizado"]);
+        }else{
+            Mail::to($user->email)->send(new \App\Mail\resolucion_negativa(""));
+        }
+
+
         return redirect("/espacios/solicitudes/autorizar");
     }
 

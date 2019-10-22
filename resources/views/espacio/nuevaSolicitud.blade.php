@@ -9,6 +9,18 @@
     </ol>
     <div class="row">
         <div class="col-md-4 col-sm-12 col-xs-12">
+            @isset($result)
+                @if($result == true)
+                    <div class="alert alert-success" role="alert">
+                        <strong>Info!</strong> Solicitud creada correctamente
+                    </div>
+                @endif
+                @if($result == false)
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Info!</strong> Ya esta reservado este espacio en esta fecha y horario
+                    </div>
+                @endif
+            @endisset
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>

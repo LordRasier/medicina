@@ -6,6 +6,7 @@
         <li class="breadcrumb-item">Mis Solicitudes</li>
     </ol>
     <div class="col-md-12 col xs 12 col sm 12">
+
         <div class="alert alert-info" role="alert">
             <strong>Info!</strong> Aca se listan todas las solicitudes de espacio que alla realizado asi como poder generar nuevas solicitudes
         </div>

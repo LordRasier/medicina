@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\factura;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class FacturaController extends Controller
 {
@@ -69,6 +71,12 @@ class FacturaController extends Controller
         $factura->description = $data["observacion"];
         $factura->file = $request->file("file")->store("app/facturas");
 
+        $ids = DB::table("sub_menu_user")->distinct()->where("sub_menu_id", "=", 9)->get();
+
+        foreach($ids as $item){
+            $user = User::find($item->user_id);
+            Mail::to($user->email)->send(new \App\Mail\factura(""));
+        }
         $factura->save();
 
         return redirect("/misFacturas");

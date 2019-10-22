@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +10,8 @@ use App\factura;
 use App\honorario;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\honorario as notifi;
+use Illuminate\Support\Facades\Mail;
 
 class HonorarioController extends Controller
 {
@@ -65,11 +68,13 @@ class HonorarioController extends Controller
                 $honorario = honorario::firstOrNew(["user_id" => $user->id,"fecha" => $date]);
                 $honorario->file = $file->store("app/honorarios");
 
-                $honorario->save();
 
+
+                $honorario->save();
+                Mail::to($user->email)->send(new \App\Mail\honorario('It works!'));
             }
 
-        return redirect("/honorarios");
+        return view("honorario.index",["honorarios" => honorario::all(),"result" => true]);
     }
 
     /**

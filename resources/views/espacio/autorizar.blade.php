@@ -41,7 +41,7 @@
                                 <td class="center">{{$item->pivot["fecha"]}}</td>
                                 <td class="center">{{$item->pivot["horario"]}}</td>
                                 <td class="center"><i class="{{$icon[$item->pivot["autorizado"]]}}"></i></td>
-                                <td class="center"><a href="/espacios/solicitudes/{{$item->id}}/edit" class="btn btn-primary" ><i class="fa fa-search"></i></a></td>
+                                <td class="center"><a href="/espacios/solicitudes/{{$item->pivot["id"]}}/edit" class="btn btn-primary" ><i class="fa fa-search"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
