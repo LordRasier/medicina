@@ -709,7 +709,7 @@ class PeriodoController extends Controller
             $periodo->save();
         }
 
-        $user->periodos = $user->periodos()->latest()->first();
+        $user->periodos = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
 
         return view("periodo.editperiod",[
             "user" => $user
