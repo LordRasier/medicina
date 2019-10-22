@@ -68,7 +68,7 @@ class SolicitudEspacioController extends Controller
 
     public function historial(){
 
-        $solicitudes = DB::table("espacios_pivot")->where("autorizado","=",0)->orderBy("id","desc")->get();
+        $solicitudes = DB::table("espacios_pivot")->where("autorizado","!=",0)->orderBy("id","desc")->get();
 
         $icons = [
             0 => "far fa-clock fa-2x",
