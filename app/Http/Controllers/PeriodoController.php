@@ -512,7 +512,7 @@ class PeriodoController extends Controller
         ];
 
         return view("periodo.lista2",[
-            "solicitudes" => sol::where("autorizacion2","!=",2)->orWhere("autorizacion3","!=",2)->get(),
+            "solicitudes" => sol::where("autorizacion2","=",1)->orWhere("autorizacion3","=",1)->get(),
             "icono" => $icono
         ]);
     }
@@ -525,7 +525,7 @@ class PeriodoController extends Controller
         ];
 
         return view("periodo.lista3",[
-            "solicitudes" => sol::where("autorizacion2","!=",2)->orWhere("autorizacion3","!=",2)->get(),
+            "solicitudes" => sol::where("autorizacion2","=",1)->orWhere("autorizacion3","=",1)->get(),
             "icono" => $icono
         ]);
     }
