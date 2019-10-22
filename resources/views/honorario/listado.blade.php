@@ -25,7 +25,7 @@
                             <tr>
                                 <td class="center">{{$item->id}}</td>
                                 <td class="center">{{$item->fecha}}</td>
-                                <td class="center"><a target="_blank" class="btn btn-secondary" href="/honorarios/show/{{$item->id}}"><i class="fa fa-search"></i></a></td>
+                                <td class="center"><a target="_blank" class="btn btn-secondary" href="/honorarios/show/{{$item->pivot["id"]}}"><i class="fa fa-search"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
