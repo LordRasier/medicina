@@ -48,9 +48,6 @@
                 <div class="px-3 py-4 d-flex flex-row align-items-center flex-wrap flex-shrink-0">
                     <button type="submit" href="javascript:void(0);" class="btn btn-info mr-3">Enviar</button>
 
-                    <a href="javascript:void(0);" class="btn btn-icon fs-xl mr-1" data-toggle="tooltip" data-original-title="Attach files" data-placement="top">
-                        <i class="fas fa-paperclip color-fusion-300"></i>
-                    </a>
                 </div>
             </div>
 

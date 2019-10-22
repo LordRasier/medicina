@@ -701,9 +701,22 @@ class PeriodoController extends Controller
         $alter->description = $data["observacion"];
         $alter->days = $data["cantidad"];
 
+        $temp = DB::table("periodos")->select("user_id")->where("id","=",$data["id"]);
+
+        $user = User::findOrFail($temp->user_id);
+        Mail::to($user->email)->send(new \App\Mail\extras(""));
         $alter->save();
 
-        return redirect("/extralist");
+        $extras = alter::all();
+        foreach($extras as $item){
+            $temp = $item->periodo()->first();
+            $item->user = $temp->user()->first();
+            $item->periodo = $item->periodo()->first();
+        }
+        return view("periodo.listedit",[
+            "extras" => $extras,
+            "resp" => true
+        ]);
     }
 
     public function extras(){

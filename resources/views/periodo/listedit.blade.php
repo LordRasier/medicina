@@ -6,6 +6,11 @@
         <li class="breadcrumb-item">Usuarios</li>
     </ol>
     <div class="col-md-12 col xs 12 col sm 12">
+        @isset($resp)
+            <div class="alert alert-success" role="alert">
+                <strong>Info!</strong> Dias asignados
+            </div>
+        @endisset
         <div id="panel-1" class="panel">
             <div class="panel-container show">
                 <div class="panel-content">
