@@ -45,7 +45,7 @@ class EventController extends Controller
         $event = new event();
         $data = Input::all();
         $fecha = explode("/",$data["fecha"]);
-        $event->fecha = $fecha[2]."-".$fecha[1]."-".$fecha[0];
+        $event->fecha = $fecha[2]."-".$fecha[0]."-".$fecha[1];
         $event->descripcion = $data["descripcion"];
         $event->user = Auth::id();
 
