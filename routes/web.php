@@ -168,4 +168,8 @@ Route::put("/editperiod/{id}/update","PeriodoController@updateperiod");
 
 Route::get("/extralist","PeriodoController@extras");
 
+Route::get("/checklist","PeriodoController@checklist");
+
+Route::get("/dispensas/check/{id}","PeriodoController@checklist");
+
 //End Rutas Dispensas //
