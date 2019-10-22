@@ -701,7 +701,7 @@ class PeriodoController extends Controller
         $alter->description = $data["observacion"];
         $alter->days = $data["cantidad"];
 
-        $temp = DB::table("periodos")->select("user_id")->where("id","=",$data["id"]);
+        $temp = DB::table("periodos")->select("user_id")->where("id","=",$data["id"])->first();
 
         $user = User::findOrFail($temp->user_id);
         Mail::to($user->email)->send(new \App\Mail\extras(""));
