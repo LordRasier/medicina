@@ -3,7 +3,7 @@
 @section('content')
     <ol class="breadcrumb page-breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Facturas</li>
+        <li class="breadcrumb-item">Editar periodo</li>
     </ol>
     <div class="col-md-4 col xs 12 col sm 12">
         <div id="panel-1" class="panel">
