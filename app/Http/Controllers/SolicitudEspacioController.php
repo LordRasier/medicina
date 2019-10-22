@@ -218,6 +218,8 @@ class SolicitudEspacioController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table("espacios_pivot")->delete($id);
+
+        return redirect("/espacios/solicitudes/list");
     }
 }

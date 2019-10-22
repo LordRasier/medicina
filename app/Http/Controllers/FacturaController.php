@@ -79,7 +79,10 @@ class FacturaController extends Controller
         }
         $factura->save();
 
-        return redirect("/misFacturas");
+        return view("factura.misFacturas",[
+            "facturas" => factura::all()->where("user_id","=",Auth::id()),
+            "carga" => true
+        ]);
 
     }
 
@@ -127,6 +130,9 @@ class FacturaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $factura = factura::findOrFail($id);
+        $factura->delete();
+
+        return redirect("/misFacturas");
     }
 }

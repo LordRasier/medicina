@@ -154,6 +154,16 @@ class PeriodoController extends Controller
         $period   = new DatePeriod($start, $interval, $end);
         foreach ($period as $dt) {
             $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+
+            if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
+            }
+            if(!checkdate($dt->format("m"),31,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
+            if(!checkdate($dt->format("m"),30,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
         }
 
 
@@ -239,6 +249,16 @@ class PeriodoController extends Controller
         $period   = new DatePeriod($start, $interval, $end);
         foreach ($period as $dt) {
             $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+
+            if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
+            }
+            if(!checkdate($dt->format("m"),31,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
+            if(!checkdate($dt->format("m"),30,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
         }
 
 
@@ -325,6 +345,17 @@ class PeriodoController extends Controller
         }
         foreach ($period as $dt) {
             $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+
+            if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
+            }
+            if(!checkdate($dt->format("m"),31,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
+            if(!checkdate($dt->format("m"),30,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
+
         }
 
         while ($start <= $end) {
@@ -339,6 +370,10 @@ class PeriodoController extends Controller
 
         $usados = 0;
         $marcar = [];
+
+
+
+
         foreach($periodo->requests as $item) {
             $usados = $usados + count(day::where("request_id","=",$item->id)->get());
             $temp = day::where("request_id","=",$item->id)->get();
@@ -450,7 +485,8 @@ class PeriodoController extends Controller
 
     public function detail($id){
         $sol = sol::findOrFail($id);
-
+        $sol->days = $sol->days()->get();
+        $sol->licence = DB::table("licences")->select("description")->where("id","=",$sol->licence_id)->first();
         return view("periodo.detail",[
             "periodo" => $sol
         ]);
@@ -486,6 +522,7 @@ class PeriodoController extends Controller
         $sol = sol::findOrFail($id);
         $sol->user = $sol->user()->first();
         $sol->dias = $sol->days()->get();
+        $sol->licence = DB::table("licences")->select("description")->where("id","=",$sol->licence_id)->first();
 
         return view("periodo.definir2",[
             "solicitud" => $sol
@@ -496,6 +533,7 @@ class PeriodoController extends Controller
         $sol = sol::findOrFail($id);
         $sol->user = $sol->user()->first();
         $sol->dias = $sol->days()->get();
+        $sol->licence = DB::table("licences")->select("description")->where("id","=",$sol->licence_id)->first();
 
         return view("periodo.definir3",[
             "solicitud" => $sol
@@ -528,8 +566,18 @@ class PeriodoController extends Controller
 
         Mail::to($user->email)->send(new \App\Mail\dispensa_2($R[$data["estado"]]));
         $sol->save();
+        $resp = ($data["estado"] == 2)? true : false;
+        $icono = [
+            0 => "far fa-times fa-2x",
+            1 => "far fa-clock",
+            2 => "far fa-check fa-2x"
+        ];
 
-        return redirect("/autorizaciones/2");
+        return view("periodo.lista2",[
+            "solicitudes" => sol::where("autorizacion2","=",1)->orWhere("autorizacion3","=",1)->get(),
+            "icono" => $icono,
+            "resp" => $resp
+        ]);
 
     }
 
@@ -552,10 +600,20 @@ class PeriodoController extends Controller
         ];
 
         Mail::to($user->email)->send(new \App\Mail\dispensa_3($R[$data["estado"]]));
-
         $sol->save();
 
-        return redirect("/autorizaciones/3");
+        $resp = ($data["estado"] == 2)? true : false;
+        $icono = [
+            0 => "far fa-times fa-2x",
+            1 => "far fa-clock",
+            2 => "far fa-check fa-2x"
+        ];
+
+        return view("periodo.lista3",[
+            "solicitudes" => sol::where("autorizacion2","=",1)->orWhere("autorizacion3","=",1)->get(),
+            "icono" => $icono,
+            "resp" => $resp
+        ]);
 
     }
 

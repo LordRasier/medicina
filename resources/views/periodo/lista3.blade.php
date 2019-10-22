@@ -9,6 +9,18 @@
         <div class="alert alert-info" role="alert">
             <strong>Info!</strong> Revise las facturas que han sido cargadas y haga el click en el boton <i class="far fa-search fa-xs"></i> para mirarla en el navegador
         </div>
+        @isset($resp)
+            @if($resp == true)
+                <div class="alert alert-success" role="alert">
+                    <strong>Info!</strong> Autorizacion enviada
+                </div>
+            @endif
+            @if($resp == false)
+                <div class="alert alert-danger" role="alert">
+                    <strong>Info!</strong> Notificacion de rechazo enviada
+                </div>
+            @endif
+        @endisset
         <div id="panel-2" class="panel">
             <div class="panel-container show">
                 <div class="panel-content">

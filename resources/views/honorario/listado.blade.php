@@ -9,6 +9,11 @@
         <div class="alert alert-info" role="alert">
             <strong>Info!</strong> Aqui puede ver todas los honorarios cargados y acceder a cargar una nueva!.
         </div>
+        @isset($elim)
+            <div class="alert alert-danger" role="alert">
+                <strong>Info!</strong> Archivo eliminado
+            </div>
+        @endisset
         <div id="panel-2" class="panel">
             <div class="panel-container show">
                 <div class="panel-content">
@@ -18,6 +23,7 @@
                             <th class="center" style="width: 10%">ID</th>
                             <th class="center" style="width: 20%">Fecha</th>
                             <th class="center" style="width: 10%"><i class="fa fa-search"></i></th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -25,7 +31,8 @@
                             <tr>
                                 <td class="center">{{$item->id}}</td>
                                 <td class="center">{{$item->fecha}}</td>
-                                <td class="center"><a target="_blank" class="btn btn-secondary" href="/honorarios/show/{{$item->pivot["id"]}}"><i class="fa fa-search"></i></a></td>
+                                <td class="center"><a target="_blank" class="btn btn-primary" href="/honorarios/show/{{$item->id}}"><i class="fa fa-search"></i></a></td>
+
                             </tr>
                         @endforeach
                         </tbody>

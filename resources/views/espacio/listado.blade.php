@@ -39,9 +39,9 @@
                                 <td class="center">{{$item->pivot["fecha"]}}</td>
                                 <td class="center">{{$item->pivot["horario"]}}</td>
                                 <td class="center"><i class="{{$icon[$item->pivot["autorizado"]]}}"></i></td>
-                                <td class="center"><button class="btn btn-danger" data-toggle="modal" data-target="#elim-{{$item->id}}"><i class="fa fa-trash"></i></button></td>
+                                <td class="center"><button class="btn btn-danger" data-toggle="modal" data-target="#elim-{{$item->pivot["id"]}}" @if($item->pivot["autorizado"] == 1) disabled @endif ><i class="fa fa-trash"></i></button></td>
                             </tr>
-                            <div class="modal modal-alert fade" id="elim-{{$item->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal modal-alert fade" id="elim-{{$item->pivot["id"]}}" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <a type="button" href="/espacios/solicitudes/{{$item->id}}/remove" class="btn btn-primary">Continuar</a>
+                                            <a type="button" href="/espacios/solicitudes/{{$item->pivot["id"]}}/remove" class="btn btn-primary">Continuar</a>
                                         </div>
                                     </div>
                                 </div>

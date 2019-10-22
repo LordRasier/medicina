@@ -13,4 +13,6 @@ class request extends Model
     public function days(){
         return $this->hasMany(day::class);
     }
+
+
 }

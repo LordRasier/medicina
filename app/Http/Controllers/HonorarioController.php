@@ -64,14 +64,15 @@ class HonorarioController extends Controller
                 $temp = explode(" - ",$file->getClientOriginalName());
                 $date =  Carbon::parse($temp[1])->toDateString();
                 $user = User::where("code","=",explode("-",$temp[2])[0])->first();
+                if($user != null){
+                    $honorario = honorario::firstOrNew(["user_id" => $user->id,"fecha" => $date]);
+                    $honorario->file = $file->store("app/honorarios");
 
-                $honorario = honorario::firstOrNew(["user_id" => $user->id,"fecha" => $date]);
-                $honorario->file = $file->store("app/honorarios");
 
 
-
-                $honorario->save();
-                Mail::to($user->email)->send(new \App\Mail\honorario('It works!'));
+                    $honorario->save();
+                    Mail::to($user->email)->send(new \App\Mail\honorario('It works!'));
+                }
             }
 
         return view("honorario.index",["honorarios" => honorario::all(),"result" => true]);
@@ -121,6 +122,9 @@ class HonorarioController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $hono = honorario::findOrFail($id);
+        $hono->delete();
+
+        return view("honorario.index",["honorarios" => honorario::all(),"elim" => true]);
     }
 }

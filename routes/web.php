@@ -102,6 +102,8 @@ Route::put("/misFacturas/create/store","FacturaController@store");
 Route::get("/facturas/show","FacturaController@index");
 
 Route::get("/facturas/show/{id}","FacturaController@show");
+
+Route::get("/facturas/delete/{id}","FacturaController@destroy");
 //End Rutas facturas
 
 //Rutas Honorarios
@@ -113,7 +115,7 @@ Route::get("/honorarios/create", "HonorarioController@create");
 
 Route::put("/honorarios/create/store", "HonorarioController@store");
 
-Route::get("/honorarios/{id}/remove", "HonorarioController@remove");
+Route::get("/honorarios/delete/{id}", "HonorarioController@destroy");
 
 Route::get("/honorarios/show/{id}", "HonorarioController@show");
 //End rutas honorarios
