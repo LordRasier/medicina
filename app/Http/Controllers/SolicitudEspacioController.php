@@ -26,7 +26,7 @@ class SolicitudEspacioController extends Controller
     public function index()
     {
         $user = User::find(Auth::id());
-        $solicitudes = $user->solicitud_espacio()->get();
+        $solicitudes = $user->solicitud_espacio()->orderBy("id","desc")->get();
         $icons = [
           0 => "far fa-clock fa-2x",
           1 => "far fa-check fa-2x",
