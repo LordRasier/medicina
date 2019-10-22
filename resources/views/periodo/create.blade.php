@@ -146,7 +146,7 @@
                         $(this).css("background-color", "");
                     }
                 }else{
-                    $("#D" + fecha).prop("CHECKED",false);
+                    $("#D" + fecha).prop(":CHECKED",false);
                 }
             });
         });
