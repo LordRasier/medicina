@@ -137,7 +137,10 @@ class DispensaController extends Controller
             2 => "far fa-check fa-2x"
         ];
         $solicitudes = sol::where("autorizacion2","!=",1)->Where("autorizacion3","!=",1)->get();
-        $solicitudes->user = User::find($solicitudes->user_id);
+        foreach ($solicitudes as $item){
+            $item->user = User::find($item->user_id);
+        }
+
 
         return view("periodo.lista3",[
             "solicitudes" => $solicitudes,
