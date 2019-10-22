@@ -6,6 +6,7 @@ use App\dispensa;
 use App\espacio;
 use App\event;
 use App\licence;
+use App\request as sol;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -127,6 +128,21 @@ class DispensaController extends Controller
     public function destroy($id)
     {
 
+    }
+
+    public function historial(){
+        $icono = [
+            0 => "far fa-times fa-2x",
+            1 => "far fa-clock",
+            2 => "far fa-check fa-2x"
+        ];
+        $solicitudes = sol::where("autorizacion2","!=",1)->Where("autorizacion3","!=",1)->get();
+        $solicitudes->user = User::find($solicitudes->user_id);
+
+        return view("periodo.lista3",[
+            "solicitudes" => $solicitudes,
+            "icono" => $icono
+        ]);
     }
 
 }

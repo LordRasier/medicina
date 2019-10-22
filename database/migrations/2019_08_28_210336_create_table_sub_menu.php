@@ -43,6 +43,7 @@ class CreateTableSubMenu extends Migration
         DB::table("sub_menus")->insert(["name" => "Autorizaciones nivel 3", "url" => "/autorizaciones/3","menu_id" => "6"]);
         DB::table("sub_menus")->insert(["name" => "Asignar dispensas adicionales", "url" => "/editperiod","menu_id" => "6"]);
         DB::table("sub_menus")->insert(["name" => "Consultar usuario", "url" => "/checklist","menu_id" => "6"]);
+        DB::table("sub_menus")->insert(["name" => "Historial", "url" => "/dispensa/historial","menu_id" => "6"]);
     }
 
     /**

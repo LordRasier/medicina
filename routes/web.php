@@ -176,4 +176,6 @@ Route::get("/dispensas/check/{id}/prev", "PeriodoController@Prevd");
 
 Route::get("/dispensas/check/{id}/next", "PeriodoController@Nextd");
 
+Route::get("/dispensas/historial", "DispensaController@historial");
+
 //End Rutas Dispensas //

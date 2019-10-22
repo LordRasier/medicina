@@ -3,12 +3,10 @@
 @section('content')
     <ol class="breadcrumb page-breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Autorizaciones nivel 2</li>
+        <li class="breadcrumb-item">Historial</li>
     </ol>
     <div class="col-md-12 col xs 12 col sm 12">
-        <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Revise las solicitudes de dispensas cargadas
-        </div>
+
         @isset($resp)
             @if($resp == true)
                 <div class="alert alert-success" role="alert">
@@ -17,7 +15,7 @@
             @endif
             @if($resp == false)
                 <div class="alert alert-danger" role="alert">
-                   <strong>Info!</strong> Notificacion de rechazo enviada
+                    <strong>Info!</strong> Notificacion de rechazo enviada
                 </div>
             @endif
         @endisset
@@ -28,20 +26,20 @@
                         <thead>
                         <tr>
                             <th class="center" style="width: 10%">ID</th>
+                            <th class="center" style="width: 10%">Emisor</th>
                             <th class="center" style="width: 30%">Fecha</th>
                             <th class="center" style="width: 30%">Aut. 2</th>
                             <th class="center" style="width: 20%">Aut. 3</th>
-                            <th class="center" style="width: 10%"><i class="fa fa-search"></i></th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($solicitudes as $item)
                             <tr>
                                 <td class="center">{{$item->id}}</td>
+                                <td class="center">{{$item->user->name}}</td>
                                 <td class="center">{{$item->created_at}}</td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion2]}}"></i></td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion3]}}"></i></td>
-                                <td class="center"><a class="btn btn-secondary" href="/autorizaciones/2/definir/{{$item->id}}"><i class="fa fa-search"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
