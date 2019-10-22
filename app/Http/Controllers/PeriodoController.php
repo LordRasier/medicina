@@ -692,7 +692,22 @@ class PeriodoController extends Controller
     }
 
     public function editperiod($id){
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+        $this->disponibles($user->id);
+        $center = Carbon::parse($user->ingreso);
+        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+
+        $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
+
+        if($periodo == null){
+            $periodo = new periodo();
+
+            $periodo->user_id = $user->id;
+            $periodo->start = $actual->toDateString();
+            $periodo->end = $actual->addDays(364)->toDateString();
+
+            $periodo->save();
+        }
 
         $user->periodos = $user->periodos()->latest()->first();
 
