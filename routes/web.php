@@ -170,6 +170,10 @@ Route::get("/extralist","PeriodoController@extras");
 
 Route::get("/checklist","PeriodoController@checklist");
 
-Route::get("/dispensas/check/{id}","PeriodoController@checklist");
+Route::get("/dispensas/check/{id}","PeriodoController@checkuser");
+
+Route::get("/dispensas/check/{id}/prev", "PeriodoController@Prevd");
+
+Route::get("/dispensas/check/{id}/next", "PeriodoController@Nextd");
 
 //End Rutas Dispensas //

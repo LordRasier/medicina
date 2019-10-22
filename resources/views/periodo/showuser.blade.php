@@ -18,15 +18,15 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     @if($prevno)
-                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo anterior" href="/misDispensas/Prev" class="btn btn-primary btn-block"><i class="far fa-chevron-left"></i></a>
+                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo anterior" href="/dispensas/check/{{$use->id}}/prev" class="btn btn-primary btn-block"><i class="far fa-chevron-left"></i></a>
                                     @endif
                                 </div>
                                 <div class="col-md-2">
-                                    <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo actual" href="/misDispensas" class="btn btn-primary btn-block"><i class="far fa-chevron-down"></i></a>
+                                    <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo actual" href="/dispensas/check/{{$use->id}}" class="btn btn-primary btn-block"><i class="far fa-chevron-down"></i></a>
                                 </div>
                                 <div class="col-md-5">
                                     @if($nextno)
-                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo Siguiente" href="/misDispensas/Next" class="btn btn-secondary btn-block"><i class="far fa-chevron-right"></i></a>
+                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo Siguiente" href="/dispensas/check/{{$use->id}}/next" class="btn btn-secondary btn-block"><i class="far fa-chevron-right"></i></a>
                                     @endif
                                 </div>
                             </div>

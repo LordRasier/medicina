@@ -228,10 +228,12 @@
                     </div>
                     <!-- app notification -->
                     <div>
+                        <!--
                         <a href="#" class="header-icon" data-toggle="dropdown" title="You got # notifications">
                             <i class="fal fa-bell"></i>
                             <span class="badge badge-icon">0</span>
                         </a>
+                        -->
                         <div class="dropdown-menu dropdown-menu-animated dropdown-xl">
                             <div class="dropdown-header bg-trans-gradient d-flex justify-content-center align-items-center rounded-top mb-2">
                                 <h4 class="m-0 text-center color-white">
