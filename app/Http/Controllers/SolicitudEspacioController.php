@@ -67,17 +67,19 @@ class SolicitudEspacioController extends Controller
     }
 
     public function historial(){
-        $user = User::find(Auth::id());
-        $solicitudes = $user->solicitud_espacio()->wherePivot("autorizado","!=",0)->orderBy("id","desc")->get();
+
+        $solicitudes = DB::table("espacios_pivot")->where("autorizado","=",0)->orderBy("id","desc")->get();
+
         $icons = [
             0 => "far fa-clock fa-2x",
             1 => "far fa-check fa-2x",
             2 => "far fa-times fa-2x"
         ];
-
         foreach ($solicitudes as $item){
-            $item->user = User::find($item->pivot["user_id"]);
+            $item->user = User::find($item->user_id);
+            $item->espacio = espacio::find($item->espacio_id);
         }
+
 
         return view("espacio.historial",[
             "solicitudes" => $solicitudes,
