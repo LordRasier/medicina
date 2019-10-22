@@ -36,7 +36,7 @@
                             <hr>
                             <div class="col-12">
                                 <button class="btn btn-primary float-right" type="submit">Enviar</button>
-                                <a class="btn btn-secondary" href="/honorarios/index">Archivo</a>
+                                <a class="btn btn-secondary" href="/honorarios">Archivo</a>
                             </div>
                         </div>
                     </form>
