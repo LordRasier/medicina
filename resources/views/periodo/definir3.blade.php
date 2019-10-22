@@ -39,7 +39,7 @@
                             <div class="col-12 mb-15">
                                 <div class="form-group">
                                     <label class="form-label">Descripcion</label>
-                                    <textarea class="form-control" rows="5">{{$solicitud->description}}</textarea>
+                                    <textarea class="form-control" rows="5" readonly>{{$solicitud->description}}</textarea>
                                 </div>
                             </div>
                             <hr>
