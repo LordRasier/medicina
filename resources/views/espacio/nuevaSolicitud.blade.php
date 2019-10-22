@@ -38,7 +38,7 @@
                                         <div class="col-12 mb-15">
                                             <div class="form-group">
                                                 <label class="form-label" for="fecha">Fecha</label>
-                                                <input disabled name="fecha" type="text" class="@error("fecha") is-invalid @enderror form-control" maxlength="20" value="{{old("fecha")}}" placeholder="Fecha a solicitar" required>
+                                                <input readonly name="fecha" type="text" class="@error("fecha") is-invalid @enderror form-control" maxlength="20" value="{{old("fecha")}}" placeholder="Fecha a solicitar" required>
                                                 @error("fecha") <div class="invalid-feedback">Este campo es obligatorio</div> @enderror
                                             </div>
                                         </div>
