@@ -142,7 +142,7 @@ class DispensaController extends Controller
         }
 
 
-        return view("periodo.lista3",[
+        return view("periodo.historial",[
             "solicitudes" => $solicitudes,
             "icono" => $icono
         ]);
