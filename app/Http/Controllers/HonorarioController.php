@@ -27,7 +27,7 @@ class HonorarioController extends Controller
      */
     public function index()
     {
-        return view("honorario.index",["honorarios" => honorario::all()]);
+        return view("honorario.index",["honorarios" => honorario::all()->sortByDesc]);
     }
 
     /**
@@ -36,7 +36,7 @@ class HonorarioController extends Controller
     public function MisHonorarios(){
         $user = User::findOrFail(Auth::id());
 
-        return view("honorario.listado",["honorarios" => $user->honorarios()->get()]);
+        return view("honorario.listado",["honorarios" => $user->honorarios()->orderBy("id","desc")->get()]);
     }
 
     /**
