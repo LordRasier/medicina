@@ -29,7 +29,6 @@
                             <th class="center" style="width: 15%">Fecha</th>
                             <th class="center" style="width: 20%">Horario</th>
                             <th class="center" style="width: 10%">Estado</th>
-                            <th class="center" style="width: 10%"><i class="fa fa-search"></i></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -42,7 +41,6 @@
                                 <td class="center">{{$item->fecha}}</td>
                                 <td class="center">{{$item->horario}}</td>
                                 <td class="center"><i class="{{$icon[$item->autorizado]}}"></i></td>
-                                <td class="center"><a href="/espacios/solicitudes/{{$item->id}}/show" class="btn btn-primary" ><i class="fa fa-search"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
