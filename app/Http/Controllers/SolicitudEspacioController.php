@@ -48,7 +48,7 @@ class SolicitudEspacioController extends Controller
      */
     public function listado(){
         $user = User::find(Auth::id());
-        $solicitudes = $user->solicitud_espacio()->get();
+        $solicitudes = DB::table("espacios_pivot")->where("autorizado","=",0)->get();
         $icons = [
             0 => "far fa-clock fa-2x",
             1 => "far fa-check fa-2x",
@@ -56,7 +56,8 @@ class SolicitudEspacioController extends Controller
         ];
 
         foreach ($solicitudes as $item){
-           $item->user = User::find($item->pivot["user_id"]);
+           $item->user = User::find($item->user_id);
+           $item->espacio = espacio::find($item->espacio_id);
         }
 
         return view("espacio.autorizar",[
