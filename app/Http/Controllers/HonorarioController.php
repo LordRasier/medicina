@@ -27,7 +27,7 @@ class HonorarioController extends Controller
      */
     public function index()
     {
-        return view("honorario.index",["honorarios" => honorario::all()->sortByDesc]);
+        return view("honorario.index",["honorarios" => honorario::all()]);
     }
 
     /**
