@@ -22,9 +22,6 @@ class CreateTableLicences extends Migration
             $table->timestamps();
         });
 
-        DB::table("licences")->insert(["description" =>"Dispensa Comun"]);
-        DB::table("licences")->insert(["description" =>"Dispensa Extraordinaria"]);
-        DB::table("licences")->insert(["description" =>"Dispensa por enfermedad"]);
     }
 
     /**
