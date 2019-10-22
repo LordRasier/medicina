@@ -405,7 +405,7 @@ class PeriodoController extends Controller
             "periodo" => $periodo,
             "almanaque" => $t,
             "domingos" => $sundays,
-            "licencias" => licence::all()->where("habilitado","=",1)->get(),
+            "licencias" => licence::all()->where("habilitado","=",1),
             "disponibles" => $this->disponibles($user->id),
             "usados" => $usados,
             "especiales" => $especiales,
