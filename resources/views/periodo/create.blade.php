@@ -147,6 +147,7 @@
                     }
                 }else{
                     $("#D" + fecha).prop("checked",false);
+                    $(this).css("background-color", "");
                 }
             });
         });
