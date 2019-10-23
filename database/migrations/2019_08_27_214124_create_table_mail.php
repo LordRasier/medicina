@@ -24,7 +24,7 @@ class CreateTableMail extends Migration
         });
 
         DB::statement("create view inboxes as select `a`.`id` AS `oid`,`a`.`name` AS `oname`,`a`.`email` AS `oemail`,`a`.`profile` AS `oprofile`,`b`.`id` AS `id`,`b`.`asunto` AS `asunto`,`b`.`body` AS `body`,`b`.`created_at` AS `created_at`,`c`.`id` AS `did`,`c`.`name` AS `dname`,`c`.`email` AS `demail`,`c`.`profile` AS `dprofile` from ((`medicina`.`users` `a` join `medicina`.`mails` `b` on((`a`.`id` = `b`.`origin`))) join `medicina`.`users` `c` on((`b`.`destiny` = `c`.`id`)))");
-        DB::statement("insert into sub_menu(name,url,menu_id) value('Historial','/dispensas/historial',6)");
+
 
     }
     /**
