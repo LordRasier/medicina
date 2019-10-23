@@ -71,7 +71,23 @@ class PeriodoController extends Controller
 
         $period   = new DatePeriod($start, $interval, $end);
         foreach ($period as $dt) {
-            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+
+            $mes = [
+                1 => "Ene",
+                2 => "Feb",
+                3 => "Mar",
+                4 => "Abr",
+                5 => "May",
+                6 => "Jun",
+                7 => "Jul",
+                8 => "Ago",
+                9 => "Sep",
+                10 => "Oct",
+                11 => "Nov",
+                12 => "Dic"
+            ];
+
+            $t[] = [$dt->format('Y-m'),$dt->format('Y')."-".$mes[$dt->format('m')]];
         }
 
 
