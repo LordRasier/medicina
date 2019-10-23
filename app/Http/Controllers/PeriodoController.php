@@ -86,7 +86,7 @@ class PeriodoController extends Controller
                 11 => "Nov",
                 12 => "Dic"
             ];
-
+            dd($mes);
             $t[] = [$dt->format('Y-m'),$dt->format('Y')."-".$mes[$dt->format('m')]];
         }
 
