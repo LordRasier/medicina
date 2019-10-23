@@ -88,6 +88,16 @@ class PeriodoController extends Controller
             );
 
             $t[] = [$dt->format('Y-m'),$dt->format('Y')."-".$mes[$dt->format('m')]];
+
+            if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
+            }
+            if(!checkdate($dt->format("m"),31,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
+            if(!checkdate($dt->format("m"),30,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
         }
 
 
@@ -173,7 +183,22 @@ class PeriodoController extends Controller
 
         $period   = new DatePeriod($start, $interval, $end);
         foreach ($period as $dt) {
-            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+            $mes = array(
+                "01" => "Ene",
+                "02" => "Feb",
+                "03" => "Mar",
+                "04" => "Abr",
+                "05" => "May",
+                "06" => "Jun",
+                "07" => "Jul",
+                "08" => "Ago",
+                "09"=> "Sep",
+                "10" => "Oct",
+                "11" => "Nov",
+                "12" => "Dic"
+            );
+
+            $t[] = [$dt->format('Y-m'),$dt->format('Y')."-".$mes[$dt->format('m')]];
 
             if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
                 $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
@@ -272,7 +297,22 @@ class PeriodoController extends Controller
 
         $period   = new DatePeriod($start, $interval, $end);
         foreach ($period as $dt) {
-            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+            $mes = array(
+                "01" => "Ene",
+                "02" => "Feb",
+                "03" => "Mar",
+                "04" => "Abr",
+                "05" => "May",
+                "06" => "Jun",
+                "07" => "Jul",
+                "08" => "Ago",
+                "09"=> "Sep",
+                "10" => "Oct",
+                "11" => "Nov",
+                "12" => "Dic"
+            );
+
+            $t[] = [$dt->format('Y-m'),$dt->format('Y')."-".$mes[$dt->format('m')]];
 
             if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
                 $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
@@ -372,7 +412,22 @@ class PeriodoController extends Controller
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
         }
         foreach ($period as $dt) {
-            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+            $mes = array(
+                "01" => "Ene",
+                "02" => "Feb",
+                "03" => "Mar",
+                "04" => "Abr",
+                "05" => "May",
+                "06" => "Jun",
+                "07" => "Jul",
+                "08" => "Ago",
+                "09"=> "Sep",
+                "10" => "Oct",
+                "11" => "Nov",
+                "12" => "Dic"
+            );
+
+            $t[] = [$dt->format('Y-m'),$dt->format('Y')."-".$mes[$dt->format('m')]];
 
             if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
                 $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
@@ -820,7 +875,22 @@ class PeriodoController extends Controller
 
         $period   = new DatePeriod($start, $interval, $end);
         foreach ($period as $dt) {
-            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+            $mes = array(
+                "01" => "Ene",
+                "02" => "Feb",
+                "03" => "Mar",
+                "04" => "Abr",
+                "05" => "May",
+                "06" => "Jun",
+                "07" => "Jul",
+                "08" => "Ago",
+                "09"=> "Sep",
+                "10" => "Oct",
+                "11" => "Nov",
+                "12" => "Dic"
+            );
+
+            $t[] = [$dt->format('Y-m'),$dt->format('Y')."-".$mes[$dt->format('m')]];
 
             if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
                 $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
@@ -918,7 +988,32 @@ class PeriodoController extends Controller
 
         $period   = new DatePeriod($start, $interval, $end);
         foreach ($period as $dt) {
-            $t[] = [$dt->format('Y-m'),$dt->format('Y-M')];
+            $mes = array(
+                "01" => "Ene",
+                "02" => "Feb",
+                "03" => "Mar",
+                "04" => "Abr",
+                "05" => "May",
+                "06" => "Jun",
+                "07" => "Jul",
+                "08" => "Ago",
+                "09"=> "Sep",
+                "10" => "Oct",
+                "11" => "Nov",
+                "12" => "Dic"
+            );
+
+            $t[] = [$dt->format('Y-m'),$dt->format('Y')."-".$mes[$dt->format('m')]];
+
+            if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
+            }
+            if(!checkdate($dt->format("m"),31,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
+            if(!checkdate($dt->format("m"),30,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
         }
 
 
