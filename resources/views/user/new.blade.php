@@ -46,7 +46,7 @@
                                         <div class="form-group">
                                             <label class="form-label" for="doc">Documento</label>
                                             <input name="doc" type="text" class="@error("doc") is-invalid @enderror form-control" maxlength="50" value="{{old("doc")}}" placeholder="Documento" required>
-                                            @error("doc") <div class="invalid-feedback">Minimo 8 caracteres</div> @enderror
+                                            @error("doc") <div class="invalid-feedback">Minimo 8 caracteres o el documento ya existe</div> @enderror
                                         </div>
                                     </div>
                                     <div class="col-12 mb-15">
