@@ -71,7 +71,7 @@ class ProfileController extends Controller
     {
         $data = $request->validate([
             "name" => "required",
-            "doc" => "required|min:8",
+            "doc" => "required|min:8|unique:users,doc",
             "email" => "required|email|unique:users,email",
             "access" => "required",
             "horas" => "required",
