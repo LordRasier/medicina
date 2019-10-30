@@ -23,6 +23,7 @@
     <link rel="stylesheet" media="screen, print" href="/css/fa-solid.css">
     <link rel="stylesheet" media="screen, print" href="/css/fa-brands.css">
     <link rel="stylesheet" media="screen, print" href="/css/formplugins/select2/select2.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="/css/datagrid/datatables/datatables.bundle.css">
     <!-- Place favicon.ico in the root directory -->
 
     <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
