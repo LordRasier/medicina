@@ -372,10 +372,17 @@
 <script src="/js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
 <script src="/js/formplugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
 <script src="/js/formplugins/select2/select2.bundle.js"></script>
+<script src="js/datagrid/datatables/datatables.bundle.js"></script>
 <script>
 
     $(document).ready(function(){
         $('.select2').select2();
+
+        $('#mytable').dataTable(
+            {
+                responsive: true
+            });
+
 
         var calendarEl = document.getElementById('calendar');
 
