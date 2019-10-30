@@ -510,7 +510,7 @@ class PeriodoController extends Controller
         }
         $sol->periodo_id = $request->periodo;
 
-        $ids = DB::table("sub_menu_user")->distinct()->where("sub_menu_id", "=", 14)->orWhere("sub_menu_id", "=", 15)->get();
+        $ids = DB::table("sub_menu_user")->distinct()->where("sub_menu_id", "=", 14)->get();
 
         foreach($ids as $item){
             $user = User::find($item->user_id);
@@ -596,7 +596,7 @@ class PeriodoController extends Controller
         ];
 
         return view("periodo.lista3",[
-            "solicitudes" => sol::where("autorizacion2","=",1)->orWhere("autorizacion3","=",1)->get(),
+            "solicitudes" => sol::where("autorizacion2","=",2)->Where("autorizacion3","=",1)->get(),
             "icono" => $icono
         ]);
     }
@@ -648,6 +648,17 @@ class PeriodoController extends Controller
         ];
 
         Mail::to($user->email)->send(new \App\Mail\dispensa_2($R[$data["estado"]]));
+
+        if($data["autorizado"] == 2){
+            $ids = DB::table("sub_menu_user")->distinct()->where("sub_menu_id", "=", 15)->get();
+
+            foreach($ids as $item){
+                $user = User::find($item->user_id);
+                Mail::to($user->email)->send(new \App\Mail\nueva_dispensa(""));
+            }
+        }
+
+
         $sol->save();
         $resp = ($data["estado"] == 2)? true : false;
         $icono = [
@@ -1171,6 +1182,117 @@ class PeriodoController extends Controller
             "prevno" => true,
             "use" => $user
         ]);
+    }
+
+    public function anio(){
+        $user = User::findOrFail(Auth::id());
+        $actual = Carbon::create(Carbon::now()->year,"01","01");
+
+
+        $start    = (new DateTime(Carbon::now()->year."-01-01"));
+        $end      = (new DateTime(Carbon::now()->year."-12-31"));
+        $interval = DateInterval::createFromDateString('1 month');
+        $intevalday  = DateInterval::createFromDateString('1 day');
+        //prohibite days
+        $sundays = array();
+
+        $before = new DatePeriod($start, $intevalday, new DateTime(Carbon::now()->year."-01-01"));
+        foreach ($before as $item){
+            $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+        }
+
+        $after = new DatePeriod(new DateTime(Carbon::now()->year."-12-31"), $intevalday, $end);
+        foreach ($after as $item){
+            $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+        }
+
+
+        $period   = new DatePeriod($start, $interval, $end);
+        foreach ($period as $dt) {
+            $mes = array(
+                "01" => "Ene",
+                "02" => "Feb",
+                "03" => "Mar",
+                "04" => "Abr",
+                "05" => "May",
+                "06" => "Jun",
+                "07" => "Jul",
+                "08" => "Ago",
+                "09"=> "Sep",
+                "10" => "Oct",
+                "11" => "Nov",
+                "12" => "Dic"
+            );
+
+            $t[] = [$dt->format('Y-m'),$dt->format('Y')."-".$mes[$dt->format('m')]];
+
+            if(!checkdate($dt->format("m"),29,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-29"] =  $dt->format("Y-m")."-29";
+            }
+            if(!checkdate($dt->format("m"),31,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
+            if(!checkdate($dt->format("m"),30,$dt->format("Y"))){
+                $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
+            }
+        }
+
+
+        while ($start <= $end) {
+            if ($start->format('w') == 0 || $start->format("w") == 6) {
+                $sundays[$start->format('Y-m-d')] = $start->format('Y-m-d');
+            }
+
+            $start->modify('+1 day');
+        }
+        //dd($sundays);
+        $bucket = User::all()->where("specialty", "=", $user->specialty);
+        $marcar = [];
+
+        foreach($bucket as $item){
+            $periodo = $item->periodos()->where("start","<=",Carbon::now()->year."-01-01")->where("end",">=",Carbon::now()->year."-12-31")->get();
+
+            if($periodo == null){
+                $periodo = new periodo();
+
+                $cen = Carbon::parse($item->ingreso);
+                $act = Carbon::create(Carbon::now()->year,$cen->month,$cen->day);
+
+                $periodo->user_id = $item->id;
+                $periodo->start = $act->toDateString();
+                $periodo->end = $act->addDays(364)->toDateString();
+
+                $periodo->save();
+
+                $periodo = $item->periodos()->where("start","<=",Carbon::now()->year."-01-01")->where("end",">=",Carbon::now()->year."-12-31")->get();
+            }
+
+            foreach ($periodo as $per){
+                $req = $per->dispensas()->where("autorizacion2","=",2)->where("autorizacion3","=",2)->get();
+
+                foreach($req as $IT) {
+
+                    $temp = day::where("request_id","=",$IT->id)->get();
+
+                    foreach($temp as $item){
+                        $marcar[$item->date] = $item->date;
+                    }
+                }
+            }
+        }
+
+
+        return view("periodo.showuser",[
+            "periodo" => $periodo,
+            "almanaque" => $t,
+            "domingos" => $sundays,
+            "disponibles" => $this->disponibles($user->id),
+            "marcar" => $marcar,
+            "nextno" => true,
+            "prevno" => true,
+            "use" => $user
+        ]);
+
     }
 
 }
