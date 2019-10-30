@@ -1282,7 +1282,7 @@ class PeriodoController extends Controller
         }
 
 
-        return view("periodo.showuser",[
+        return view("periodo.estadoanual",[
             "periodo" => $periodo,
             "almanaque" => $t,
             "domingos" => $sundays,
