@@ -366,17 +366,14 @@
                 + waves.js (extension)
                 + smartpanels.js (extension)
                 + src/../jquery-snippets.js (core) -->
-<script
-    src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-    crossorigin="anonymous"></script>
+
 <script src="/js/vendors.bundle.js"></script>
 <script src="/js/app.bundle.js"></script>
 <script src="/js/dependency/moment/moment.js"></script>
 <script src="/js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
 <script src="/js/formplugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
 <script src="/js/formplugins/select2/select2.bundle.js"></script>
-<script src="js/datagrid/datatables/datatables.bundle.js"></script>
+<script src="/js/datagrid/datatables/datatables.bundle.js"></script>
 <script>
 
     $(document).ready(function(){
