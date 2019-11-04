@@ -18,6 +18,7 @@ class CreateTableHonorarios extends Migration
             $table->bigInteger("user_id");
             $table->date("fecha");
             $table->string("file");
+            $table->string("factura")->nullable();
             $table->timestamps();
         });
     }

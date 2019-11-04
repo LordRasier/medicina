@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\alter;
 use App\day;
+use App\forbid;
 use App\request as sol;
 use App\event;
 use App\licence;
@@ -61,11 +62,19 @@ class PeriodoController extends Controller
         $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
         foreach ($before as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
         $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
         foreach ($after as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
 
@@ -98,6 +107,8 @@ class PeriodoController extends Controller
             if(!checkdate($dt->format("m"),30,$dt->format("Y"))){
                 $sundays[$dt->format("Y-m")."-31"] =  $dt->format("Y-m")."-31";
             }
+
+
         }
 
 
@@ -124,6 +135,8 @@ class PeriodoController extends Controller
                 $marcar[$item->date] = $item->date;
             }
         }
+
+
         $especiales = 0;
         $T = alter::where("periodo_id","=",$periodo->id)->get();
 
@@ -173,11 +186,21 @@ class PeriodoController extends Controller
         $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
         foreach ($before as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
+
+
 
         $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
         foreach ($after as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
 
@@ -287,11 +310,17 @@ class PeriodoController extends Controller
         $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
         foreach ($before as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
         $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
         foreach ($after as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
 
@@ -405,11 +434,17 @@ class PeriodoController extends Controller
         $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
         foreach ($before as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
         $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
         foreach ($after as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
         foreach ($period as $dt) {
             $mes = array(
@@ -649,7 +684,7 @@ class PeriodoController extends Controller
 
         Mail::to($user->email)->send(new \App\Mail\dispensa_2($R[$data["estado"]]));
 
-        if($data["autorizado"] == 2){
+        if($data["estado"] == 2){
             $ids = DB::table("sub_menu_user")->distinct()->where("sub_menu_id", "=", 15)->get();
 
             foreach($ids as $item){
@@ -876,11 +911,17 @@ class PeriodoController extends Controller
         $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
         foreach ($before as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
         $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
         foreach ($after as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
 
@@ -989,11 +1030,17 @@ class PeriodoController extends Controller
         $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
         foreach ($before as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
         $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
         foreach ($after as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
 
@@ -1101,11 +1148,17 @@ class PeriodoController extends Controller
         $before = new DatePeriod($start, $intevalday, new DateTime($periodo->start));
         foreach ($before as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
         $after = new DatePeriod(new DateTime($periodo->end), $intevalday, $end);
         foreach ($after as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
 
@@ -1199,11 +1252,17 @@ class PeriodoController extends Controller
         $before = new DatePeriod($start, $intevalday, new DateTime(Carbon::now()->year."-01-01"));
         foreach ($before as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
         $after = new DatePeriod(new DateTime(Carbon::now()->year."-12-31"), $intevalday, $end);
         foreach ($after as $item){
             $sundays[$item->format('Y-m-d')] = $item->format('Y-m-d');
+            foreach (forbid::whereYear("day",$item->format("Y"))->get() as $item2){
+                $sundays[$item2->day] = $item2->day;
+            }
         }
 
 
@@ -1250,7 +1309,8 @@ class PeriodoController extends Controller
         $marcar = [];
 
         foreach($bucket as $item){
-            $periodo = $item->periodos()->where("start","<=",Carbon::now()->year."-01-01")->where("end",">=",Carbon::now()->year."-12-31")->get();
+
+            $periodo = $item->periodos()->whereYear("start",Carbon::now()->year)->orwhereYear("end",Carbon::now()->year)->get();
 
             if($periodo == null){
                 $periodo = new periodo();
@@ -1279,6 +1339,7 @@ class PeriodoController extends Controller
                     }
                 }
             }
+
         }
 
 

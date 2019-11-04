@@ -180,4 +180,10 @@ Route::get("/dispensas/historial", "DispensaController@historial");
 
 Route::get("/dispensas/anual", "PeriodoController@anio");
 
+Route::get("/configuracion/forbid", "ForbidController@index");
+
+Route::get("/configuracion/forbid/{anio}", "ForbidController@change");
+
+Route::put("/configuracion/forbid/store", "ForbidController@store");
+
 //End Rutas Dispensas //
