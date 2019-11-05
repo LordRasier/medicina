@@ -26,8 +26,8 @@
     <link rel="stylesheet" media="screen, print" href="/css/datagrid/datatables/datatables.bundle.css">
     <!-- Place favicon.ico in the root directory -->
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/iso.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/iso.png">
     <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <!--<link rel="stylesheet" media="screen, print" href="css/your_styles.css">-->
     <title>SMART - NovoPles</title>
