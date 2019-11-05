@@ -24,12 +24,12 @@
                         </thead>
                         <tbody>
                         @foreach($honorarios as $item)
-                            <tr class="@if($item->factura != null) state-success @endif">
+                            <tr class="@if($item->factura != null) bg-success @endif">
                                 <td class="center">{{$item->id}}</td>
                                 <td class="center">{{$item->user["name"]}}</td>
                                 <td class="center">{{$item->fecha}}</td>
                                 <td class="center"><a target="_blank" class="btn btn-primary" href="/honorarios/show/{{$item->id}}"><i class="fa fa-search"></i></a></td>
-                                <td class="center"><a target="_blank" class="btn btn-secondary @if($item->factura != null) state-danger @endif" href="@if($item->factura == null) # @else /facturas/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
+                                <td class="center"><a target="_blank" class="btn btn-secondary @if($item->factura == null) btn-danger @else btn-success @endif" href="@if($item->factura == null) # @else /facturas/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
