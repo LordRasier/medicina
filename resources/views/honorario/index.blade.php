@@ -29,7 +29,7 @@
                                 <td class="center">{{$item->user["name"]}}</td>
                                 <td class="center">{{$item->fecha}}</td>
                                 <td class="center"><a target="_blank" class="btn btn-primary" href="/honorarios/show/{{$item->id}}"><i class="fa fa-search"></i></a></td>
-                                <td class="center"><a target="_blank" class="btn btn-secondary @if($item->factura == null) btn-danger @else btn-success @endif" href="@if($item->factura == null) # @else /facturas/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
+                                <td class="center"><a @if($item->factura != null) target="_blank" @endif class="btn btn-secondary @if($item->factura == null) btn-danger @else btn-success @endif" href="@if($item->factura == null) # @else /facturas/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
