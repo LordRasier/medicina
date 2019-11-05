@@ -80,7 +80,7 @@ class FacturaController extends Controller
     public function show($id)
     {
         $factura = honorario::findOrFail($id);
-
+        dd($factura);
         return response()->file(storage_path("app/".$factura->factura));
     }
 
