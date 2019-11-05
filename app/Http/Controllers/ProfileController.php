@@ -171,8 +171,8 @@ class ProfileController extends Controller
         $user->type = $data["tipo"];
         $user->specialty = $data["especialidad"];
         $user->code = $data["codigo"];
-        dd(Carbon::createFromFormat("d/m/y",$data["ingreso"]));
-        $user->ingreso = Carbon::parse($data["ingreso"])->format("Y-m-d");
+        $temp = explode("/",$data["ingreso"]);
+        $user->ingreso = $temp[2]."-".$temp[1]."-".$temp[0];
 
         $menus = sub_menu::all();
         foreach ($menus as $item){
