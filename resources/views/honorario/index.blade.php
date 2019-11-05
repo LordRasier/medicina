@@ -24,7 +24,7 @@
                         </thead>
                         <tbody>
                         @foreach($honorarios as $item)
-                            <tr class="@if($item->factura != null) bg-success @endif">
+                            <tr class="@if($item->factura != null) bg-success-50 @endif">
                                 <td class="center">{{$item->id}}</td>
                                 <td class="center">{{$item->user["name"]}}</td>
                                 <td class="center">{{$item->fecha}}</td>
