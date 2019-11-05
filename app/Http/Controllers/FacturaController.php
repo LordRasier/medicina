@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\factura;
+use App\honorario;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -43,9 +44,9 @@ class FacturaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view("factura.create");
+        return view("factura.create",["honorario" => $id]);
     }
 
     /**
@@ -57,27 +58,15 @@ class FacturaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            "fecha" => "required",
-            "numero" => "required | unique:facturas,numero",
-            "observacion" => "required",
             "file" => "file"
         ]);
 
-        $factura = new factura();
+        $honorario = honorario::fndOrFail($data["honorario"]);
+        $honorario->factura = $request->file("file")->store("app/facturas");
 
-        $factura->user_id = Auth::id();
-        $factura->fecha = Carbon::parse($data["fecha"])->toDateString();
-        $factura->numero = $data["numero"];
-        $factura->description = $data["observacion"];
-        $factura->file = $request->file("file")->store("app/facturas");
+        $honorario->save();
 
-
-        $factura->save();
-
-        return view("factura.misFacturas",[
-            "facturas" => factura::all()->where("user_id","=",Auth::id()),
-            "carga" => true
-        ]);
+        return redirect("/misHonorarios");
 
     }
 

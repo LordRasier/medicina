@@ -95,7 +95,7 @@ Route::get("/espacios/solicitudes/{id}/remove","SolicitudEspacioController@destr
 // Rutas Facturas
 Route::get("/misFacturas","FacturaController@MisFacturas");
 
-Route::get("/misFacturas/create","FacturaController@create");
+Route::get("/misFacturas/create/{id}","FacturaController@create");
 
 Route::put("/misFacturas/create/store","FacturaController@store");
 
