@@ -34,7 +34,7 @@
                                 <td class="center">{{$item->id}}</td>
                                 <td class="center">{{$item->fecha}}</td>
                                 <td class="center"><a target="_blank" class="btn btn-primary" href="/honorarios/show/{{$item->id}}"><i class="fa fa-search"></i></a></td>
-                                <td class="center"><a target="_blank" class="btn btn-secondary @if($item->factura != null) state-danger @endif" href="@if($item->factura == null) # @else /factura/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
+                                <td class="center"><a target="_blank" class="btn btn-secondary @if($item->factura != null) state-danger @endif" href="@if($item->factura == null) # @else /facturas/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
                                 <td class="center"><a  class="btn btn-secondary" href="/misFacturas/create/{{$item->id}}"><i class="fa fa-upload"></i></a></td>
                             </tr>
                         @endforeach
