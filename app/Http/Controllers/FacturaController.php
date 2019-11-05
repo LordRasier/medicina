@@ -79,9 +79,9 @@ class FacturaController extends Controller
      */
     public function show($id)
     {
-        $factura = factura::findOrFail($id);
+        $factura = honorario::findOrFail($id);
 
-        return response()->file(storage_path("app/".$factura->file));
+        return response()->file(storage_path("app/".$factura->factura));
     }
 
     /**
