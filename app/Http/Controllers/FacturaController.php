@@ -58,7 +58,8 @@ class FacturaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            "file" => "file"
+            "file" => "file",
+            "honorario" => "required"
         ]);
 
         $honorario = honorario::fndOrFail($data["honorario"]);
