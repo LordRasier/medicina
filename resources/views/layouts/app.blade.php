@@ -446,7 +446,7 @@
         $('.calendar').on('shown.bs.modal', function (e) {
             $(".fc-dayGridMonth-button").click();
         });
-        $(".calendar-event-date").datepicker({dateFormat:"yy-mm-dd"});
+        $(".calendar-event-date").datepicker({dateFormat:"dd/mm/yy"});
 
     });
 </script>
