@@ -1341,7 +1341,7 @@ class PeriodoController extends Controller
             }
 
         }
-
+        dd($marcar);
 
         return view("periodo.estadoanual",[
             "periodo" => $periodo,
