@@ -109,7 +109,7 @@
                                         @foreach($acceso as $item)
                                             <div class="col-6">
                                                 <div class="col-12 mb-15">
-                                                 <h4>{{$item->nombre}}</h4>
+                                                 <h4>{{$item->name}}</h4>
                                                 </div>
                                                 @foreach($item->hijos as $item)
                                                 <div class="col-12 mb-15">
