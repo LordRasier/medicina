@@ -62,7 +62,7 @@ class FacturaController extends Controller
             "honorario" => "required"
         ]);
 
-        $honorario = honorario::fndOrFail($data["honorario"]);
+        $honorario = honorario::findOrFail($data["honorario"]);
         $honorario->factura = $request->file("file")->store("app/facturas");
 
         $honorario->save();
