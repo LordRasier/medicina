@@ -682,7 +682,7 @@ class PeriodoController extends Controller
             2 => "Aprobada"
         ];
 
-        Mail::to($user->email)->send(new \App\Mail\dispensa_2($R[$data["estado"]]));
+        //Mail::to($user->email)->send(new \App\Mail\dispensa_2($R[$data["estado"]]));
 
         if($data["estado"] == 2){
             $ids = DB::table("sub_menu_user")->distinct()->where("sub_menu_id", "=", 15)->get();

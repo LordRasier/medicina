@@ -88,7 +88,7 @@ class HonorarioController extends Controller
     {
         $honorario = honorario::findOrFail($id);
 
-        return response()->file(storage_path("app/".$honorario->file));
+        return response()->header('Content-Type', 'text/html; charset=utf-8')->file(storage_path("app/".$honorario->file));
     }
 
     /**

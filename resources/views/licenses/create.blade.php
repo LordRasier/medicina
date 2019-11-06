@@ -3,8 +3,9 @@
 @section('content')
     <ol class="breadcrumb page-breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Mis facturas</li>
-        <li class="breadcrumb-item">Cargar nueva factura</li>
+        <li class="breadcrumb-item">Configuraciones</li>
+        <li class="breadcrumb-item">Dispensas</li>
+        <li class="breadcrumb-item">Nueva Dispensa</li>
     </ol>
     <div class="col-md-6 col-sm-12 col-xs-12">
         <div id="panel-1" class="panel">

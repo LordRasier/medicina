@@ -110,12 +110,14 @@ class SolicitudEspacioController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->validate([
             "fecha"=>"required",
             "horario"=>"required",
             "espacio"=>"required",
             "detalle" => "required"
         ]);
+        $myself = User::find(Auth::id());
         $result = false;
         //dd(DB::table("espacios_pivot")->where(["espacio_id" => $data["espacio"],"fecha" => $data["fecha"], "horario" => $data["horario"], "autorizado" => 1])->count());
         if(!DB::table("espacios_pivot")->where(["espacio_id" => $data["espacio"],"fecha" => $data["fecha"], "horario" => $data["horario"], "autorizado" => 1])->count()){
@@ -126,7 +128,10 @@ class SolicitudEspacioController extends Controller
 
             foreach($ids as $item){
                 $user = User::find($item->user_id);
-                Mail::to($user->email)->send(new \App\Mail\solicitud_espacio('It works!'));
+                if($user->specialty == $myself->specialty){
+                    Mail::to($user->email)->send(new \App\Mail\solicitud_espacio('It works!'));
+                }
+
             }
         }
 
