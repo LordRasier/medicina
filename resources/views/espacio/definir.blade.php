@@ -27,7 +27,7 @@
                                         <div class="col-12 mb-15">
                                             <div class="form-group">
                                                 <label class="form-label" for="user">Solicitante</label>
-                                                <input name="user" type="text" class="form-control" value="{{$item->user["name"]}}" readonly>
+                                                <input name="user" type="text" class="form-control" value="@isset($item->user["name"]){{$item->user["name"]}} @endisset" readonly>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-15">
