@@ -121,7 +121,7 @@ class ProfileController extends Controller
 
         $user = User::findOrFail(Auth::id());
         if($data["newpass"] == $data["re-pass"]){
-            $user->pass = Hash::make($data["newpass"]);
+            $user->password = Hash::make($data["newpass"]);
             $user->save();
         }
 
