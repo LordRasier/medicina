@@ -30,6 +30,8 @@ Route::get("/logout", "SesionController@logout");
 
 //Rutas Perfil
 Route::put("profile/pic/update","ProfileController@pic");
+
+Route::put("profile/password","ProfileController@password");
 //End Rutas Perfil
 
 //Rutas Calendar

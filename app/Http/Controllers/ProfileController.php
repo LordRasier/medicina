@@ -113,6 +113,21 @@ class ProfileController extends Controller
         //
     }
 
+    public function password(Request $request){
+        $data = $request->validate([
+            "newpass" => "required",
+            "re-pass" => "required"
+        ]);
+
+        $user => User::findOrFail(Auth::id());
+        if($data["newpass"] == $data["re-pass"]){
+            $user->pass = Hash::make($data["newpass"]);
+            $user->save();
+        }
+
+        return redirect("/");
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
