@@ -35,7 +35,7 @@
                                 <div class="col-12 mb-15">
                                     <div class="form-group">
                                       <label for="newpass" class="form-label">Nueva contraseña</label>
-                                      <input minlenght="8" class="form-control" type="password" name="pass" value="" placeholder="Nueva contraeña" required>
+                                      <input minlenght="8" class="form-control" type="password" name="newpass" value="" placeholder="Nueva contraeña" required>
                                     </div>
                                 </div>
                                 <div class="col-12 mb-15">
