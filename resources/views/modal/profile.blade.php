@@ -35,13 +35,13 @@
                                 <div class="col-12 mb-15">
                                     <div class="form-group">
                                       <label for="newpass" class="form-label">Nueva contraseña</label>
-                                      <input class="form-control" type="text" name="pass" value="" placeholder="Nueva contraeña">
+                                      <input class="form-control" type="password" name="pass" value="" placeholder="Nueva contraeña">
                                     </div>
                                 </div>
                                 <div class="col-12 mb-15">
                                     <div class="form-group">
                                       <label for="re-pass" class="form-label">Repita nueva contraseña</label>
-                                      <input class="form-control" type="text" name="re-pass" value="" placeholder="Nueva contraeña">
+                                      <input class="form-control" type="password" name="re-pass" value="" placeholder="Nueva contraeña">
                                     </div>
                                 </div>
                                 <div class="col-12">
