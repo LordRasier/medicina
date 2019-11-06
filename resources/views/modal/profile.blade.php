@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                    <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
                                 </div>
                             </form>
                         </div>
