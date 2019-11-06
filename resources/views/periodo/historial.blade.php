@@ -36,7 +36,7 @@
                         @foreach($solicitudes as $item)
                             <tr>
                                 <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->user->name}}</td>
+                                <td class="center">@isset($item->user->name){{$item->user->name}} @endisset</td>
                                 <td class="center">{{$item->created_at}}</td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion2]}}"></i></td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion3]}}"></i></td>
