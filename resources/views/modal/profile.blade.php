@@ -44,7 +44,9 @@
                                       <input class="form-control" type="text" name="re-pass" value="" placeholder="Nueva contraeña">
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                </div>
                             </form>
                         </div>
                     </div>
