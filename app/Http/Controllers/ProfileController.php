@@ -113,6 +113,21 @@ class ProfileController extends Controller
         //
     }
 
+    public function password(Request $request){
+        $data = $request->validate([
+            "newpass" => "required",
+            "re-pass" => "required"
+        ]);
+
+        $user = User::findOrFail(Auth::id());
+        if($data["newpass"] == $data["re-pass"]){
+            $user->password = Hash::make($data["newpass"]);
+            $user->save();
+        }
+
+        return redirect("/");
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -171,7 +186,8 @@ class ProfileController extends Controller
         $user->type = $data["tipo"];
         $user->specialty = $data["especialidad"];
         $user->code = $data["codigo"];
-        $user->ingreso = Carbon::parse($data["ingreso"])->format("Y-m-d");
+        $temp = explode("/",$data["ingreso"]);
+        $user->ingreso = $temp[2]."-".$temp[1]."-".$temp[0];
 
         $menus = sub_menu::all();
         foreach ($menus as $item){

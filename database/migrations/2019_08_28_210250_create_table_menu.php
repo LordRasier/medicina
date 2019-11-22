@@ -24,7 +24,7 @@ class CreateTableMenu extends Migration
         DB::table("menus")->insert(["id" => "1","name" => "Herramientas", "icon" => "far fa-cogs"]);
         DB::table("menus")->insert(["id" => "2","name" => "Configuraciones", "icon" => "far fa-cog"]);
         DB::table("menus")->insert(["id" => "3","name" => "Espacios", "icon" => "far fa-cog"]);
-        DB::table("menus")->insert(["id" => "4","name" => "Facturas", "icon" => "far fa-cog"]);
+        //DB::table("menus")->insert(["id" => "4","name" => "Facturas", "icon" => "far fa-cog"]);
         DB::table("menus")->insert(["id" => "5","name" => "Honorarios", "icon" => "far fa-cog"]);
         DB::table("menus")->insert(["id" => "6","name" => "Dispensas", "icon" => "far fa-cog"]);
     }

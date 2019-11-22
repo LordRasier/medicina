@@ -30,6 +30,8 @@ Route::get("/logout", "SesionController@logout");
 
 //Rutas Perfil
 Route::put("profile/pic/update","ProfileController@pic");
+
+Route::put("profile/newpass","ProfileController@password");
 //End Rutas Perfil
 
 //Rutas Calendar
@@ -95,7 +97,7 @@ Route::get("/espacios/solicitudes/{id}/remove","SolicitudEspacioController@destr
 // Rutas Facturas
 Route::get("/misFacturas","FacturaController@MisFacturas");
 
-Route::get("/misFacturas/create","FacturaController@create");
+Route::get("/misFacturas/create/{id}","FacturaController@create");
 
 Route::put("/misFacturas/create/store","FacturaController@store");
 

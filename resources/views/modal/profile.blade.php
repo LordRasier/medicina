@@ -27,6 +27,29 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="/profile/newpass" method="post">
+                                @csrf
+                                @method("put")
+                                <div class="col-12 mb-15">
+                                    <div class="form-group">
+                                      <label for="newpass" class="form-label">Nueva contraseña</label>
+                                      <input minlenght="8" class="form-control" type="password" name="newpass" value="" placeholder="Nueva contraeña" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-15">
+                                    <div class="form-group">
+                                      <label for="re-pass" class="form-label">Repita nueva contraseña</label>
+                                      <input minlenght="8" class="form-control" type="password" name="re-pass" value="" placeholder="Nueva contraeña" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

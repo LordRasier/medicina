@@ -22,7 +22,7 @@
         <div id="panel-2" class="panel">
             <div class="panel-container show">
                 <div class="panel-content">
-                    <table class="table table-striped table-hover">
+                    <table id="mytable" class="table table-striped table-hover">
                         <thead>
                         <tr>
                             <th class="center" style="width: 10%">ID</th>
@@ -36,7 +36,7 @@
                         @foreach($solicitudes as $item)
                             <tr>
                                 <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->user->name}}</td>
+                                <td class="center">@isset($item->user->name){{$item->user->name}} @endisset</td>
                                 <td class="center">{{$item->created_at}}</td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion2]}}"></i></td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion3]}}"></i></td>

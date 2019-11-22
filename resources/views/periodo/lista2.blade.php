@@ -24,7 +24,7 @@
         <div id="panel-2" class="panel">
             <div class="panel-container show">
                 <div class="panel-content">
-                    <table class="table table-striped table-hover">
+                    <table id="mytable" class="table table-striped table-hover">
                         <thead>
                         <tr>
                             <th class="center" style="width: 10%">ID</th>

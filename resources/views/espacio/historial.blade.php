@@ -20,7 +20,7 @@
         <div id="panel-1" class="panel">
             <div class="panel-container show">
                 <div class="panel-content">
-                    <table class="table table-striped table-hover">
+                    <table id="mytable" class="table table-striped table-hover">
                         <thead>
                         <tr>
                             <th class="center" style="width: 5%">ID</th>
@@ -36,7 +36,7 @@
 
                             <tr>
                                 <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->user->name}}</td>
+                                <td class="center">@isset($item->user->name){{$item->user->name}} @endisset</td>
                                 <td class="center">{{$item->espacio->description}}</td>
                                 <td class="center">{{$item->fecha}}</td>
                                 <td class="center">{{$item->horario}}</td>

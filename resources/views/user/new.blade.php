@@ -24,7 +24,7 @@
                                     <div class="col-6 mb-15">
                                         <div class="form-group">
                                             <label class="form-label" for="ingreso">Fecha de ingreso</label>
-                                            <input autocomplete="disabled" name="ingreso" type="text" class="calendar-event-date @error("ingreso") is-invalid @enderror form-control" maxlength="4" value="{{old("ingreso")}}" placeholder="01/12/2007" required>
+                                            <input autocomplete="off" name="ingreso" type="text" class="calendar-event-date @error("ingreso") is-invalid @enderror form-control" maxlength="4" value="{{old("ingreso")}}" placeholder="01/12/2007" required>
                                             @error("ingreso") <div class="invalid-feedback">Este campo es obligatorio</div> @enderror
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@
                                         @foreach($acceso as $item)
                                             <div class="col-6">
                                                 <div class="col-12 mb-15">
-                                                 <h4>{{$item->nombre}}</h4>
+                                                 <h4>{{$item->name}}</h4>
                                                 </div>
                                                 @foreach($item->hijos as $item)
                                                 <div class="col-12 mb-15">

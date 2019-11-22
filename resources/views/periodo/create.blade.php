@@ -109,7 +109,7 @@
                                 <div class="col">
                                     <div class="input-group">
                                         <label for="description" class="form-label" style="width:100%">Descripcion</label>
-                                        <textarea name="description" class="form-control" cols="5" rows="5"></textarea>
+                                        <textarea name="description" class="form-control" cols="5" rows="5" required></textarea>
                                     </div>
                                 </div>
                             </div>

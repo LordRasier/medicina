@@ -44,7 +44,7 @@
                     </div>
                     <div class="row">
                         <div class="col-3 mb-15">
-                            <h3 class="center">Dispensas Comunes asigandas</h3>
+                            <h3 class="center">Dispensas asigandas</h3>
                             <h4 class="center" style="width:100%">{{$disponibles}}</h4>
                         </div>
                         <div class="col-3 mb-15">

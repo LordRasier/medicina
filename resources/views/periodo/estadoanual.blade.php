@@ -26,7 +26,7 @@
                             <tr>
                                 <td>{{$item[1]}}</td>
                                 @for($i = 1; $i <= 31; $i++)
-                                    <td data-date="{{$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)}}" class="center purple-hover">@isset($domingos[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset</td>
+                                    <td data-date="{{$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)}}" @isset($marcar[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)]) style="background-color:#a38cc6" @endisset class="center purple-hover">@isset($domingos[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset</td>
                                 @endfor
                             </tr>
                         @endforeach
