@@ -18,13 +18,9 @@
                             <th class="center" style="width: 10%">ID</th>
                             <th class="center" style="width: 30%">Usuario</th>
                             <th class="center" style="width: 20%">Fecha</th>
-<<<<<<< HEAD
-                            <th class="center" style="width: 10%"><i class="fa fa-file"></i></th>
-                            <th class="center" style="width: 10%"><i class="fa fa-file"></i></th>
-=======
                             <th class="center" style="width: 10%">Honorario</th>
                             <th class="center" style="width: 10%">Factura</th>
->>>>>>> 3446924e79b62a7afa619f6089ebf25d5168308e
+
                         </tr>
                         </thead>
                         <tbody>
@@ -34,12 +30,7 @@
                                 <td class="center">{{$item->user["name"]}}</td>
                                 <td class="center">{{$item->fecha}}</td>
                                 <td class="center"><a target="_blank" class="btn btn-primary" href="/honorarios/show/{{$item->id}}"><i class="fa fa-search"></i></a></td>
-<<<<<<< HEAD
-                                <td class="center"><a target="_blank" class="btn btn-secondary @if($item->factura != null) state-danger @endif" href="@if($item->factura == null) # @else /factura/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
-
-=======
                                 <td class="center"><a @if($item->factura != null) target="_blank" @endif class="btn btn-secondary @if($item->factura == null) btn-danger @else btn-success @endif" href="@if($item->factura == null) # @else /facturas/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
->>>>>>> 3446924e79b62a7afa619f6089ebf25d5168308e
                             </tr>
                         @endforeach
                         </tbody>

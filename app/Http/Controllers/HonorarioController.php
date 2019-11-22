@@ -89,11 +89,7 @@ class HonorarioController extends Controller
     public function show($id)
     {
         $honorario = honorario::findOrFail($id);
-<<<<<<< HEAD
-        $resp = new Response();
-=======
 
->>>>>>> 3446924e79b62a7afa619f6089ebf25d5168308e
         return Response()->file(storage_path("app/".$honorario->file));
     }
 
