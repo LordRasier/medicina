@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 
 use App\User;
+use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\factura;
 use App\honorario;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Notifications\honorario as notifi;
+use Symfony\Component\HttpFoundation\Response as respuesta;
 use Illuminate\Support\Facades\Mail;
 
 class HonorarioController extends Controller
@@ -87,8 +88,8 @@ class HonorarioController extends Controller
     public function show($id)
     {
         $honorario = honorario::findOrFail($id);
-
-        return response()->file(storage_path("app/".$honorario->file));
+        $resp = new Response();
+        return Response()->file(storage_path("app/".$honorario->file));
     }
 
     /**
