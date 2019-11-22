@@ -192,6 +192,7 @@ class ProfileController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        DB::statement("delete from sub_menu_user where user_id = ".$user->id);
         $user->delete();
 
         return redirect("/users");
