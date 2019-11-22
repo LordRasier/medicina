@@ -12,7 +12,6 @@ use App\honorario;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Symfony\Component\HttpFoundation\Response;
 
 class HonorarioController extends Controller
 {
