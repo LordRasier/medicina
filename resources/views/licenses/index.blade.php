@@ -24,7 +24,7 @@
                         <thead>
                         <tr>
                             <th class="center" style="width: 10%">ID</th>
-                            <th class="center" style="width: 30%">Licencia</th>
+                            <th class="center" style="width: 30%">Dispensas</th>
                             <th class="center" style="width: 30%">Calcula</th>
                             <th class="center" style="width: 20%">Habilitado</th>
                             <th class="center" style="width: 10%"><i class="fa fa-edit"></i></th>

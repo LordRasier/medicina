@@ -3,7 +3,7 @@
 @section('content')
     <ol class="breadcrumb page-breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Facturas</li>
+        <li class="breadcrumb-item">Autorizaciones nivel 3</li>
     </ol>
     <div class="row">
         <div class="col-md-6 col xs 12 col sm 12">

@@ -3,14 +3,14 @@
 @section('content')
     <ol class="breadcrumb page-breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Autorizaciones nivel 2</li>
+        <li class="breadcrumb-item">Detalle de la solicitud</li>
     </ol>
     <div class="row">
         <div class="col-md-6 col xs 12 col sm 12">
             <div id="panel-1" class="panel">
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <a href="/autorizaciones/2" class="btn btn-primary">Atras</a>
+                        <a href="/dispensas/historial" class="btn btn-primary">Atras</a>
                     </div>
                 </div>
             </div>
@@ -42,34 +42,12 @@
                                     <textarea class="form-control" rows="5" readonly>{{$solicitud->description}}</textarea>
                                 </div>
                             </div>
-                            <hr>
-                            <form action="/autorizaciones/2/definir/{{$solicitud->id}}/update" method="POST" style="width: 100%;">
-                                @csrf
-                                @method("PUT")
-                                <input type="hidden" name="id" value="{{$solicitud->id}}">
-                                <div class="col-12 mb-15">
-                                    <div class="form-group">
-                                        <label for="respuesta" class="form-label">Descripcion</label>
-                                        <textarea class="form-control" name="respuesta" rows="5" required></textarea>
-                                    </div>
+                            <div class="col-12 mb-15">
+                                <div class="form-group">
+                                    <label class="form-label">Respuesta del autorizador</label>
+                                    <textarea class="form-control" rows="5" readonly>{{$solicitud->respuesta}}</textarea>
                                 </div>
-                                <div class="col-12 mb-15">
-                                    <div class="frame-wrap mb-0">
-                                        <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
-                                            <label class="btn btn-primary">
-                                                <input type="radio" name="estado" value="2"> Autorizar
-                                            </label>
-                                            <label class="btn btn-secondary">
-                                                <input type="radio" name="estado" value="0"> Rechazar
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary float-right" type="submit">Enviar resolucion</button>
-                                </div>
-                            </form>
-                            <hr>
+                            </div>
                         </div>
                     </div>
                 </div>

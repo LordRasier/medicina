@@ -148,4 +148,15 @@ class DispensaController extends Controller
         ]);
     }
 
+    public function HistorialDetail(Request $request, $id){
+        $sol = sol::findOrFail($id);
+        $sol->user = $sol->user()->first();
+        $sol->dias = $sol->days()->get();
+        $sol->licence = DB::table("licences")->select("description")->where("id","=",$sol->licence_id)->first();
+
+        return view("licenses.historial",[
+            "solicitud" => $sol
+        ]);
+    }
+
 }

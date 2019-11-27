@@ -188,4 +188,6 @@ Route::get("/configuracion/forbid/{anio}", "ForbidController@change");
 
 Route::put("/configuracion/forbid/store", "ForbidController@store");
 
+Route::get("/historial/detail/{id}","DispensaController@HistorialDetail");
+
 //End Rutas Dispensas //

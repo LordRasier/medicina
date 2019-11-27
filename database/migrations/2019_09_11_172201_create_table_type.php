@@ -20,7 +20,7 @@ class CreateTableType extends Migration
             $table->timestamps();
         });
 
-        DB::table("types")->insert(["description" => "Administrativo"]);
+        DB::table("types")->insert(["description" => "Jefe de Servicio"]);
         DB::table("types")->insert(["description" => "Medico"]);
     }
 

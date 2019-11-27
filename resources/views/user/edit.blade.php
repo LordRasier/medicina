@@ -3,14 +3,14 @@
 @section('content')
     <ol class="breadcrumb page-breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Usuarios</li>
+        <li class="breadcrumb-item">Profesionales</li>
         <li class="breadcrumb-item">{{$edit->name}}</li>
     </ol>
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Editar <span class="fw-300"><i>Usuario</i></span>
+                    Editar <span class="fw-300"><i>Profesional</i></span>
                 </h2>
             </div>
             <div class="panel-container show">

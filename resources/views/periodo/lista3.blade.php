@@ -3,11 +3,11 @@
 @section('content')
     <ol class="breadcrumb page-breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Facturas</li>
+        <li class="breadcrumb-item">Autorizaciones nivel 3</li>
     </ol>
     <div class="col-md-12 col xs 12 col sm 12">
         <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Revise las facturas que han sido cargadas y haga el click en el boton <i class="far fa-search fa-xs"></i> para mirarla en el navegador
+            <strong>Info!</strong> Revise las Solicitudes que han sido cargadas y haga el click en el boton <i class="far fa-search fa-xs"></i> para Autorizarla o rechazarla
         </div>
         @isset($resp)
             @if($resp == true)

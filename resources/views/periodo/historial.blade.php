@@ -28,8 +28,9 @@
                             <th class="center" style="width: 10%">ID</th>
                             <th class="center" style="width: 10%">Emisor</th>
                             <th class="center" style="width: 30%">Fecha</th>
-                            <th class="center" style="width: 30%">Aut. 2</th>
+                            <th class="center" style="width: 20%">Aut. 2</th>
                             <th class="center" style="width: 20%">Aut. 3</th>
+                            <th class="center" style="width: 10%"><i class="far fa-search"></i></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -40,6 +41,7 @@
                                 <td class="center">{{$item->created_at}}</td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion2]}}"></i></td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion3]}}"></i></td>
+                                <td class="center"><a class="btn btn-secondary" href="/historial/detail(/{{$item->id}}"><i class="fa fa-search"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>

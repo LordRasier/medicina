@@ -11,7 +11,7 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Cargar <span class="fw-300"><i>Factura</i></span>
+                    Crear <span class="fw-300"><i>Dispensa</i></span>
                 </h2>
             </div>
             <div class="panel-container show">

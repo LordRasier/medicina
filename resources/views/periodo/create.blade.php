@@ -48,7 +48,7 @@
                             <div class="col-12 mb-15">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="licencia" class="center">Licencia a solicitar</label>
+                                        <label for="licencia" class="center">Dispensa a solicitar</label>
                                         <select name="licencia" class="form-control">
                                             @foreach($licencias as $item)
                                                 <option value="{{$item->id}}">{{$item->description}}</option>
