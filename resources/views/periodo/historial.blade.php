@@ -41,7 +41,7 @@
                                 <td class="center">{{$item->created_at}}</td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion2]}}"></i></td>
                                 <td class="center"><i class="{{$icono[$item->autorizacion3]}}"></i></td>
-                                <td class="center"><a class="btn btn-secondary" href="/historial/detail(/{{$item->id}}"><i class="fa fa-search"></i></a></td>
+                                <td class="center"><a class="btn btn-secondary" href="/historial/detail/{{$item->id}}"><i class="fa fa-search"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
