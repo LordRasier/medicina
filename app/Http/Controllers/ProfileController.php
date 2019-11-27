@@ -148,7 +148,7 @@ class ProfileController extends Controller
             "edit" => $edit,
             "check" => $edit->access()->get(),
             "types" => type::all(),
-            "especialidad" => specialty::all(),
+            "especialidad" => specialty::orderBy("description")->get(),
             "dedications" => dedication::all(),
             "acceso" => $menus
         ]);
