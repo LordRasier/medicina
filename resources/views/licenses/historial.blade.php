@@ -44,8 +44,14 @@
                             </div>
                             <div class="col-12 mb-15">
                                 <div class="form-group">
-                                    <label class="form-label">Respuesta del autorizador</label>
-                                    <textarea class="form-control" rows="5" readonly>{{$solicitud->respuesta}}</textarea>
+                                    <label class="form-label">Respuesta del autorizador Nivel 2</label>
+                                    <textarea class="form-control" rows="5" readonly>{{$solicitud->observacion2}}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-15">
+                                <div class="form-group">
+                                    <label class="form-label">Respuesta del autorizador Nivel 3</label>
+                                    <textarea class="form-control" rows="5" readonly>{{$solicitud->observacion3}}</textarea>
                                 </div>
                             </div>
                         </div>
