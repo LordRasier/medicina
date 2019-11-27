@@ -10,6 +10,7 @@ use App\request as sol;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DispensaController extends Controller
 {
