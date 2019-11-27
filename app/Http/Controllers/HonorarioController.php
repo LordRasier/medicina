@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 
 use App\User;
+use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\factura;
 use App\honorario;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Notifications\honorario as notifi;
 use Illuminate\Support\Facades\Mail;
-use Symfony\Component\HttpFoundation\Response;
 
 class HonorarioController extends Controller
 {

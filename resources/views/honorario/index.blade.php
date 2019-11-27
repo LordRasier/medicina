@@ -20,6 +20,7 @@
                             <th class="center" style="width: 20%">Fecha</th>
                             <th class="center" style="width: 10%">Honorario</th>
                             <th class="center" style="width: 10%">Factura</th>
+
                         </tr>
                         </thead>
                         <tbody>
