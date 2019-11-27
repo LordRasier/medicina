@@ -24,7 +24,7 @@
                                     <div class="col-6 mb-15">
                                         <div class="form-group">
                                             <label class="form-label" for="ingreso">Fecha de ingreso</label>
-                                            <input autocomplete="off" name="ingreso" type="text" class="calendar-event-date @error("ingreso") is-invalid @enderror form-control" value="{{$edit->ingreso}}" maxlength="4" value="{{old("ingreso")}}" placeholder="01/12/2007" required>
+                                            <input autocomplete="off" name="ingreso" type="text" class="calendar-event-date @error("ingreso") is-invalid @enderror form-control" value="{{$edit->ingreso}}" maxlength="40" value="{{old("ingreso")}}" placeholder="01/12/2007" required>
                                             @error("ingreso") <div class="invalid-feedback">Este campo es obligatorio</div> @enderror
                                         </div>
                                     </div>
