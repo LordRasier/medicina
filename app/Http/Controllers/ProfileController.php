@@ -55,7 +55,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         return view("user.new",[
             "types" => type::all(),
-            "specialtys" => specialty::all(),
+            "specialtys" => specialty::orderBy("description")->get(),
             "dedications" => dedication::all(),
             "acceso" => $menus
         ]);
