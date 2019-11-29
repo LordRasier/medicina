@@ -79,7 +79,8 @@ class ProfileController extends Controller
             "tipo" => "required",
             "especialidad" => "required",
             "codigo" => "required",
-            "ingreso" => "required"
+            "ingreso" => "required",
+            "graduacion" => "required"
         ]);
 
         $new = new User();
@@ -93,6 +94,7 @@ class ProfileController extends Controller
         $new->specialty = $data["especialidad"];
         $new->code = $data["codigo"];
         $new->ingreso = Carbon::parse($data["ingreso"])->format("Y-m-d");
+        $new->graduacion = Carbon::parse($data["graduacion"])->format("Y-m-d");
         $new->save();
 
         foreach ($data["access"] as $item){
@@ -173,7 +175,8 @@ class ProfileController extends Controller
             "tipo" => "required",
             "especialidad" => "required",
             "codigo" => "required",
-            "ingreso" => "required"
+            "ingreso" => "required",
+            "graduacion" => "required"
         ]);
 
         $user = User::findOrFail($id);
@@ -188,6 +191,8 @@ class ProfileController extends Controller
         $user->code = $data["codigo"];
         $temp = explode("/",$data["ingreso"]);
         $user->ingreso = $temp[2]."-".$temp[1]."-".$temp[0];
+        $temp = explode("/",$data["graduacion"]);
+        $user->graduacion = $temp[2]."-".$temp[1]."-".$temp[0];
 
         $menus = sub_menu::all();
         foreach ($menus as $item){

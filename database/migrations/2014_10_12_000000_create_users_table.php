@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->integer("horas")->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->date("ingreso")->default("2019-06-01");
+            $table->date("graduacion")->default("2019-06-01");
             $table->string('password');
             $table->integer("specialty");
             $table->integer("type");
