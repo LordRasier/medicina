@@ -93,8 +93,10 @@ class ProfileController extends Controller
         $new->type = $data["tipo"];
         $new->specialty = $data["especialidad"];
         $new->code = $data["codigo"];
-        $new->ingreso = Carbon::parse($data["ingreso"])->format("Y-m-d");
-        $new->graduacion = Carbon::parse($data["graduacion"])->format("Y-m-d");
+        $temp = explode("/",$data["ingreso"]);
+        $new->ingreso = $temp[2]."-".$temp[1]."-".$temp[0];
+        $temp = explode("/",$data["graduacion"]);
+        $new->graduacion = $temp[2]."-".$temp[1]."-".$temp[0];
         $new->save();
 
         foreach ($data["access"] as $item){
