@@ -35,7 +35,7 @@
                         @foreach($extras as $item)
                             <tr>
                                 <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->user->name}}</td>
+                                <td class="center">@isset($item->user->name){{$item->user->name}}@endisset</td>
                                 <td class="center">{{$item->periodo->start}} - {{$item->periodo->end}}</td>
                                 <td class="center">{{$item->days}}</td>
                                 <td class="center"><button class="btn btn-primary" data-toggle="modal" data-target="#detail-{{$item->id}}"><i class="fa fa-search"></i></button></td>
