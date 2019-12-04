@@ -887,8 +887,8 @@ class PeriodoController extends Controller
         $user = User::findOrFail($id);
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
-        dd($center);
-        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+        $center = explode("-",$center);
+        $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
 
