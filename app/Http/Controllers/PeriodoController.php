@@ -37,7 +37,8 @@ class PeriodoController extends Controller
         $user = User::find(Auth::id());
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
-        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+        $center = explode("-",$center);
+        $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
         $actual = $actual->subYear();
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
@@ -47,7 +48,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(364)->toDateString();
+            $periodo->end = $actual->addYear()->subDays(1)->toDateString();
 
             $periodo->save();
         }
@@ -161,8 +162,9 @@ class PeriodoController extends Controller
         $user = User::find(Auth::id());
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
-        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
-        $actual = $actual->addDays(365);
+        $center = explode("-",$center);
+        $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
+        $actual = $actual->addYear();
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
 
@@ -171,7 +173,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(364)->toDateString();
+            $periodo->end = $actual->addYear()->subDays(1)->toDateString();
 
             $periodo->save();
         }
@@ -286,7 +288,8 @@ class PeriodoController extends Controller
         $user = User::find(Auth::id());
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
-        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+        $center = explode("-",$center);
+        $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
 
@@ -295,7 +298,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(364)->toDateString();
+            $periodo->end = $actual->addYear()->subDays(1)->toDateString();
 
             $periodo->save();
         }
@@ -409,7 +412,8 @@ class PeriodoController extends Controller
         $user = User::find(Auth::id());
 
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
-        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+        $center = explode("-",$center);
+        $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
 
@@ -418,7 +422,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(364)->toDateString();
+            $periodo->end = $actual->addYear()->subDays(1)->toDateString();
 
             $periodo->save();
         }
@@ -812,7 +816,8 @@ class PeriodoController extends Controller
         $user = User::find($id);
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
-        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+        $center = explode("-",$center);
+        $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
 
@@ -821,7 +826,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(364)->toDateString();
+            $periodo->end = $actual->addYear()->subDays(1)->toDateString();
 
             $periodo->save();
         }
@@ -888,6 +893,7 @@ class PeriodoController extends Controller
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
         $center = explode("-",$center);
+        $center = explode("-",$center);
         $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
@@ -897,7 +903,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(364)->toDateString();
+            $periodo->end = $actual->addYear()->subDays(1)->toDateString();
 
             $periodo->save();
         }
@@ -1006,7 +1012,8 @@ class PeriodoController extends Controller
         $user = User::findOrFail($id);
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
-        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
+        $center = explode("-",$center);
+        $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
         $actual = $actual->subYear();
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
@@ -1016,7 +1023,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(364)->toDateString();
+            $periodo->end = $actual->addYear()->subDays(1)->toDateString();
 
             $periodo->save();
         }
@@ -1124,8 +1131,9 @@ class PeriodoController extends Controller
         $user = User::findOrFail($id);
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
-        $actual = Carbon::create(Carbon::now()->year,$center->month,$center->day);
-        $actual = $actual->addDays(365);
+        $center = explode("-",$center);
+        $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
+        $actual = $actual->addYear();
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
 
@@ -1134,7 +1142,7 @@ class PeriodoController extends Controller
 
             $periodo->user_id = $user->id;
             $periodo->start = $actual->toDateString();
-            $periodo->end = $actual->addDays(364)->toDateString();
+            $periodo->end = $actual->addYear()->subDays(1)->toDateString();
 
             $periodo->save();
         }
