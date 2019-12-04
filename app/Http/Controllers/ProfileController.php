@@ -142,6 +142,7 @@ class ProfileController extends Controller
     {
         $edit = User::findOrFail($id);
         $edit->ingreso = Carbon::parse($edit->ingreso)->format("d/m/Y");
+        $edit->graduacion = Carbon::parse($edit->graduacion)->format("d/m/Y");
 
         $menus = menu::all();
         foreach ($menus as $item){
