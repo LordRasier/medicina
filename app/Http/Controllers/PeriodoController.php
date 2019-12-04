@@ -893,7 +893,6 @@ class PeriodoController extends Controller
         $this->disponibles($user->id);
         $center = Carbon::parse($user->ingreso)->format("Y-m-d");
         $center = explode("-",$center);
-        $center = explode("-",$center);
         $actual = Carbon::create(Carbon::now()->year,$center[1],$center[2]);
 
         $periodo = $user->periodos()->where("start","<=",$actual)->where("end",">=",$actual)->first();
