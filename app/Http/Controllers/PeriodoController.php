@@ -777,8 +777,12 @@ class PeriodoController extends Controller
         $user = User::findOrFail($id);
         $horas = $user->horas;
         $dedicacion = $user->dedication;
-        $antiguedad = date_diff(new DateTime($user->ingreso),new DateTime(now()));
-        $antiguedad = ($antiguedad->y > 15)?15:$antiguedad->y;
+        $antiguedad = date_diff(new DateTime($user->ingreso),new DateTime(now())) * 2;
+
+        $graduacion = date_diff(new DateTime($user->graduacion),new DateTime(now()));
+        $graduacion = ($graduacion->y > 15)?15:$graduacion->y;
+
+        $horas = $graduacion + $antiguedad;
 
         $total = 0;
         switch($dedicacion){
@@ -803,7 +807,7 @@ class PeriodoController extends Controller
                 }
             break;
         }
-        return $total + $antiguedad;
+        return $total;
     }
 
     public function toeditperiod(){
