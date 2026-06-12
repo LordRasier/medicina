@@ -13,12 +13,16 @@
                     <div class="row no-gutters row-grid">
                         <div class="col-12">
                             <div class="d-flex flex-column align-items-center justify-content-center p-4">
-                                <img src="/storage/profile/{{$user->profile}}" class="rounded-circle shadow-2 img-thumbnail" alt="">
+                                @include('components.profile-avatar', [
+                                    'profile' => $user->profile,
+                                    'name' => $user->name,
+                                    'class' => 'profile-avatar-large rounded-circle shadow-2 img-thumbnail',
+                                ])
                                 <form action="/profile/pic/update" enctype="multipart/form-data" method="POST">
                                     @csrf
                                     @method("put")
                                     <a href="#" onclick="$('[name=pic]').click()" class="btn btn-primary btn-icon rounded-circle change-pic"><i class="fal fa-sync"></i></a>
-                                    <input onchange="this.form.submit()" type="file" name="pic" style="visibility: hidden" accept="jpg,png">
+                                    <input onchange="this.form.submit()" type="file" name="pic" style="visibility: hidden" accept=".jpg,.jpeg,.png">
                                 </form>
                                 <h5 class="mb-0 fw-700 text-center mt-3">
                                     {{$user->name}}

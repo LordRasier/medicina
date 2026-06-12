@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\espacio;
-use App\event;
-use App\turno;
-use App\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\Espacios\ResolveSolicitudEspacioRequest;
+use App\Http\Requests\Espacios\StoreSolicitudEspacioRequest;
+use App\Services\Espacios\SolicitudEspacioService;
+use App\SolicitudEspacio;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class SolicitudEspacioController extends Controller
 {
-    public function __construct()
+    private const STATUS_ICONS = [
+        SolicitudEspacio::PENDING => 'far fa-clock fa-2x',
+        SolicitudEspacio::APPROVED => 'far fa-check fa-2x',
+        SolicitudEspacio::REJECTED => 'far fa-times fa-2x',
+    ];
+
+    private SolicitudEspacioService $solicitudes;
+
+    public function __construct(SolicitudEspacioService $solicitudes)
     {
         $this->middleware("auth");
+        $this->solicitudes = $solicitudes;
 
     }
     /**
@@ -25,21 +32,15 @@ class SolicitudEspacioController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::id());
-        $solicitudes = $user->solicitud_espacio()->orderBy("id","desc")->get();
-        $icons = [
-          0 => "far fa-clock fa-2x",
-          1 => "far fa-check fa-2x",
-          2 => "far fa-times fa-2x"
-        ];
-
-        foreach ($solicitudes as $item){
-            $item->espacio = espacio::find($item->espacio_id);
-        }
+        $solicitudes = Auth::user()
+            ->solicitudesEspacio()
+            ->with('espacio')
+            ->orderByDesc('id')
+            ->get();
 
         return view("espacio.listado",[
             "solicitudes" => $solicitudes,
-            "icon" => $icons,
+            "icon" => self::STATUS_ICONS,
         ]);
     }
 
@@ -47,43 +48,26 @@ class SolicitudEspacioController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function listado(){
-        $user = User::find(Auth::id());
-        $solicitudes = DB::table("espacios_pivot")->where("autorizado","=",0)->orderBy("id","desc")->get();
-        $icons = [
-            0 => "far fa-clock fa-2x",
-            1 => "far fa-check fa-2x",
-            2 => "far fa-times fa-2x"
-        ];
-
-        foreach ($solicitudes as $item){
-           $item->user = User::find($item->user_id);
-           $item->espacio = espacio::find($item->espacio_id);
-        }
+        $solicitudes = SolicitudEspacio::with(['user', 'espacio'])
+            ->pending()
+            ->orderByDesc('id')
+            ->get();
 
         return view("espacio.autorizar",[
             "solicitudes" => $solicitudes,
-            "icon" => $icons,
+            "icon" => self::STATUS_ICONS,
         ]);
     }
 
     public function historial(){
-
-        $solicitudes = DB::table("espacios_pivot")->where("autorizado","!=",0)->orderBy("id","desc")->get();
-
-        $icons = [
-            0 => "far fa-clock fa-2x",
-            1 => "far fa-check fa-2x",
-            2 => "far fa-times fa-2x"
-        ];
-        foreach ($solicitudes as $item){
-            $item->user = User::find($item->user_id);
-            $item->espacio = espacio::find($item->espacio_id);
-        }
-
+        $solicitudes = SolicitudEspacio::with(['user', 'espacio'])
+            ->resolved()
+            ->orderByDesc('id')
+            ->get();
 
         return view("espacio.historial",[
             "solicitudes" => $solicitudes,
-            "icon" => $icons,
+            "icon" => self::STATUS_ICONS,
         ]);
     }
 
@@ -94,9 +78,6 @@ class SolicitudEspacioController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-
-
         return view("espacio.nuevaSolicitud",[
             "espacios" => espacio::all()
         ]);
@@ -108,36 +89,13 @@ class SolicitudEspacioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSolicitudEspacioRequest $request)
     {
-
-        $data = $request->validate([
-            "fecha"=>"required",
-            "horario"=>"required",
-            "espacio"=>"required",
-            "detalle" => "required"
-        ]);
-        $myself = User::find(Auth::id());
-        $result = false;
-        //dd(DB::table("espacios_pivot")->where(["espacio_id" => $data["espacio"],"fecha" => $data["fecha"], "horario" => $data["horario"], "autorizado" => 1])->count());
-        if(!DB::table("espacios_pivot")->where(["espacio_id" => $data["espacio"],"fecha" => $data["fecha"], "horario" => $data["horario"], "autorizado" => 1])->count()){
-            User::find(Auth::id())->solicitud_espacio()->attach($data["espacio"],["fecha" => $data["fecha"], "horario" => $data["horario"], "detalle" => $data["detalle"]]);
-            $result = true;
-
-            $ids = DB::table("sub_menu_user")->where("sub_menu_id", "=", 6)->get();
-
-            foreach($ids as $item){
-                $user = User::find($item->user_id);
-                if($user->specialty == $myself->specialty){
-                    Mail::to($user->email)->send(new \App\Mail\solicitud_espacio('It works!'));
-                }
-
-            }
-        }
+        $solicitud = $this->solicitudes->create(Auth::user(), $request->validated());
 
         return view("espacio.nuevaSolicitud",[
             "espacios" => espacio::all(),
-            "result" => $result
+            "result" => $solicitud != null
         ]);
 
     }
@@ -150,16 +108,16 @@ class SolicitudEspacioController extends Controller
      */
     public function show($id)
     {
-        $turno = User::find($id);
+        $solicitud = SolicitudEspacio::with(['user', 'espacio'])->findOrFail($id);
+        abort_unless($solicitud->user_id === Auth::id(), 403);
+
         $estado = [
           1 => "Autorizado",
           2 => "Rechazado"
         ];
 
-        $turno->espacio = $turno->espacio()->get();
-        $turno->user = $turno->user()->get();
         return view("espacio.show",[
-            "item" => $turno,
+            "item" => $solicitud,
             "estado" => $estado
         ]);
     }
@@ -172,10 +130,7 @@ class SolicitudEspacioController extends Controller
      */
     public function edit($id)
     {
-        $solicitud = DB::table("espacios_pivot")->where("id","=",$id)->first();
-
-        $solicitud->user = User::find($solicitud->user_id);
-        $solicitud->espacio = espacio::find($solicitud->espacio_id);
+        $solicitud = SolicitudEspacio::with(['user', 'espacio'])->findOrFail($id);
 
         return view("espacio.definir",[
             "item" => $solicitud
@@ -189,31 +144,11 @@ class SolicitudEspacioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(ResolveSolicitudEspacioRequest $request)
     {
-        $data = $request->validate([
-            "estado" => "required",
-            "respuesta" => "required",
-            "id" => "required"
-        ]);
-
-        $R = [
-            1 => "Aprobada",
-            2 => "Rechazada"
-        ];
-
-        DB::table("espacios_pivot")->where("id","=",$data["id"])->update(["autorizado" => $data["estado"], "respuesta" => $data["respuesta"]]);
-
-
-        $temp = DB::table("espacios_pivot")->select(["user_id","espacio_id","horario"])->where("id","=",$data["id"])->first();
-        $user = User::find($temp->user_id);
-        if($data["estado"] == 1){
-            Mail::to($user->email)->send(new \App\Mail\resolucion_espacio(""));
-            DB::table("espacios_pivot")->where("id","!=",$data["id"])->where("espacio_id","=",$temp->espacio_id)->where("horario","=",$temp->horario)->update(["autorizado" => 2, "respuesta" => "Otro usuario fue autorizado"]);
-        }else{
-            Mail::to($user->email)->send(new \App\Mail\resolucion_negativa(""));
-        }
-
+        $data = $request->validated();
+        $solicitud = SolicitudEspacio::with('user')->findOrFail($data["id"]);
+        $this->solicitudes->resolve($solicitud, (int) $data["estado"], $data["respuesta"]);
 
         return redirect("/espacios/solicitudes/autorizar");
     }
@@ -226,7 +161,11 @@ class SolicitudEspacioController extends Controller
      */
     public function destroy($id)
     {
-        DB::table("espacios_pivot")->delete($id);
+        $solicitud = SolicitudEspacio::findOrFail($id);
+        abort_unless($solicitud->user_id === Auth::id(), 403);
+        abort_if((int) $solicitud->autorizado === SolicitudEspacio::APPROVED, 403);
+
+        $solicitud->delete();
 
         return redirect("/espacios/solicitudes/list");
     }

@@ -4,7 +4,10 @@
 /vendor
 .env
 .env.backup
+.phpunit.cache/
 .phpunit.result.cache
+composer.phar
+phpunit.xml.bak
 Homestead.json
 Homestead.yaml
 npm-debug.log

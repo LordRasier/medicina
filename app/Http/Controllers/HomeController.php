@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\event;
-use App\menu;
-use App\sub_menu;
-use App\User;
-use Illuminate\Http\Request;
+use App\Services\Dashboard\DashboardService;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    private DashboardService $dashboard;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(DashboardService $dashboard)
     {
         $this->middleware('auth');
+        $this->dashboard = $dashboard;
     }
 
     /**
@@ -30,6 +29,8 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        return view('home');
+        return view('home', [
+            'dashboard' => $this->dashboard->forUser($user),
+        ]);
     }
 }

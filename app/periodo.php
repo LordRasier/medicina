@@ -13,4 +13,9 @@ class periodo extends Model
     public function dispensas(){
         return $this->hasMany(request::class);
     }
+
+    public function extras()
+    {
+        return $this->hasMany(alter::class);
+    }
 }

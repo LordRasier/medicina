@@ -1,55 +1,94 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Mis facturas</li>
-        <li class="breadcrumb-item">Cargar nueva factura</li>
-    </ol>
-    <div class="col-md-6 col-sm-12 col-xs-12">
-        <div id="panel-1" class="panel">
-            <div class="panel-hdr">
-                <h2>
-                    Cargar <span class="fw-300"><i>Factura</i></span>
-                </h2>
-            </div>
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <form action="/misFacturas/create/store" method="POST" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-12">
-                                @csrf
-                                @method("PUT")
-                                <input type="hidden" name="honorario" value="{{$honorario}}">
-                                <div class="row">
-                                    <div class="col-12 mb-15">
-                                        <div class="form-group">
-                                            <label class="form-label" for="file">Selecciona archivo</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" name="file"  accept="application/pdf,html" multiple>
-                                                    <label class="custom-file-label" for="file">Buscar</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="col-12">
-                                <button class="btn btn-primary float-right" type="submit">Enviar</button>
-                                <a class="btn btn-secondary" href="/misHonorarios">Cancelar</a>
-                            </div>
+    @component('components.page-header', [
+        'title' => 'Cargar factura',
+        'subtitle' => 'Factura asociada al honorario #' . $honorario,
+        'breadcrumbs' => [
+            ['label' => 'Honorarios', 'url' => '/misHonorarios'],
+            ['label' => 'Cargar factura'],
+        ],
+    ])
+        <a href="/misHonorarios" class="btn btn-outline-secondary">
+            <i class="fal fa-arrow-left mr-1"></i>
+            Cancelar
+        </a>
+    @endcomponent
+
+    @if ($errors->any())
+        <div class="alert alert-danger" role="alert">
+            <strong>Revisar factura.</strong>
+            <ul class="mb-0 mt-2">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="row">
+        <div class="col-lg-7">
+            @component('components.table-panel', [
+                'title' => 'Archivo de factura',
+                'description' => 'Selecciona el comprobante que corresponde a este honorario.',
+            ])
+                <form action="/misFacturas/create/store" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method("PUT")
+                    <input type="hidden" name="honorario" value="{{ $honorario }}">
+
+                    <div class="upload-dropzone">
+                        <i class="fal fa-file-invoice"></i>
+                        <label for="factura-file" class="form-label">Seleccionar factura</label>
+                        <div class="custom-file">
+                            <input id="factura-file" type="file" class="custom-file-input @error('file') is-invalid @enderror" name="file" accept=".pdf,.jpg,.jpeg,.png" required>
+                            <label class="custom-file-label" for="factura-file">Buscar archivo</label>
                         </div>
-                    </form>
-                </div>
-            </div>
+                        <small class="text-muted d-block mt-2">Formatos permitidos: PDF, JPG, JPEG y PNG.</small>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fal fa-upload mr-1"></i>
+                            Cargar factura
+                        </button>
+                    </div>
+                </form>
+            @endcomponent
+        </div>
+
+        <div class="col-lg-5">
+            @component('components.table-panel', [
+                'title' => 'Honorario asociado',
+                'description' => 'La factura quedara vinculada a este registro.',
+            ])
+                <dl class="request-summary mb-0">
+                    <dt>Honorario</dt>
+                    <dd>#{{ $honorario }}</dd>
+
+                    <dt>Estado</dt>
+                    <dd>
+                        @include('components.file-status-badge', [
+                            'available' => false,
+                            'missingText' => 'Pendiente de carga',
+                        ])
+                    </dd>
+                </dl>
+            @endcomponent
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+@endsection
+
+@push('scripts')
     <script>
-        $(document).ready(function(){
-            $(".calendar-event-date").datepicker({dateFormat:"dd/mm/yy"});
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.custom-file-input').forEach(function (input) {
+                input.addEventListener('change', function () {
+                    var fileName = input.files.length ? input.files[0].name : 'Buscar archivo';
+                    input.nextElementSibling.textContent = fileName;
+                });
+            });
         });
     </script>
-@endsection
+@endpush

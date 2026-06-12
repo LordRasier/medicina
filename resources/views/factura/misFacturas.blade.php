@@ -1,55 +1,74 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Facturas</li>
-    </ol>
-    <div class="col-md-12 col xs 12 col sm 12">
-        <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Aqui puede ver todas las facturas cargadas y acceder a cargar una nueva!.
+    @component('components.page-header', [
+        'title' => 'Mis facturas',
+        'subtitle' => 'Facturas asociadas a tus honorarios cargados.',
+        'breadcrumbs' => [
+            ['label' => 'Honorarios', 'url' => '/misHonorarios'],
+            ['label' => 'Mis facturas'],
+        ],
+    ])
+        <a href="/misHonorarios" class="btn btn-outline-secondary">
+            <i class="fal fa-arrow-left mr-1"></i>
+            Volver a honorarios
+        </a>
+    @endcomponent
+
+    @isset($carga)
+        <div class="alert alert-success" role="alert">
+            Nueva factura cargada correctamente.
         </div>
-        @isset($carga)
-            <div class="alert alert-success" role="alert">
-                <strong>Info!</strong> Nueva factura cargada!
-            </div>
-        @endisset
-        <div id="panel-1" class="panel">
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <a href="/misFacturas/create" class="btn btn-primary">Cargar nueva factura</a>
-                </div>
-            </div>
-        </div>
-        <div id="panel-2" class="panel">
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th class="center" style="width: 10%">ID</th>
-                            <th class="center" style="width: 30%">Emisor</th>
-                            <th class="center" style="width: 30%">Numero</th>
-                            <th class="center" style="width: 10%">Fecha</th>
-                            <th class="center" style="width: 10%"><i class="fa fa-search"></i></th>
-                            <th class="center" style="width: 10%"><i class="fa fa-trash"></i></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($facturas as $item)
-                            <tr>
-                                <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->user["name"]}}</td>
-                                <td class="center">{{$item->numero}}</td>
-                                <td class="center">{{$item->fecha}}</td>
-                                <td class="center"><a target="_blank" class="btn btn-primary" href="/facturas/show/{{$item->id}}"><i class="fa fa-search"></i></a></td>
-                                <td class="center"><a  class="btn btn-secondary" href="/facturas/delete/{{$item->id}}"><i class="fa fa-trash"></i></a></td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+    @endisset
+
+    @component('components.table-panel', [
+        'title' => 'Facturas cargadas',
+        'description' => 'Desde esta pantalla puedes ver o eliminar facturas ya asociadas a honorarios.',
+    ])
+        <table id="mytable" class="table table-striped table-hover ui-data-table">
+            <thead>
+            <tr>
+                <th>Factura</th>
+                <th>Honorario</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th class="text-right">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($facturas as $item)
+                <tr>
+                    <td><strong>#{{ $item->id }}</strong></td>
+                    <td>#{{ $item->id }}</td>
+                    <td>{{ $item->fecha }}</td>
+                    <td>
+                        @include('components.file-status-badge', [
+                            'available' => $item->factura != null,
+                            'availableText' => 'Cargada',
+                            'missingText' => 'Sin archivo',
+                        ])
+                    </td>
+                    <td class="text-right">
+                        <a target="_blank" class="btn btn-outline-secondary btn-sm" href="/facturas/show/{{ $item->id }}" data-toggle="tooltip" title="Ver factura">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        <form method="POST" action="/facturas/delete/{{ $item->id }}" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger btn-sm" data-toggle="tooltip" title="Eliminar factura">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                        Todavia no cargaste facturas.
+                    </td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    @endcomponent
 @endsection

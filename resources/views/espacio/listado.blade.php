@@ -34,18 +34,18 @@
                         <tbody>
                         @foreach($solicitudes as $item)
                             <tr>
-                                <td class="center">{{$item->pivot["id"]}}</td>
-                                <td class="center">{{$item->description}}</td>
-                                <td class="center">{{$item->pivot["fecha"]}}</td>
-                                <td class="center">{{$item->pivot["horario"]}}</td>
-                                <td class="center"><i class="{{$icon[$item->pivot["autorizado"]]}}"></i></td>
-                                <td class="center"><button class="btn btn-danger" data-toggle="modal" data-target="#elim-{{$item->pivot["id"]}}" @if($item->pivot["autorizado"] == 1) disabled @endif ><i class="fa fa-trash"></i></button></td>
+                                <td class="center">{{$item->id}}</td>
+                                <td class="center">{{optional($item->espacio)->description}}</td>
+                                <td class="center">{{$item->fecha}}</td>
+                                <td class="center">{{$item->horario}}</td>
+                                <td class="center"><i class="{{$icon[$item->autorizado]}}"></i></td>
+                                <td class="center"><button class="btn btn-danger" data-toggle="modal" data-target="#elim-{{$item->id}}" @if($item->autorizado == 1) disabled @endif ><i class="fa fa-trash"></i></button></td>
                             </tr>
-                            <div class="modal modal-alert fade" id="elim-{{$item->pivot["id"]}}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal modal-alert fade" id="elim-{{$item->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Eliminar a {{$item->description}}</h5>
+                                            <h5 class="modal-title">Eliminar a {{optional($item->espacio)->description}}</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true"><i class="fal fa-times"></i></span>
                                             </button>
@@ -55,7 +55,11 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <a type="button" href="/espacios/solicitudes/{{$item->pivot["id"]}}/remove" class="btn btn-primary">Continuar</a>
+                                            <form method="POST" action="/espacios/solicitudes/{{$item->id}}/remove" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-primary">Continuar</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

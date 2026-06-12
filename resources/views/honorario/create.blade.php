@@ -1,53 +1,92 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Cargar honorarios</li>
-    </ol>
-    <div class="col-md-6 col-sm-12 col-xs-12">
-        <div id="panel-1" class="panel">
-            <div class="panel-hdr">
-                <h2>
-                    Cargar <span class="fw-300"><i>Honorarios</i></span>
-                </h2>
-            </div>
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <form action="/honorarios/create/store" method="POST" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-12">
-                                @csrf
-                                @method("PUT")
-                                <div class="row">
-                                    <div class="col-12 mb-15">
-                                        <div class="form-group">
-                                            <label class="form-label" for="file">Selecciona archivo</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" name="file[]" multiple>
-                                                    <label class="custom-file-label" for="file">Buscar</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="col-12">
-                                <button class="btn btn-primary float-right" type="submit">Enviar</button>
-                                <a class="btn btn-secondary" href="/honorarios">Archivo</a>
-                            </div>
+    @component('components.page-header', [
+        'title' => 'Cargar honorarios',
+        'subtitle' => 'Importacion masiva de comprobantes por profesional.',
+        'breadcrumbs' => [
+            ['label' => 'Honorarios', 'url' => '/honorarios'],
+            ['label' => 'Cargar registros'],
+        ],
+    ])
+        <a href="/honorarios" class="btn btn-outline-secondary">
+            <i class="fal fa-arrow-left mr-1"></i>
+            Volver al archivo
+        </a>
+    @endcomponent
+
+    @if ($errors->any())
+        <div class="alert alert-danger" role="alert">
+            <strong>Revisar carga.</strong>
+            <ul class="mb-0 mt-2">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="row">
+        <div class="col-lg-7">
+            @component('components.table-panel', [
+                'title' => 'Archivos de honorarios',
+                'description' => 'Puedes seleccionar uno o varios archivos para importarlos en una sola operacion.',
+            ])
+                <form action="/honorarios/create/store" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method("PUT")
+
+                    <div class="upload-dropzone">
+                        <i class="fal fa-file-upload"></i>
+                        <label for="honorarios-file" class="form-label">Seleccionar archivos</label>
+                        <div class="custom-file">
+                            <input id="honorarios-file" type="file" class="custom-file-input @error('file') is-invalid @enderror" name="file[]" accept=".pdf,.jpg,.jpeg,.png" multiple required>
+                            <label class="custom-file-label" for="honorarios-file">Buscar archivos</label>
                         </div>
-                    </form>
+                        <small class="text-muted d-block mt-2">Formatos permitidos: PDF, JPG, JPEG y PNG.</small>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fal fa-upload mr-1"></i>
+                            Importar honorarios
+                        </button>
+                    </div>
+                </form>
+            @endcomponent
+        </div>
+
+        <div class="col-lg-5">
+            @component('components.table-panel', [
+                'title' => 'Formato esperado',
+                'description' => 'El importador toma la fecha y el codigo profesional desde el nombre del archivo.',
+            ])
+                <div class="format-example">
+                    <span>Ejemplo</span>
+                    <code>Planilla - 2026-06-20 - MED123-detalle.pdf</code>
                 </div>
-            </div>
+                <ul class="upload-guidelines">
+                    <li>La fecha debe poder interpretarse como fecha valida.</li>
+                    <li>El codigo profesional debe coincidir con el campo `code` del usuario.</li>
+                    <li>Los archivos sin formato valido se omiten y quedan reportados en el resumen.</li>
+                </ul>
+            @endcomponent
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+@endsection
+
+@push('scripts')
     <script>
-        $(document).ready(function(){
-            $(".calendar-event-date").datepicker({dateFormat:"dd/mm/yy"});
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.custom-file-input').forEach(function (input) {
+                input.addEventListener('change', function () {
+                    var names = Array.prototype.map.call(input.files, function (file) {
+                        return file.name;
+                    });
+                    input.nextElementSibling.textContent = names.length > 1 ? names.length + ' archivos seleccionados' : (names[0] || 'Buscar archivos');
+                });
+            });
         });
     </script>
-@endsection
+@endpush

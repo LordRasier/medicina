@@ -1,103 +1,83 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Configuracion</li>
-        <li class="breadcrumb-item">Dispensa</li>
-    </ol>
-    <div class="col-md-12 col xs 12 col sm 12">
-        <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Aqui podras ver las solicitudes de dispensas correspondientes al periodo actual
+    @php
+        $totalDisponible = $disponibles + $especiales - $usados;
+    @endphp
+
+    @component('components.page-header', [
+        'title' => 'Mis dispensas',
+        'subtitle' => 'Periodo ' . $periodo->start . ' al ' . $periodo->end,
+        'breadcrumbs' => [
+            ['label' => 'Dispensas'],
+            ['label' => 'Mi periodo'],
+        ],
+    ])
+        <a href="/misDispensas/solicitudes" class="btn btn-outline-secondary">
+            <i class="fal fa-list mr-1"></i>
+            Mis solicitudes
+        </a>
+        <a href="/misDispensas/solicitud" class="btn btn-primary">
+            <i class="fal fa-plus mr-1"></i>
+            Nueva solicitud
+        </a>
+    @endcomponent
+
+    <div class="period-nav mb-3">
+        @if($prevno)
+            <a href="/misDispensas/Prev" class="btn btn-outline-secondary" data-toggle="tooltip" title="Periodo anterior">
+                <i class="far fa-chevron-left"></i>
+            </a>
+        @else
+            <button class="btn btn-outline-secondary" disabled>
+                <i class="far fa-chevron-left"></i>
+            </button>
+        @endif
+
+        <a href="/misDispensas" class="btn btn-outline-secondary" data-toggle="tooltip" title="Periodo actual">
+            <i class="far fa-calendar mr-1"></i>
+            Actual
+        </a>
+
+        @if($nextno)
+            <a href="/misDispensas/Next" class="btn btn-outline-secondary" data-toggle="tooltip" title="Periodo siguiente">
+                <i class="far fa-chevron-right"></i>
+            </a>
+        @else
+            <button class="btn btn-outline-secondary" disabled>
+                <i class="far fa-chevron-right"></i>
+            </button>
+        @endif
+    </div>
+
+    <div class="metric-strip mb-3">
+        <div class="metric-item">
+            <span>Base</span>
+            <strong>{{ $disponibles }}</strong>
         </div>
-        <div class="row">
-            <div class="col-md-8">
-                <div id="panel-1" class="panel">
-                    <div class="panel-container show">
-                        <div class="panel-content">
-                            <a href="/misDispensas/solicitud" class="btn btn-primary">Generar nueva solicitud</a>
-                            <a href="/misDispensas/solicitudes" class="btn btn-primary">Mis Solicitudes</a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div id="panel-4" class="panel">
-                    <div class="panel-container show">
-                        <div class="panel-content">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    @if($prevno)
-                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo anterior" href="/misDispensas/Prev" class="btn btn-primary btn-block"><i class="far fa-chevron-left"></i></a>
-                                    @endif
-                                </div>
-                                <div class="col-md-2">
-                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo actual" href="/misDispensas" class="btn btn-primary btn-block"><i class="far fa-chevron-down"></i></a>
-                                </div>
-                                <div class="col-md-5">
-                                    @if($nextno)
-                                        <a data-template="<div class=&quot;tooltip&quot; role=&quot;tooltip&quot;><div class=&quot;tooltip-inner bg-primary-500&quot;></div></div>" data-toggle="tooltip" title="" data-original-title="Periodo Siguiente" href="/misDispensas/Next" class="btn btn-secondary btn-block"><i class="far fa-chevron-right"></i></a>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="metric-item">
+            <span>Extras</span>
+            <strong>{{ $especiales }}</strong>
         </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div id="panel-2" class="panel">
-                    <div class="panel-hdr center">
-                        <h2 class="center">Periodo {{$periodo->start}} - {{$periodo->end}}</h2>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 mb-15">
-                            <h3 class="center">Mis dispensas</h3>
-                            <h4 class="center" style="width:100%">{{$disponibles}}</h4>
-                        </div>
-                        <div class="col-3 mb-15">
-                            <h3 class="center">Dispensas Extraordinarias asignadas</h3>
-                            <h4 class="center" style="width:100%">{{$especiales}}</h4>
-                        </div>
-                        <div class="col-3 mb-15">
-                            <h3 class="center">Dispensas Usadas</h3>
-                            <h4 class="center" style="width:100%">{{$usados}}</h4>
-                        </div>
-                        <div class="col-3 mb-15">
-                            <h3 class="center">Total disponible</h3>
-                            <h4 class="center" style="width:100%">{{$disponibles + $especiales - $usados}}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div id="panel-3" class="panel">
-                    <table class="table table-bordered" style="margin-bottom: 0">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                @for($i = 1; $i <= 31; $i++)
-                                    <th class="center">{{$i}}</th>
-                                @endfor
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($almanaque as $item)
-                                <tr>
-                                    <td>{{$item[1]}}</td>
-                                    @for($i = 1; $i <= 31; $i++)
-                                        <td data-date="{{$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)}}" @isset($marcar[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)]) style="background-color:#a38cc6" @endisset class="center purple-hover">@isset($domingos[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset</td>
-                                    @endfor
-                                </tr>
-                            @endforeach
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="metric-item">
+            <span>Usadas</span>
+            <strong>{{ $usados }}</strong>
+        </div>
+        <div class="metric-item">
+            <span>Disponibles</span>
+            <strong>{{ $totalDisponible }}</strong>
         </div>
     </div>
+
+    @component('components.table-panel', [
+        'title' => 'Calendario del periodo',
+        'description' => 'Los dias usados o bloqueados no cuentan como disponibles para nuevas solicitudes.',
+        'contentClass' => 'no-padding',
+    ])
+        @include('components.period-calendar', [
+            'almanaque' => $almanaque,
+            'domingos' => $domingos,
+            'marcar' => $marcar,
+        ])
+    @endcomponent
 @endsection

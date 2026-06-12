@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\factura;
+use App\Http\Requests\Billing\StoreHonorarioFacturaRequest;
 use App\honorario;
-use App\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Services\Billing\FacturaFileService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class FacturaController extends Controller
 {
-    public function __construct()
+    private FacturaFileService $facturaFiles;
+
+    public function __construct(FacturaFileService $facturaFiles)
     {
         $this->middleware("auth");
+        $this->facturaFiles = $facturaFiles;
 
     }
     /**
@@ -26,7 +26,7 @@ class FacturaController extends Controller
     public function index()
     {
         return view("factura.index",[
-            "facturas" => factura::all()
+            "facturas" => $this->adminFacturas()
         ]);
     }
 
@@ -35,7 +35,7 @@ class FacturaController extends Controller
      */
     public function MisFacturas(){
         return view("factura.misFacturas",[
-            "facturas" => factura::all()->where("user_id","=",Auth::id())
+            "facturas" => Auth::user()->honorarios()->with('user')->whereNotNull('factura')->orderByDesc('id')->get()
         ]);
     }
 
@@ -46,6 +46,9 @@ class FacturaController extends Controller
      */
     public function create($id)
     {
+        $honorario = honorario::findOrFail($id);
+        abort_unless((int) $honorario->user_id === (int) Auth::id(), 403);
+
         return view("factura.create",["honorario" => $id]);
     }
 
@@ -55,17 +58,13 @@ class FacturaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreHonorarioFacturaRequest $request)
     {
-        $data = $request->validate([
-            "file" => "file",
-            "honorario" => "required"
-        ]);
-
+        $data = $request->validated();
         $honorario = honorario::findOrFail($data["honorario"]);
-        $honorario->factura = $request->file("file")->store("app/facturas");
+        abort_unless((int) $honorario->user_id === (int) Auth::id(), 403);
 
-        $honorario->save();
+        $this->facturaFiles->uploadForHonorario($honorario, $request->file("file"));
 
         return redirect("/misHonorarios");
 
@@ -79,31 +78,9 @@ class FacturaController extends Controller
      */
     public function show($id)
     {
-        $factura = honorario::findOrFail($id);
-        return response()->file(storage_path("app/".$factura->factura));
-    }
+        $path = $this->facturaFiles->viewablePathFor((int) $id, Auth::user());
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return response()->file(Storage::path($path));
     }
 
     /**
@@ -114,9 +91,19 @@ class FacturaController extends Controller
      */
     public function destroy($id)
     {
-        $factura = factura::findOrFail($id);
-        $factura->delete();
+        $honorario = honorario::findOrFail($id);
+        abort_unless(
+            (int) $honorario->user_id === (int) Auth::id() || Auth::user()->canAccessAnyMenu(['/honorarios']),
+            403
+        );
+
+        $this->facturaFiles->deleteForHonorario($honorario);
 
         return redirect("/misFacturas");
+    }
+
+    private function adminFacturas()
+    {
+        return honorario::with('user')->whereNotNull('factura')->orderByDesc('id')->get();
     }
 }

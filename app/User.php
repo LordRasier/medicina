@@ -42,12 +42,39 @@ class User extends Authenticatable
         return $this->belongsToMany(espacio::class,"espacios_pivot","user_id","espacio_id")->withPivot("id","detalle","horario","autorizado","respuesta","fecha");
     }
 
+    public function solicitudesEspacio()
+    {
+        return $this->hasMany(SolicitudEspacio::class);
+    }
+
     public function events(){
         return $this->hasMany(event::class);
     }
 
     public function access(){
         return $this->belongsToMany(sub_menu::class,"sub_menu_user","user_id","sub_menu_id");
+    }
+
+    public function canAccessAnyMenu(array $urls)
+    {
+        $allowedUrls = collect($urls)
+            ->filter()
+            ->map(fn ($url) => '/' . ltrim($url, '/'))
+            ->values();
+
+        if ($allowedUrls->isEmpty()) {
+            return false;
+        }
+
+        $allowedSubMenuIds = sub_menu::whereIn('url', $allowedUrls)->pluck('id');
+
+        if ($allowedSubMenuIds->isEmpty()) {
+            return false;
+        }
+
+        return $this->access()
+            ->whereIn('sub_menus.id', $allowedSubMenuIds)
+            ->exists();
     }
 
     public function dedication(){
@@ -60,10 +87,6 @@ class User extends Authenticatable
 
     public function type(){
         return $this->belongsTo(type::class);
-    }
-
-    public function facturas(){
-        return $this->hasMany(factura::class);
     }
 
     public function honorarios(){

@@ -1,42 +1,90 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Honorarios</li>
-    </ol>
-    <div class="col-md-12 col xs 12 col sm 12">
-        <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Revise los honorarios que han sido cargados y haga el click en el boton <i class="far fa-search fa-xs"></i> para mirarla en el navegador
-        </div>
-        <div id="panel-2" class="panel">
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <table id="mytable" class="table table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th class="center" style="width: 10%">ID</th>
-                            <th class="center" style="width: 30%">Usuario</th>
-                            <th class="center" style="width: 20%">Fecha</th>
-                            <th class="center" style="width: 10%">Honorario</th>
-                            <th class="center" style="width: 10%">Factura</th>
+    @component('components.page-header', [
+        'title' => 'Honorarios cargados',
+        'subtitle' => 'Listado administrativo de liquidaciones importadas al sistema.',
+        'breadcrumbs' => [
+            ['label' => 'Honorarios'],
+            ['label' => 'Archivo'],
+        ],
+    ])
+        <a href="/honorarios/create" class="btn btn-primary">
+            <i class="fal fa-upload mr-1"></i>
+            Cargar registros
+        </a>
+    @endcomponent
 
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($honorarios as $item)
-                            <tr class="@if($item->factura != null) bg-success-50 @endif">
-                                <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->user["name"]}}</td>
-                                <td class="center">{{$item->fecha}}</td>
-                                <td class="center"><a target="_blank" class="btn btn-primary" href="/honorarios/show/{{$item->id}}"><i class="fa fa-search"></i></a></td>
-                                <td class="center"><a @if($item->factura != null) target="_blank" @endif class="btn btn-secondary @if($item->factura == null) btn-danger @else btn-success @endif" href="@if($item->factura == null) # @else /facturas/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    @isset($result)
+        <div class="alert alert-success" role="alert">
+            Importacion procesada correctamente.
+            @isset($importSummary)
+                <span class="ml-2">Archivos importados: {{ $importSummary['imported'] ?? 0 }}.</span>
+                <span class="ml-2">Omitidos: {{ $importSummary['skipped'] ?? 0 }}.</span>
+            @endisset
         </div>
-    </div>
+    @endisset
+
+    @isset($elim)
+        <div class="alert alert-success" role="alert">
+            Honorario eliminado correctamente.
+        </div>
+    @endisset
+
+    @component('components.table-panel', [
+        'title' => 'Liquidaciones',
+        'description' => 'Consulta comprobantes de honorarios y facturas asociadas por profesional.',
+    ])
+        <table id="mytable" class="table table-striped table-hover ui-data-table">
+            <thead>
+            <tr>
+                <th>Honorario</th>
+                <th>Profesional</th>
+                <th>Fecha</th>
+                <th>Comprobante</th>
+                <th>Factura</th>
+                <th class="text-right">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($honorarios as $item)
+                <tr>
+                    <td><strong>#{{ $item->id }}</strong></td>
+                    <td>{{ optional($item->user)->name ?? 'Usuario no disponible' }}</td>
+                    <td>{{ $item->fecha }}</td>
+                    <td>
+                        @include('components.file-status-badge', [
+                            'available' => $item->file != null,
+                            'availableText' => 'Disponible',
+                            'missingText' => 'Sin archivo',
+                        ])
+                    </td>
+                    <td>
+                        @include('components.file-status-badge', [
+                            'available' => $item->factura != null,
+                            'availableText' => 'Facturada',
+                            'missingText' => 'Sin factura',
+                        ])
+                    </td>
+                    <td class="text-right">
+                        <a target="_blank" class="btn btn-outline-secondary btn-sm" href="/honorarios/show/{{ $item->id }}" data-toggle="tooltip" title="Ver honorario">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        @if($item->factura != null)
+                            <a target="_blank" class="btn btn-outline-secondary btn-sm" href="/facturas/show/{{ $item->id }}" data-toggle="tooltip" title="Ver factura">
+                                <i class="fal fa-file-invoice"></i>
+                            </a>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        No hay honorarios cargados para mostrar.
+                    </td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    @endcomponent
 @endsection

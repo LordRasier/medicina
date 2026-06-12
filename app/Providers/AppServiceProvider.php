@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 "user" => Auth::user(),
                 "users" => User::all(),
-                "events" => event::all()->where("user",Auth::id()),
+                "events" => event::where("user", Auth::id())->get(),
                 "menus" => $user->access_list()
             ]);
         });

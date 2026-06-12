@@ -49,7 +49,11 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <a type="button" href="/users/{{$item->id}}/remove" class="btn btn-primary">Continuar</a>
+                                                <form method="POST" action="/users/{{$item->id}}/remove" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-primary">Continuar</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

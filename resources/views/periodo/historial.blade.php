@@ -1,53 +1,65 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Historial</li>
-    </ol>
-    <div class="col-md-12 col xs 12 col sm 12">
+    @component('components.page-header', [
+        'title' => 'Historial de dispensas',
+        'subtitle' => 'Solicitudes ya resueltas por el circuito de autorizacion.',
+        'breadcrumbs' => [
+            ['label' => 'Dispensas'],
+            ['label' => 'Historial'],
+        ],
+    ])
+    @endcomponent
 
-        @isset($resp)
-            @if($resp == true)
-                <div class="alert alert-success" role="alert">
-                    <strong>Info!</strong> Autorizacion enviada
-                </div>
+    @isset($resp)
+        <div class="alert @if($resp) alert-success @else alert-danger @endif" role="alert">
+            @if($resp)
+                Autorizacion enviada correctamente.
+            @else
+                Notificacion de rechazo enviada.
             @endif
-            @if($resp == false)
-                <div class="alert alert-danger" role="alert">
-                    <strong>Info!</strong> Notificacion de rechazo enviada
-                </div>
-            @endif
-        @endisset
-        <div id="panel-2" class="panel">
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <table id="mytable" class="table table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th class="center" style="width: 10%">ID</th>
-                            <th class="center" style="width: 10%">Emisor</th>
-                            <th class="center" style="width: 30%">Fecha</th>
-                            <th class="center" style="width: 20%">Aut. 2</th>
-                            <th class="center" style="width: 20%">Aut. 3</th>
-                            <th class="center" style="width: 10%"><i class="far fa-search"></i></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($solicitudes as $item)
-                            <tr>
-                                <td class="center">{{$item->id}}</td>
-                                <td class="center">@isset($item->user->name){{$item->user->name}} @endisset</td>
-                                <td class="center">{{$item->created_at}}</td>
-                                <td class="center"><i class="{{$icono[$item->autorizacion2]}}"></i></td>
-                                <td class="center"><i class="{{$icono[$item->autorizacion3]}}"></i></td>
-                                <td class="center"><a class="btn btn-secondary" href="/historial/detail/{{$item->id}}"><i class="fa fa-search"></i></a></td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
-    </div>
+    @endisset
+
+    @component('components.table-panel', [
+        'title' => 'Solicitudes resueltas',
+        'description' => 'Consulta solicitudes aprobadas o rechazadas y revisa el detalle de cada resolucion.',
+    ])
+        <table id="mytable" class="table table-striped table-hover ui-data-table">
+            <thead>
+            <tr>
+                <th>Solicitud</th>
+                <th>Profesional</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Autorizacion 2</th>
+                <th>Autorizacion 3</th>
+                <th class="text-right">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($solicitudes as $item)
+                <tr>
+                    <td><strong>#{{ $item->id }}</strong></td>
+                    <td>{{ optional($item->user)->name ?? 'Usuario no disponible' }}</td>
+                    <td>{{ optional($item->licence)->description ?? 'Sin tipo' }}</td>
+                    <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                    <td>@include('components.status-badge', ['status' => $item->autorizacion2])</td>
+                    <td>@include('components.status-badge', ['status' => $item->autorizacion3])</td>
+                    <td class="text-right">
+                        <a class="btn btn-outline-secondary btn-sm" href="/historial/detail/{{ $item->id }}" data-toggle="tooltip" title="Ver detalle">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">
+                        No hay solicitudes resueltas para mostrar.
+                    </td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    @endcomponent
 @endsection

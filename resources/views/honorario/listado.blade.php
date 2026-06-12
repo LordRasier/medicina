@@ -1,47 +1,82 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Mis honorarios</li>
-    </ol>
-    <div class="col-md-12 col xs 12 col sm 12">
-        <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Aqui puede ver todas los honorarios cargados y acceder a cargar una nueva!.
-        </div>
-        @isset($elim)
-            <div class="alert alert-danger" role="alert">
-                <strong>Info!</strong> Archivo eliminado
-            </div>
-        @endisset
-        <div id="panel-2" class="panel">
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <table id="mytable" class="table table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th class="center" style="width: 10%">ID</th>
-                            <th class="center" style="width: 20%">Fecha</th>
-                            <th class="center" style="width: 10%">Honorario</th>
-                            <th class="center" style="width: 10%">Factura</th>
-                            <th class="center" style="width: 10%">Cargar</th>
+    @component('components.page-header', [
+        'title' => 'Mis honorarios',
+        'subtitle' => 'Consulta tus liquidaciones y gestiona la factura asociada.',
+        'breadcrumbs' => [
+            ['label' => 'Honorarios'],
+            ['label' => 'Mis honorarios'],
+        ],
+    ])
+        <a href="/misFacturas" class="btn btn-outline-secondary">
+            <i class="fal fa-file-invoice mr-1"></i>
+            Mis facturas
+        </a>
+    @endcomponent
 
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($honorarios as $item)
-                            <tr>
-                                <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->fecha}}</td>
-                                <td class="center"><a target="_blank" class="btn btn-primary" href="/honorarios/show/{{$item->id}}"><i class="fa fa-search"></i></a></td>
-                                <td class="center"><a @if($item->factura != null) target="_blank" @endif class="btn btn-secondary @if($item->factura == null) btn-danger @else btn-success @endif" href="@if($item->factura == null) # @else /facturas/show/{{$item->id}} @endif"><i class="fa fa-search"></i></a></td>
-                                <td class="center"><a  class="btn btn-secondary" href="/misFacturas/create/{{$item->id}}"><i class="fa fa-upload"></i></a></td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    @isset($elim)
+        <div class="alert alert-success" role="alert">
+            Archivo eliminado correctamente.
         </div>
-    </div>
+    @endisset
+
+    @component('components.table-panel', [
+        'title' => 'Liquidaciones disponibles',
+        'description' => 'Cada honorario permite ver el comprobante y cargar o consultar su factura.',
+    ])
+        <table id="mytable" class="table table-striped table-hover ui-data-table">
+            <thead>
+            <tr>
+                <th>Honorario</th>
+                <th>Fecha</th>
+                <th>Comprobante</th>
+                <th>Factura</th>
+                <th class="text-right">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($honorarios as $item)
+                <tr>
+                    <td><strong>#{{ $item->id }}</strong></td>
+                    <td>{{ $item->fecha }}</td>
+                    <td>
+                        @include('components.file-status-badge', [
+                            'available' => $item->file != null,
+                            'availableText' => 'Disponible',
+                            'missingText' => 'Sin archivo',
+                        ])
+                    </td>
+                    <td>
+                        @include('components.file-status-badge', [
+                            'available' => $item->factura != null,
+                            'availableText' => 'Facturada',
+                            'missingText' => 'Sin factura',
+                        ])
+                    </td>
+                    <td class="text-right">
+                        <a target="_blank" class="btn btn-outline-secondary btn-sm" href="/honorarios/show/{{ $item->id }}" data-toggle="tooltip" title="Ver honorario">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        @if($item->factura != null)
+                            <a target="_blank" class="btn btn-outline-secondary btn-sm" href="/facturas/show/{{ $item->id }}" data-toggle="tooltip" title="Ver factura">
+                                <i class="fal fa-file-invoice"></i>
+                            </a>
+                        @else
+                            <a class="btn btn-outline-primary btn-sm" href="/misFacturas/create/{{ $item->id }}" data-toggle="tooltip" title="Cargar factura">
+                                <i class="fa fa-upload"></i>
+                            </a>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                        No hay honorarios cargados para mostrar.
+                    </td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    @endcomponent
 @endsection

@@ -53,7 +53,11 @@
                         <div id="msg-{{$mail->id}}" class="d-flex flex-column border-faded border-top-0 border-left-0 border-right-0 py-3 px-3 px-sm-4 px-lg-0 mr-0 mr-lg-5 flex-shrink-0">
                             <div class="d-flex align-items-center flex-row">
                                 <div class="ml-0 mr-3 mx-lg-3">
-                                    <img src="/storage/profile/{{$mail->oprofile}}" class="profile-image profile-image-md rounded-circle" alt="{{$mail->oname}}">
+                                    @include('components.profile-avatar', [
+                                        'profile' => $mail->oprofile,
+                                        'name' => $mail->oname,
+                                        'class' => 'profile-image profile-image-md rounded-circle',
+                                    ])
                                 </div>
                                 <div class="fw-500 flex-1 d-flex flex-column cursor-pointer" data-toggle="collapse" data-target="#msg-{{$mail->id}} > .js-collapse">
                                     <div class="fs-lg">

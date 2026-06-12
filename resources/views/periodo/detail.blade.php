@@ -1,46 +1,102 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Detalle</li>
-    </ol>
-    <div class="col-md-12 col xs 12 col sm 12">
-        <div id="panel-1" class="panel">
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <a href="/misDispensas/solicitudes" class="btn btn-primary">Atras</a>
+    @php
+        $solicitud = $periodo;
+    @endphp
+
+    @component('components.page-header', [
+        'title' => 'Solicitud #' . $solicitud->id,
+        'subtitle' => 'Detalle y estado de autorizacion de tu dispensa.',
+        'breadcrumbs' => [
+            ['label' => 'Dispensas', 'url' => '/misDispensas'],
+            ['label' => 'Mis solicitudes', 'url' => '/misDispensas/solicitudes'],
+            ['label' => 'Detalle'],
+        ],
+    ])
+        <a href="/misDispensas/solicitudes" class="btn btn-outline-secondary">
+            <i class="fal fa-arrow-left mr-1"></i>
+            Volver
+        </a>
+    @endcomponent
+
+    <div class="row">
+        <div class="col-lg-7">
+            @component('components.table-panel', [
+                'title' => 'Resumen',
+                'description' => 'Informacion principal de la solicitud enviada.',
+            ])
+                <dl class="request-summary">
+                    <dt>Fecha</dt>
+                    <dd>{{ $solicitud->created_at->format('d/m/Y H:i') }}</dd>
+
+                    <dt>Tipo</dt>
+                    <dd>{{ optional($solicitud->licence)->description ?? 'Sin licencia asociada' }}</dd>
+
+                    <dt>Autorizacion 2</dt>
+                    <dd>@include('components.status-badge', ['status' => $solicitud->autorizacion2])</dd>
+
+                    <dt>Autorizacion 3</dt>
+                    <dd>@include('components.status-badge', ['status' => $solicitud->autorizacion3])</dd>
+
+                    <dt>Adjunto</dt>
+                    <dd>
+                        @if($solicitud->file != null)
+                            <a target="_blank" href="/checkfile/{{ $solicitud->id }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fal fa-paperclip mr-1"></i>
+                                Ver adjunto
+                            </a>
+                        @else
+                            <span class="text-muted">Sin adjunto</span>
+                        @endif
+                    </dd>
+                </dl>
+
+                <div class="form-group mb-0">
+                    <label class="form-label">Descripcion enviada</label>
+                    <textarea class="form-control" rows="4" readonly>{{ $solicitud->description }}</textarea>
                 </div>
-            </div>
-        </div>
-        <div id="panel-2" class="panel">
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <div class="row">
-                        <div class="col-6 mb-15">
-                            <div class="form-group">
-                                <label class="form-label">Detalle Aut. 2</label>
-                                <textarea rows="5" class="form-control">{{$periodo->observacion2}}</textarea>
-                            </div>
+            @endcomponent
+
+            @component('components.table-panel', [
+                'title' => 'Respuestas',
+                'description' => 'Observaciones registradas durante el circuito de autorizacion.',
+            ])
+                <div class="response-stack">
+                    <div class="response-card">
+                        <div class="response-card-title">
+                            @include('components.status-badge', ['status' => $solicitud->autorizacion2])
+                            <span>Nivel 2</span>
                         </div>
-                        <div class="col-6 mb-15">
-                            <div class="form-group">
-                                <label class="form-label">Detalle Aut. 3</label>
-                                <textarea rows="5" class="form-control">{{$periodo->observacion3}}</textarea>
-                            </div>
+                        <p>{{ $solicitud->observacion2 ?: 'Sin observacion registrada.' }}</p>
+                    </div>
+                    <div class="response-card">
+                        <div class="response-card-title">
+                            @include('components.status-badge', ['status' => $solicitud->autorizacion3])
+                            <span>Nivel 3</span>
                         </div>
-                        <h3 class="center mb-15" style="width:100%">Dias solicitados</h3>
-                        @foreach($periodo->days as $item)
-                            <div class="col-3 mb-15">
-                                <div class="form-group">
-                                    <label class="form-label">{{$periodo->licence->description}}</label>
-                                    <input type="text" value="{{$item->date}}" class="form-control" disabled>
-                                </div>
-                            </div>
-                        @endforeach
+                        <p>{{ $solicitud->observacion3 ?: 'Sin observacion registrada.' }}</p>
                     </div>
                 </div>
-            </div>
+            @endcomponent
+        </div>
+
+        <div class="col-lg-5">
+            @component('components.table-panel', [
+                'title' => 'Dias solicitados',
+                'description' => 'Fechas incluidas en esta solicitud.',
+            ])
+                <div class="date-chip-list">
+                    @forelse($solicitud->days as $item)
+                        <span class="date-chip">
+                            <i class="fal fa-calendar mr-1"></i>
+                            {{ $item->date }}
+                        </span>
+                    @empty
+                        <span class="text-muted">No hay dias cargados.</span>
+                    @endforelse
+                </div>
+            @endcomponent
         </div>
     </div>
 @endsection

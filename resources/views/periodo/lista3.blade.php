@@ -1,53 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Autorizaciones nivel 3</li>
-    </ol>
-    <div class="col-md-12 col xs 12 col sm 12">
-        <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Revise las Solicitudes que han sido cargadas y haga el click en el boton <i class="far fa-search fa-xs"></i> para Autorizarla o rechazarla
-        </div>
-        @isset($resp)
-            @if($resp == true)
-                <div class="alert alert-success" role="alert">
-                    <strong>Info!</strong> Autorizacion enviada
-                </div>
+    @component('components.page-header', [
+        'title' => 'Autorizaciones nivel 3',
+        'subtitle' => 'Solicitudes aprobadas por nivel 2 pendientes de resolucion final.',
+        'breadcrumbs' => [
+            ['label' => 'Dispensas'],
+            ['label' => 'Autorizaciones nivel 3'],
+        ],
+    ])
+    @endcomponent
+
+    @isset($resp)
+        <div class="alert @if($resp) alert-success @else alert-danger @endif" role="alert">
+            @if($resp)
+                Autorizacion enviada correctamente.
+            @else
+                Notificacion de rechazo enviada.
             @endif
-            @if($resp == false)
-                <div class="alert alert-danger" role="alert">
-                    <strong>Info!</strong> Notificacion de rechazo enviada
-                </div>
-            @endif
-        @endisset
-        <div id="panel-2" class="panel">
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <table id="mytable" class="table table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th class="center" style="width: 10%">ID</th>
-                            <th class="center" style="width: 30%">Fecha</th>
-                            <th class="center" style="width: 30%">Aut. 2</th>
-                            <th class="center" style="width: 20%">Aut. 3</th>
-                            <th class="center" style="width: 10%"><i class="fa fa-search"></i></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($solicitudes as $item)
-                            <tr>
-                                <td class="center">{{$item->id}}</td>
-                                <td class="center">{{$item->created_at}}</td>
-                                <td class="center"><i class="{{$icono[$item->autorizacion2]}}"></i></td>
-                                <td class="center"><i class="{{$icono[$item->autorizacion3]}}"></i></td>
-                                <td class="center"><a class="btn btn-secondary" href="/autorizaciones/3/definir/{{$item->id}}"><i class="fa fa-search"></i></a></td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
-    </div>
+    @endisset
+
+    @component('components.table-panel', [
+        'title' => 'Bandeja de resolucion final',
+        'description' => 'Estas solicitudes ya pasaron el primer nivel y esperan definicion final.',
+    ])
+        <table id="mytable" class="table table-striped table-hover ui-data-table">
+            <thead>
+            <tr>
+                <th>Solicitud</th>
+                <th>Fecha</th>
+                <th>Autorizacion 2</th>
+                <th>Autorizacion 3</th>
+                <th class="text-right">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($solicitudes as $item)
+                <tr>
+                    <td><strong>#{{ $item->id }}</strong></td>
+                    <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                    <td>@include('components.status-badge', ['status' => $item->autorizacion2])</td>
+                    <td>@include('components.status-badge', ['status' => $item->autorizacion3])</td>
+                    <td class="text-right">
+                        <a class="btn btn-outline-secondary btn-sm" href="/autorizaciones/3/definir/{{ $item->id }}" data-toggle="tooltip" title="Resolver solicitud">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                        No hay solicitudes pendientes para resolucion final.
+                    </td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    @endcomponent
 @endsection

@@ -1,89 +1,161 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $availableDays = max(0, $disponibles + $especiales - $usados);
+        $selectedDays = old('dia', []);
+    @endphp
+
     <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-        <li class="breadcrumb-item">Configuracion</li>
-        <li class="breadcrumb-item">Dispensa</li>
+        <li class="breadcrumb-item"><a href="/home">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="/misDispensas">Mis dispensas</a></li>
+        <li class="breadcrumb-item active">Nueva solicitud</li>
     </ol>
-    <div class="col-md-12 col xs 12 col sm 12">
-        <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Aqui podras ver las solicitudes de dispensas correspondientes al periodo actual
+
+    <form action="/misDispensas/create/store" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method("PUT")
+        <input type="hidden" value="{{ $periodo->id }}" name="periodo">
+
+        <div class="dispensa-toolbar">
+            <div>
+                <h1 class="page-title mb-1">Nueva solicitud de dispensa</h1>
+                <div class="text-muted">Periodo {{ $periodo->start }} al {{ $periodo->end }}</div>
+            </div>
+            <div class="dispensa-actions">
+                <a href="/misDispensas" class="btn btn-outline-secondary">
+                    <i class="fal fa-arrow-left mr-1"></i>
+                    Volver
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fal fa-paper-plane mr-1"></i>
+                    Enviar solicitud
+                </button>
+            </div>
         </div>
-        <div id="panel-1" class="panel">
+
+        @if ($errors->any())
+            <div class="alert alert-danger" role="alert">
+                <strong>Revisar solicitud.</strong>
+                <ul class="mb-0 mt-2">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="metric-strip mb-3">
+            <div class="metric-item">
+                <span>Disponibles</span>
+                <strong>{{ $availableDays }}</strong>
+            </div>
+            <div class="metric-item">
+                <span>Usados</span>
+                <strong>{{ $usados }}</strong>
+            </div>
+            <div class="metric-item">
+                <span>Extras</span>
+                <strong>{{ $especiales }}</strong>
+            </div>
+            <div class="metric-item">
+                <span>Seleccionados</span>
+                <strong id="selected-days-count">{{ count($selectedDays) }}</strong>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-hdr">
+                <h2>Datos de la solicitud</h2>
+            </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <a href="/misDispensas" class="btn btn-primary">Atras</a>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="licencia">Dispensa a solicitar</label>
+                            <select id="licencia" name="licencia" class="form-control @error('licencia') is-invalid @enderror">
+                                @foreach($licencias as $item)
+                                    <option value="{{ $item->id }}" @selected((int) old('licencia') === (int) $item->id)>
+                                        {{ $item->description }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('licencia')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="file">Adjunto</label>
+                            <div class="custom-file">
+                                <input id="file" type="file" class="custom-file-input @error('file') is-invalid @enderror" name="file" accept=".pdf,.jpg,.jpeg,.png">
+                                <label class="custom-file-label" for="file">Seleccionar archivo</label>
+                                @error('file')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="description">Descripcion</label>
+                            <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="4" required>{{ old('description') }}</textarea>
+                            @error('description')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <form action="/misDispensas/create/store" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method("PUT")
-            <input type="hidden" value="{{$periodo->id}}" name="periodo">
-            <div class="row">
-                <div class="col-md-12">
-                    <div id="panel-2" class="panel">
-                        <div class="panel-hdr center">
-                            <h2 class="center">Periodo</h2>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 mb-15">
-                                <h4 class="center">Inicio</h4>
-                                <h3 class="center" style="width:100%">{{$periodo->start}}</h3>
-                            </div>
-                            <div class="col-6 mb-15">
-                                <h4 class="center">Fin</h4>
-                                <h3 class="center" style="width:100%">{{$periodo->end}}</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div id="panel-4" class="panel">
-                        <div class="panel-hdr center">
 
-                        </div>
-                        <div class="row">
-                            <div class="col-12 mb-15">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="licencia" class="center">Dispensa a solicitar</label>
-                                        <select name="licencia" class="form-control">
-                                            @foreach($licencias as $item)
-                                                <option value="{{$item->id}}">{{$item->description}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div id="panel-3" class="panel">
-                        <table class="table table-bordered" style="margin-bottom: 0">
+        <div class="panel">
+            <div class="panel-hdr">
+                <h2>Dias solicitados</h2>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content no-padding">
+                    <div class="table-responsive">
+                        <table class="table table-bordered calendar-request-table mb-0">
                             <thead>
                             <tr>
-                                <th></th>
+                                <th class="month-column">Mes</th>
                                 @for($i = 1; $i <= 31; $i++)
-                                    <th class="center">{{$i}}</th>
+                                    <th>{{ $i }}</th>
                                 @endfor
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($almanaque as $item)
                                 <tr>
-                                    <td>{{$item[1]}}</td>
+                                    <th class="month-column">{{ $item[1] }}</th>
                                     @for($i = 1; $i <= 31; $i++)
-                                        <td data-date="{{$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)}}" class="center @empty($marcar[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)]) @empty($domingos[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)]) dia @endempty @endempty purple-hover " @isset($marcar[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)]) style="background-color:#a38cc6" @endisset> @isset($domingos[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)])<i class="far fa-times"></i> @endisset
-
+                                        @php
+                                            $date = $item[0] . "-" . str_pad($i, 2, 0, STR_PAD_LEFT);
+                                            $isUnavailable = isset($domingos[$date]);
+                                            $isUsed = isset($marcar[$date]);
+                                            $isSelectable = ! $isUnavailable && ! $isUsed;
+                                            $isSelected = in_array($date, $selectedDays, true);
+                                        @endphp
+                                        <td
+                                            data-date="{{ $date }}"
+                                            class="calendar-day @if($isSelectable) js-day-select @endif @if($isUnavailable) is-blocked @endif @if($isUsed) is-used @endif @if($isSelected) is-selected @endif"
+                                        >
+                                            @if($isUnavailable)
+                                                <i class="far fa-times"></i>
+                                            @elseif($isUsed)
+                                                <i class="far fa-check"></i>
+                                            @endif
                                         </td>
-                                        @empty($marcar[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)])
-                                            @empty($domingos[$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)])
-                                                <input id="D{{$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)}}" value="{{$item[0]."-".str_pad($i,2,0,STR_PAD_LEFT)}}" type="checkbox" name="dia[]" class="dias" style="opacity:0; position:absolute; left:9999px;">
-                                            @endempty
-                                        @endempty
+                                        @if($isSelectable)
+                                            <input
+                                                id="D{{ $date }}"
+                                                value="{{ $date }}"
+                                                type="checkbox"
+                                                name="dia[]"
+                                                class="dias sr-only"
+                                                @checked($isSelected)
+                                            >
+                                        @endif
                                     @endfor
                                 </tr>
                             @endforeach
@@ -91,64 +163,42 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div id="panel-4" class="panel" style="padding-top: 1.5rem;">
-                        <div class="row">
-                            <div class="col-12 mb-15">
-                                <div class="col">
-                                    <div class="input-group">
-                                        <label for="file" class="form-label" style="width:100%">Adjunto</label>
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="file"  accept="application/pdf,html" >
-                                            <label class="custom-file-label" for="file">Buscar</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 mb-15">
-                                <div class="col">
-                                    <div class="input-group">
-                                        <label for="description" class="form-label" style="width:100%">Descripcion</label>
-                                        <textarea name="description" class="form-control" cols="5" rows="5" required></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-15 center">
-                                <button class="btn btn-primary center">Enviar solicitud</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </form>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        </div>
+    </form>
+
     <script>
-        var disponibles = {{$disponibles + $especiales - $usados}};
+        document.addEventListener('DOMContentLoaded', function () {
+            var availableDays = {{ $availableDays }};
+            var selectedCounter = document.getElementById('selected-days-count');
 
-        $(document).ready(function(){
-            var usados = 0;
+            function selectedCount() {
+                return document.querySelectorAll('.dias:checked').length;
+            }
 
-            $(".dia").click(function () {
-                usados = 0;
-                var fecha = $(this).data("date");
-                $(".dias").each(function () {
-                    if ($(this).is(":CHECKED")) {
-                        usados++;
+            function refreshCounter() {
+                selectedCounter.textContent = selectedCount();
+            }
+
+            document.querySelectorAll('.js-day-select').forEach(function (cell) {
+                cell.addEventListener('click', function () {
+                    var checkbox = document.getElementById('D' + cell.dataset.date);
+
+                    if (! checkbox.checked && selectedCount() >= availableDays) {
+                        return;
                     }
+
+                    checkbox.checked = ! checkbox.checked;
+                    cell.classList.toggle('is-selected', checkbox.checked);
+                    refreshCounter();
                 });
-                console.log(usados+" "+disponibles);
-                if (usados < disponibles) {
-                    $("#D" + fecha).click();
-                    if ($("#D" + fecha).is(":CHECKED")) {
-                        $(this).css("background-color", "#a38cc6 !important");
-                    } else {
-                        $(this).css("background-color", "");
-                    }
-                }else{
-                    $("#D" + fecha).prop("checked",false);
-                    $(this).css("background-color", "");
-                }
+            });
+
+            document.querySelectorAll('.custom-file-input').forEach(function (input) {
+                input.addEventListener('change', function () {
+                    var fileName = input.files.length ? input.files[0].name : 'Seleccionar archivo';
+                    input.nextElementSibling.textContent = fileName;
+                });
             });
         });
     </script>

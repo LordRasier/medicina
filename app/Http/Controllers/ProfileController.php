@@ -35,7 +35,7 @@ class ProfileController extends Controller
         return view("user.userList",[
             "user" =>Auth::user(),
             "users" => User::all(),
-            "events" => event::all()->where("user",Auth::id()),
+            "events" => event::where("user", Auth::id())->get(),
             "menus" => $user->access_list()
         ]);
     }
@@ -216,13 +216,17 @@ class ProfileController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        DB::statement("delete from sub_menu_user where user_id = ".$user->id);
+        $user->access()->detach();
         $user->delete();
 
         return redirect("/users");
     }
 
     public function pic(Request $request){
+        $request->validate([
+            "pic" => "required|image|mimes:jpg,jpeg,png|max:2048"
+        ]);
+
         $user = user::findOrFail(Auth::user()->id);
 
         $user->profile = basename($request->file("pic")->store("/public/profile"));

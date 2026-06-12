@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 
-use App\User;
-use http\Client\Response;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\factura;
+use App\Http\Requests\Billing\StoreHonorariosRequest;
 use App\honorario;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use App\Services\Billing\HonorarioImportService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class HonorarioController extends Controller
 {
-    public function __construct()
+    private HonorarioImportService $honorarioImporter;
+
+    public function __construct(HonorarioImportService $honorarioImporter)
     {
         $this->middleware("auth");
+        $this->honorarioImporter = $honorarioImporter;
 
     }
     /**
@@ -27,16 +26,16 @@ class HonorarioController extends Controller
      */
     public function index()
     {
-        return view("honorario.index",["honorarios" => honorario::all()]);
+        return view("honorario.index",["honorarios" => $this->adminHonorarios()]);
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function MisHonorarios(){
-        $user = User::findOrFail(Auth::id());
-
-        return view("honorario.listado",["honorarios" => $user->honorarios()->orderBy("id","desc")->get()]);
+        return view("honorario.listado",[
+            "honorarios" => Auth::user()->honorarios()->orderBy("id","desc")->get()
+        ]);
     }
 
     /**
@@ -55,27 +54,15 @@ class HonorarioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreHonorariosRequest $request)
     {
-        $files = $request->file("file");
+        $summary = $this->honorarioImporter->import($request->file("file", []));
 
-
-            foreach($files as $file){
-                $temp = explode(" - ",$file->getClientOriginalName());
-                $date =  Carbon::parse($temp[1])->toDateString();
-                $user = User::where("code","=",explode("-",$temp[2])[0])->first();
-                if($user != null){
-                    $honorario = honorario::firstOrNew(["user_id" => $user->id,"fecha" => $date]);
-                    $honorario->file = $file->store("app/honorarios");
-
-
-
-                    $honorario->save();
-                    Mail::to($user->email)->send(new \App\Mail\honorario('It works!'));
-                }
-            }
-
-        return view("honorario.index",["honorarios" => honorario::all(),"result" => true]);
+        return view("honorario.index",[
+            "honorarios" => $this->adminHonorarios(),
+            "result" => true,
+            "importSummary" => $summary,
+        ]);
     }
 
     /**
@@ -87,8 +74,15 @@ class HonorarioController extends Controller
     public function show($id)
     {
         $honorario = honorario::findOrFail($id);
+        $user = Auth::user();
 
-        return Response()->file(storage_path("app/".$honorario->file));
+        abort_unless(
+            (int) $honorario->user_id === (int) Auth::id() || $user->canAccessAnyMenu(['/honorarios']),
+            403
+        );
+        abort_if($honorario->file == null || ! Storage::exists($honorario->file), 404);
+
+        return response()->file(Storage::path($honorario->file));
     }
 
     /**
@@ -125,6 +119,11 @@ class HonorarioController extends Controller
         $hono = honorario::findOrFail($id);
         $hono->delete();
 
-        return view("honorario.index",["honorarios" => honorario::all(),"elim" => true]);
+        return view("honorario.index",["honorarios" => $this->adminHonorarios(),"elim" => true]);
+    }
+
+    private function adminHonorarios()
+    {
+        return honorario::with('user')->orderByDesc('id')->get();
     }
 }

@@ -117,7 +117,12 @@
                     </div>
                 </div>
                 <div class="info-card">
-                    <img src="/storage/profile/{{$user->profile}}" class="profile-image rounded-circle" alt="{{$user->name}}">
+                    @include('components.profile-avatar', [
+                        'profile' => $user->profile,
+                        'name' => $user->name,
+                        'class' => 'profile-image rounded-circle',
+                        'loading' => 'eager',
+                    ])
                     <div class="info-card-text">
                         <a href="#" class="d-flex align-items-center text-white" data-toggle="modal" data-target=".profile">
                             <span class="text-truncate text-truncate-sm d-inline-block">
@@ -264,7 +269,12 @@
                     <!-- app user menu -->
                     <div>
                         <a href="#" data-toggle="dropdown" title="{{$user->email}}" class="header-icon d-flex align-items-center justify-content-center ml-2">
-                            <img src="/storage/profile/{{$user->profile}}" class="profile-image rounded-circle" alt="{{$user->name}}">
+                            @include('components.profile-avatar', [
+                                'profile' => $user->profile,
+                                'name' => $user->name,
+                                'class' => 'profile-image rounded-circle',
+                                'loading' => 'eager',
+                            ])
                             <!-- you can also add username next to the avatar with the codes below:
                             <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
                             <i class="ni ni-chevron-down hidden-xs-down"></i> -->
@@ -273,7 +283,12 @@
                             <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
                                 <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
                                     <span class="mr-2">
-                                        <img src="/storage/profile/{{$user->profile}}" class="rounded-circle profile-image" alt="{{$user->name}}">
+                                        @include('components.profile-avatar', [
+                                            'profile' => $user->profile,
+                                            'name' => $user->name,
+                                            'class' => 'rounded-circle profile-image',
+                                            'loading' => 'eager',
+                                        ])
                                     </span>
                                     <div class="info-card-text">
                                         <div class="fs-lg text-truncate text-truncate-lg">{{$user->name}}</div>
@@ -288,10 +303,12 @@
                                 <i class="float-right text-muted fw-n">F11</i>
                             </a>
                             <div class="dropdown-divider m-0"></div>
-                            <a class="dropdown-item fw-500 pt-3 pb-3" href="/logout">
-                                <span data-i18n="drpdwn.page-logout">Cerrar Sesion</span>
-
-                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item fw-500 pt-3 pb-3 text-left">
+                                    <span data-i18n="drpdwn.page-logout">Cerrar Sesion</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -342,9 +359,12 @@
     <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Ir hacia arriba">
         <i class="fal fa-arrow-up"></i>
     </a>
-    <a href="/logout" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Cerrar Sesion">
-        <i class="fal fa-sign-out"></i>
-    </a>
+    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+        @csrf
+        <button type="submit" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Cerrar Sesion">
+            <i class="fal fa-sign-out"></i>
+        </button>
+    </form>
     <a href="#" class="menu-item btn" data-action="app-fullscreen" data-toggle="tooltip" data-placement="left" title="Pantalla Completa">
         <i class="fal fa-expand"></i>
     </a>
@@ -380,76 +400,82 @@
     $(document).ready(function(){
         $('.select2').select2();
 
-        $('#mytable').dataTable(
-            {
-                responsive: true
-            });
-
+        $('.js-data-table, #mytable').each(function () {
+            if (! $.fn.DataTable.isDataTable(this)) {
+                $(this).dataTable({
+                    responsive: true
+                });
+            }
+        });
 
         var calendarEl = document.getElementById('calendar');
 
-        var calendar = new FullCalendar.Calendar(calendarEl,
-            {
-                plugins: ['dayGrid', 'bootstrap'],
-                themeSystem: 'bootstrap',
-                timeZone: 'UTC',
-                dateAlignment: "month", //week, month
-                buttonText:
-                    {
-                        today: 'today',
-                        month: 'month',
-                        week: 'week',
-                        day: 'day',
-                        list: 'list'
-                    },
-                eventTimeFormat:
-                    {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        meridiem: 'short'
-                    },
-                navLinks: true,
-                header:
-                    {
-                        left: 'title',
-                        center: '',
-                        right: 'today prev,next'
-                    },
-                footer:
-                    {
-                        left: 'dayGridMonth',
-                        center: '',
-                        right: ''
-                    },
-                editable: true,
-                eventLimit: true, // allow "more" link when too many events
-                events: [
-                    @foreach($events as $event)
-                    {
-                        title: "{{$event->descripcion}}",
-                        start: "{{$event->fecha}}",
-                        className: "bg-white border-primary text-primary"
-                    },
-
-                    @endforeach
-                ],
-                viewSkeletonRender: function()
+        if (calendarEl) {
+            var calendar = new FullCalendar.Calendar(calendarEl,
                 {
-                    $('.fc-toolbar .btn-default').addClass('btn-sm');
-                    $('.fc-header-toolbar h2').addClass('fs-md');
-                    $('#calendar').addClass('fc-reset-order')
-                },
+                    plugins: ['dayGrid', 'bootstrap'],
+                    themeSystem: 'bootstrap',
+                    timeZone: 'UTC',
+                    dateAlignment: "month",
+                    buttonText:
+                        {
+                            today: 'today',
+                            month: 'month',
+                            week: 'week',
+                            day: 'day',
+                            list: 'list'
+                        },
+                    eventTimeFormat:
+                        {
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            meridiem: 'short'
+                        },
+                    navLinks: true,
+                    header:
+                        {
+                            left: 'title',
+                            center: '',
+                            right: 'today prev,next'
+                        },
+                    footer:
+                        {
+                            left: 'dayGridMonth',
+                            center: '',
+                            right: ''
+                        },
+                    editable: true,
+                    eventLimit: true,
+                    events: [
+                        @foreach($events as $event)
+                        {
+                            title: "{{$event->descripcion}}",
+                            start: "{{$event->fecha}}",
+                            className: "bg-white border-primary text-primary"
+                        },
 
+                        @endforeach
+                    ],
+                    viewSkeletonRender: function()
+                    {
+                        $('.fc-toolbar .btn-default').addClass('btn-sm');
+                        $('.fc-header-toolbar h2').addClass('fs-md');
+                        $('#calendar').addClass('fc-reset-order')
+                    },
+
+                });
+
+            calendar.render();
+            $('.calendar').on('shown.bs.modal', function (e) {
+                $(".fc-dayGridMonth-button").click();
             });
+        }
 
-        calendar.render();
-        $('.calendar').on('shown.bs.modal', function (e) {
-            $(".fc-dayGridMonth-button").click();
-        });
         $(".calendar-event-date").datepicker({dateFormat:"dd/mm/yy"});
 
     });
 </script>
+@stack('scripts')
 <!--<script src="js/../script.js"></script>
 <script>
 $(document).ready(function () {

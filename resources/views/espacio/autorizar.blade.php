@@ -36,8 +36,8 @@
                         @foreach($solicitudes as $item)
                             <tr>
                                 <td class="center">{{$item->id}}</td>
-                                <td class="center">@isset($item->user->name){{$item->user->name}} @endisset</td>
-                                <td class="center">{{$item->espacio->description}}</td>
+                                <td class="center">{{optional($item->user)->name}}</td>
+                                <td class="center">{{optional($item->espacio)->description}}</td>
                                 <td class="center">{{$item->fecha}}</td>
                                 <td class="center">{{$item->horario}}</td>
                                 <td class="center"><i class="{{$icon[$item->autorizado]}}"></i></td>

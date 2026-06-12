@@ -2,15 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\dispensa;
-use App\espacio;
-use App\event;
 use App\licence;
 use App\request as sol;
-use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class DispensaController extends Controller
 {
@@ -137,10 +131,7 @@ class DispensaController extends Controller
             1 => "far fa-clock",
             2 => "far fa-check fa-2x"
         ];
-        $solicitudes = sol::where("autorizacion2","!=",1)->Where("autorizacion3","!=",1)->get();
-        foreach ($solicitudes as $item){
-            $item->user = User::find($item->user_id);
-        }
+        $solicitudes = sol::with(['user', 'licence'])->resolved()->orderByDesc('id')->get();
 
 
         return view("periodo.historial",[
@@ -150,10 +141,7 @@ class DispensaController extends Controller
     }
 
     public function HistorialDetail(Request $request, $id){
-        $sol = sol::findOrFail($id);
-        $sol->user = $sol->user()->first();
-        $sol->dias = $sol->days()->get();
-        $sol->licence = DB::table("licences")->select("description")->where("id","=",$sol->licence_id)->first();
+        $sol = sol::with(['user', 'days', 'licence'])->findOrFail($id);
 
         return view("licenses.historial",[
             "solicitud" => $sol
